@@ -17,7 +17,7 @@ impl AttributeInfo for SignatureAttribute
 
 impl SignatureAttribute
 {
-    pub fn new(data: &Vec<u8>) -> SignatureAttribute
+    pub fn new(data: &[u8]) -> SignatureAttribute
     {
         let mut iter = data.iter();
         SignatureAttribute

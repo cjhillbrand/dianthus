@@ -18,7 +18,7 @@ impl AttributeInfo for ExceptionAttribute
 
 impl ExceptionAttribute
 {
-    pub fn new(data: &Vec<u8>) -> ExceptionAttribute
+    pub fn new(data: &[u8]) -> ExceptionAttribute
     {
         let mut iter = data.iter();
         ExceptionAttribute

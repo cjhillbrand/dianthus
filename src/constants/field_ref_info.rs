@@ -16,7 +16,7 @@ impl ConstantInfo for FieldRefInfo
 
 impl FieldRefInfo
 {
-    pub fn new(data: &Vec<u8>) -> FieldRefInfo
+    pub fn new(data: &[u8]) -> FieldRefInfo
     {
         let mut iter = data.iter();
         FieldRefInfo

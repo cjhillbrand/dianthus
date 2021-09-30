@@ -16,7 +16,7 @@ impl ConstantInfo for MethodRefInfo
 
 impl MethodRefInfo
 {
-    pub fn new(data: &Vec<u8>) -> MethodRefInfo
+    pub fn new(data: &[u8]) -> MethodRefInfo
     {
         let mut iter = data.iter();
         MethodRefInfo

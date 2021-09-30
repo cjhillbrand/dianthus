@@ -17,7 +17,7 @@ impl AttributeInfo for ConstantValueAttribute
 
 impl ConstantValueAttribute
 {
-    pub fn new(data: &Vec<u8>) -> ConstantValueAttribute
+    pub fn new(data: &[u8]) -> ConstantValueAttribute
     {
         let mut iter = data.iter();
         ConstantValueAttribute

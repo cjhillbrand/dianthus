@@ -25,7 +25,7 @@ impl AttributeInfo for CodeAttribute
 
 impl CodeAttribute
 {
-    pub fn new(data: &Vec<u8>) -> CodeAttribute
+    pub fn new(data: &[u8]) -> CodeAttribute
     {
         let mut iter = data.iter();
         let mut result: CodeAttribute = Default::default();
@@ -40,9 +40,7 @@ impl CodeAttribute
         let mut exception_table: Vec<ExceptionInfo> = Vec::new();
         for _j in 0..result.exception_table_length
         {
-            let info_size = size_of::<ExceptionInfo>();
-            let exception_bytes:Vec<u8> = to_vec(&mut iter, info_size.clone()).unwrap();
-            let exception_info: ExceptionInfo = ExceptionInfo::new(&exception_bytes);
+            let exception_info: ExceptionInfo = ExceptionInfo::new(&data);
             exception_table.push(exception_info);
         }
 
@@ -62,7 +60,7 @@ pub struct ExceptionInfo
 
 impl ExceptionInfo
 {
-    pub fn new(data: &Vec<u8>) -> ExceptionInfo
+    pub fn new(data: &[u8]) -> ExceptionInfo
     {
         let mut iter = data.iter();
         let mut info: ExceptionInfo = Default::default();

@@ -15,7 +15,7 @@ impl ConstantInfo for ClassInfo
 
 impl ClassInfo
 {
-    pub fn new(data: &Vec<u8>) -> ClassInfo
+    pub fn new(data: &[u8]) -> ClassInfo
     {
         let mut iter = data.iter();
         ClassInfo

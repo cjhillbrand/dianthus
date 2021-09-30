@@ -16,7 +16,7 @@ impl AttributeInfo for DeprecatedAttribute
 
 impl DeprecatedAttribute
 {
-    pub fn new(data: &Vec<u8>) -> DeprecatedAttribute
+    pub fn new(data: &[u8]) -> DeprecatedAttribute
     {
         let mut iter = data.iter();
         DeprecatedAttribute

@@ -15,7 +15,7 @@ impl ConstantInfo for StringInfo
 
 impl StringInfo
 {
-    pub fn new(data: &Vec<u8>) -> StringInfo
+    pub fn new(data: &[u8]) -> StringInfo
     {
         let mut iter = data.iter();
         StringInfo

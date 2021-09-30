@@ -16,7 +16,7 @@ impl ConstantInfo for InterfaceMethodRefInfo
 
 impl InterfaceMethodRefInfo
 {
-    pub fn new(data: &Vec<u8>) -> InterfaceMethodRefInfo
+    pub fn new(data: &[u8]) -> InterfaceMethodRefInfo
     {
         let mut iter = data.iter();
         InterfaceMethodRefInfo
