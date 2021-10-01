@@ -5,6 +5,16 @@ use crate::constants::utf8_info::Utf8Info;
 use crate::attributes::attribute_info::{AttributeInfo};
 use crate::util::to_u16;
 use crate::attributes::code_attribute::CodeAttribute;
+use crate::attributes::constant_value_attribute::ConstantValueAttribute;
+use crate::attributes::deprecated_attribute::DeprecatedAttribute;
+use crate::attributes::signature_attribute::SignatureAttribute;
+use crate::attributes::exception_attribute::ExceptionAttribute;
+
+const CONSTANT_VALUE: &str = "ConstantValue";
+const CODE: &str = "Code";
+const DEPRECATED: &str = "Deprecated";
+const SIGNATURE: &str = "Signature";
+const EXCEPTION: &str = "Exception";
 
 pub fn get_attribute(data: &[u8], constant_pool: &[Box<dyn ConstantInfo>]) -> Box<dyn AttributeInfo>
 {
@@ -20,6 +30,11 @@ pub fn get_attribute(data: &[u8], constant_pool: &[Box<dyn ConstantInfo>]) -> Bo
     let attribute_type = utf8_info.get_string();
     match attribute_type
     {
-        &_ => { Box::new(CodeAttribute::new(&data)) }
+        CONSTANT_VALUE =>   { Box::new(ConstantValueAttribute::new(&data)) },
+        CODE =>             { Box::new(CodeAttribute::new(&data)) },
+        DEPRECATED =>       { Box::new(DeprecatedAttribute::new(&data)) },
+        SIGNATURE =>        { Box::new(SignatureAttribute::new(&data)) },
+        EXCEPTION =>        { Box::new(ExceptionAttribute::new(&data)) },
+        &_ => panic!("Unidentified attribute")
     }
 }
