@@ -1,5 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::{to_u8, to_u16, to_u32};
+use std::any::Any;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct FloatInfo
@@ -11,6 +12,7 @@ pub struct FloatInfo
 impl ConstantInfo for FloatInfo
 {
     fn tag(&self) -> &u8 { &self.tag }
+    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl FloatInfo

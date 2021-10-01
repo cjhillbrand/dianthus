@@ -1,5 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::{to_u8, to_u16 };
+use std::any::Any;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct NameAndTypeInfo
@@ -12,6 +13,7 @@ pub struct NameAndTypeInfo
 impl ConstantInfo for NameAndTypeInfo
 {
     fn tag(&self) -> &u8 { &self.tag }
+    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl NameAndTypeInfo

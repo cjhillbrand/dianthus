@@ -1,5 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::{to_u8, to_u16, to_vec};
+use std::any::Any;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct Utf8Info
@@ -14,6 +15,7 @@ pub struct Utf8Info
 impl ConstantInfo for Utf8Info
 {
     fn tag(&self) -> &u8 { &self.tag }
+    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl Utf8Info
@@ -29,6 +31,11 @@ impl Utf8Info
         result.value = to_vec(&mut iter, length as usize).unwrap();
 
         result
+    }
+
+    pub fn get_string(&self) -> &str
+    {
+        "hello"
     }
 }
 

@@ -1,6 +1,9 @@
+use std::any::Any;
+
 pub trait ConstantInfo
 {
     fn tag(&self) -> &u8;
+    fn as_any(&self) -> &dyn Any;
 }
 
 pub enum ConstantFlags

@@ -1,5 +1,6 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::util::{to_u32, to_u16};
+use std::any::Any;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ConstantValueAttribute
@@ -13,6 +14,7 @@ impl AttributeInfo for ConstantValueAttribute
 {
     fn name_index(&self) -> &u16 { &self.attribute_name_index }
     fn attr_length(&self) -> &u32 { &self.attribute_length }
+    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl ConstantValueAttribute
