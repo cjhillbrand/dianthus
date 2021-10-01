@@ -13,3 +13,4 @@ mod invoke_dynamic_info;
 mod double_info;
 mod field_ref_info;
 mod method_ref_info;
+mod constant_factory;

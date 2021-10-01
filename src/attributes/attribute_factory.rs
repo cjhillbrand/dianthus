@@ -31,7 +31,7 @@ pub fn get_attribute(data: &[u8], constant_pool: &[Box<dyn ConstantInfo>]) -> Bo
     match attribute_type
     {
         CONSTANT_VALUE =>   { Box::new(ConstantValueAttribute::new(&data)) },
-        CODE =>             { Box::new(CodeAttribute::new(&data)) },
+        CODE =>             { Box::new(CodeAttribute::new(&data, &constant_pool)) },
         DEPRECATED =>       { Box::new(DeprecatedAttribute::new(&data)) },
         SIGNATURE =>        { Box::new(SignatureAttribute::new(&data)) },
         EXCEPTION =>        { Box::new(ExceptionAttribute::new(&data)) },

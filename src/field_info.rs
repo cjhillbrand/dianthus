@@ -1,6 +1,9 @@
 use crate::attributes::attribute_info::AttributeInfo;
+use crate::constants::constant_info::ConstantInfo;
+use crate::util::to_u16;
+use crate::attributes::attribute_factory::get_attribute;
 
-#[warn(dead_code)]
+#[derive(Default)]
 pub struct FieldInfo
 {
     /// Mask of flags used to denote access permissions to
@@ -20,10 +23,34 @@ pub struct FieldInfo
 
     /// Each value of the attributes table must be an
     /// attribute structure. Can have any number of attributes.
+    // TODO: implement Clone, Debug, Serialize, Deserialize for this type
+    //      so other structs can derive it.
     attributes: Vec<Box<dyn AttributeInfo>>
 }
+
+impl FieldInfo
+{
+    pub fn new(data: &[u8], constant_pool: &[Box<dyn ConstantInfo>]) -> FieldInfo
+    {
+        let mut iter = data.iter();
+        let mut result: FieldInfo = Default::default();
+        result.access_flags = to_u16(&mut iter).unwrap();
+        result.name_index = to_u16(&mut iter).unwrap();
+        result.descriptor_index = to_u16(&mut iter).unwrap();
+        result.attributes_count = to_u16(&mut iter).unwrap();
+
+        result.attributes = Vec::new();
+        for _i in 0..result.attributes_count.clone()
+        {
+            result.attributes.push(get_attribute(&data, &constant_pool));
+        }
+
+        result
+    }
+}
+
 #[warn(dead_code)]
-pub enum AccessFlags
+pub enum FieldAccessFlags
 {
     Public = 0x0001,
     Private = 0x0002,

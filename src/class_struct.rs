@@ -4,6 +4,7 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::constants::constant_info::ConstantInfo;
 use crate::field_info::FieldInfo;
+use crate::method_info::MethodInfo;
 
 #[warn(dead_code)]
 struct ClassStruct {
@@ -20,7 +21,7 @@ struct ClassStruct {
     fields_count: u16,
     field_info: Vec<FieldInfo>,
     methods_count: u16,
-    // method_info Vec<MethodInfo>
+    method_info: Vec<MethodInfo>,
     attributes_count: u16,
     attribute_info: Vec<Box<dyn AttributeInfo>>
 }
