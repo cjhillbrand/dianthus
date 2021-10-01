@@ -1,7 +1,7 @@
 mod class_struct;
 mod field_info;
 mod attributes;
-mod util;
+mod read_bytes;
 mod constants;
 mod method_info;
 

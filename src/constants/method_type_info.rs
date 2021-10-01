@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u16 };
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 use crate::vecdeque;
@@ -23,8 +23,8 @@ impl MethodTypeInfo
     {
         MethodTypeInfo
         {
-            tag: to_u8(&mut data),
-            descriptor_index: to_u16(&mut data)
+            tag: data.pop_u8(),
+            descriptor_index: data.pop_u16()
         }
     }
 }

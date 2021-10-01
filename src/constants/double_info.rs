@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u64 };
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 
@@ -22,9 +22,9 @@ impl DoubleInfo
     {
         DoubleInfo
         {
-            tag: to_u8(&mut data),
+            tag: data.pop_u8(),
             value: {
-                let bits: u64 = to_u64(&mut data);
+                let bits: u64 = data.pop_u64();
                 DoubleInfo::unsigned_to_float(&bits)
             }
         }

@@ -1,7 +1,7 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::constants::utf8_info::Utf8Info;
 use crate::attributes::attribute_info::{AttributeInfo};
-use crate::util::to_u16;
+use crate::read_bytes::ReadBytes;
 use crate::attributes::code_attribute::CodeAttribute;
 use crate::attributes::constant_value_attribute::ConstantValueAttribute;
 use crate::attributes::deprecated_attribute::DeprecatedAttribute;
@@ -19,7 +19,7 @@ const EXCEPTION: &str = "Exception";
 pub fn get_attribute(mut data: &mut VecDeque<u8>, constant_pool: &[Box<dyn ConstantInfo>]) -> Box<dyn AttributeInfo>
 {
     let mut attr_index_vec = vecdeque![data[0].clone(), data[1].clone()];
-    let attr_index: usize = to_u16(&mut attr_index_vec) as usize;
+    let attr_index: usize = attr_index_vec.pop_u16() as usize;
     let constant_info = &constant_pool[attr_index];
     let utf8_info: &Utf8Info = match constant_info.as_any().downcast_ref::<Utf8Info>() {
         Some(info) => info,

@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u16, to_u32};
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 
@@ -22,9 +22,9 @@ impl FloatInfo
     {
         FloatInfo
         {
-            tag: to_u8(&mut data),
+            tag: data.pop_u8(),
             value:  {
-                let bits = to_u32(&mut data);
+                let bits = data.pop_u32();
                 FloatInfo::unsigned_to_float(&bits)
             }
         }

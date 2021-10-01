@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u16 };
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 
@@ -23,9 +23,9 @@ impl FieldRefInfo
     {
         FieldRefInfo
         {
-            tag: to_u8(&mut data),
-            class_index: to_u16(&mut data),
-            name_and_type_index: to_u16(&mut data)
+            tag: data.pop_u8(),
+            class_index: data.pop_u16(),
+            name_and_type_index: data.pop_u16()
         }
     }
 }

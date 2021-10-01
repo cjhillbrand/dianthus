@@ -1,4 +1,4 @@
-use crate::util::{to_u16, to_u32};
+use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_info::AttributeInfo;
 use std::any::Any;
 use core::mem::size_of;
@@ -26,10 +26,10 @@ impl ExceptionAttribute
     {
         ExceptionAttribute
         {
-            attribute_name_index: to_u16(&mut data),
-            attribute_length: to_u32(&mut data),
-            number_of_exceptions: to_u16(&mut data),
-            exception_index_table: to_u16(&mut data)
+            attribute_name_index: data.pop_u16(),
+            attribute_length: data.pop_u32(),
+            number_of_exceptions: data.pop_u16(),
+            exception_index_table: data.pop_u16()
         }
     }
 }

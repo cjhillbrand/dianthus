@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u64};
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 use crate::vecdeque;
@@ -23,8 +23,8 @@ impl LongInfo
     {
         LongInfo
         {
-            tag: to_u8(&mut data),
-            value: to_u64(&mut data) as i64
+            tag: data.pop_u8(),
+            value: data.pop_u64() as i64
         }
     }
 }

@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u32};
+use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_info::AttributeInfo;
 use std::any::Any;
 use std::collections::VecDeque;
@@ -23,8 +23,8 @@ impl IntegerInfo
     {
         IntegerInfo
         {
-            tag: to_u8(&mut data),
-            value: to_u32(&mut data) as i32
+            tag: data.pop_u8(),
+            value: data.pop_u32() as i32
         }
     }
 }

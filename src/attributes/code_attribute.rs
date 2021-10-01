@@ -1,5 +1,5 @@
 use crate::attributes::attribute_info::AttributeInfo;
-use crate::util::{to_vec, to_u32, to_u16 };
+use crate::read_bytes::ReadBytes;
 use std::collections::VecDeque;
 use std::any::Any;
 use crate::constants::constant_info::ConstantInfo;
@@ -32,12 +32,12 @@ impl CodeAttribute
     pub fn new(mut data: &mut VecDeque<u8>, constant_pool: &[Box<dyn ConstantInfo>]) -> CodeAttribute
     {
         let mut result: CodeAttribute = Default::default();
-        result.attribute_name_index = to_u16(&mut data);
-        result.attribute_length = to_u32(&mut data);
-        result.max_stack = to_u16(&mut data);
-        result.code_length = to_u32(&mut data);
-        result.code = to_vec(&mut data, result.code_length.clone() as usize);
-        result.exception_table_length = to_u16(&mut data);
+        result.attribute_name_index = data.pop_u16();
+        result.attribute_length = data.pop_u32();
+        result.max_stack = data.pop_u16();
+        result.code_length = data.pop_u32();
+        result.code = data.pop_vec(result.code_length.clone() as usize);
+        result.exception_table_length = data.pop_u16();
 
         result.exception_table = Vec::new();
         for _j in 0..result.exception_table_length
@@ -46,7 +46,7 @@ impl CodeAttribute
             result.exception_table.push(exception_info);
         }
 
-        result.attribute_count = to_u16(&mut data);
+        result.attribute_count = data.pop_u16();
         result.attribute_info = Vec::new();
         for _i in 0..result.attribute_length.clone()
         {
@@ -72,10 +72,10 @@ impl ExceptionInfo
     {
         ExceptionInfo
         {
-            start_pc: to_u16(&mut data),
-            end_pc: to_u16(&mut data),
-            handler_pc: to_u16(&mut data),
-            catch_type: to_u16(&mut data)
+            start_pc: data.pop_u16(),
+            end_pc: data.pop_u16(),
+            handler_pc: data.pop_u16(),
+            catch_type: data.pop_u16()
         }
     }
 }

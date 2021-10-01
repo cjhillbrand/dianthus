@@ -1,5 +1,5 @@
 use crate::attributes::attribute_info::AttributeInfo;
-use crate::util::{to_u32, to_u16};
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 
@@ -24,9 +24,9 @@ impl ConstantValueAttribute
     {
         ConstantValueAttribute
         {
-            attribute_name_index: to_u16(&mut data),
-            attribute_length: to_u32(&mut data),
-            constant_value_index: to_u16(&mut data),
+            attribute_name_index: data.pop_u16(),
+            attribute_length: data.pop_u32(),
+            constant_value_index: data.pop_u16(),
         }
     }
 }

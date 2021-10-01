@@ -1,5 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
-use crate::util::{to_u8, to_u16, to_vec};
+use crate::read_bytes::ReadBytes;
 use std::any::Any;
 use std::collections::VecDeque;
 use crate::vecdeque;
@@ -26,10 +26,10 @@ impl Utf8Info
     {
         let mut result: Utf8Info = Default::default();
 
-        result.tag = to_u8(&mut data);
-        let length = to_u16(&mut data);
+        result.tag = data.pop_u8();
+        let length = data.pop_u16();
         result.length = length.clone();
-        result.value = to_vec(&mut data, length as usize);
+        result.value = data.pop_vec(length as usize);
 
         result
     }
