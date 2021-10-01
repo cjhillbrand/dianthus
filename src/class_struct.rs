@@ -5,7 +5,6 @@ use crate::method_info::MethodInfo;
 use crate::read_bytes::ReadBytes;
 use crate::constants::constant_factory::get_constant;
 use crate::attributes::attribute_factory::get_attribute;
-use std::collections::VecDeque;
 
 #[derive(Default)]
 struct ClassStruct {
@@ -29,7 +28,7 @@ struct ClassStruct {
 
 impl ClassStruct
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> ClassStruct
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> ClassStruct
     {
         let mut result: ClassStruct = Default::default();
         result.magic = data.pop_u32();
@@ -39,7 +38,7 @@ impl ClassStruct
         result.constant_pool = Vec::new();
         for _i in 0..result.constant_pool_count.clone()
         {
-            result.constant_pool.push(get_constant(&mut data));
+            result.constant_pool.push(get_constant(data));
         }
 
         result.access_flags = data.pop_u16();
@@ -56,21 +55,21 @@ impl ClassStruct
         result.field_info = Vec::new();
         for _i in 0..result.fields_count.clone()
         {
-            result.field_info.push(FieldInfo::new(&mut data, &result.constant_pool));
+            result.field_info.push(FieldInfo::new(data, &result.constant_pool));
         }
 
         result.methods_count = data.pop_u16();
         result.method_info = Vec::new();
         for _i in 0..result.methods_count.clone()
         {
-            result.method_info.push(MethodInfo::new(&mut data, &result.constant_pool));
+            result.method_info.push(MethodInfo::new(data, &result.constant_pool));
         }
 
         result.attributes_count = data.pop_u16();
         result.attribute_info = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attribute_info.push(get_attribute(&mut data, &result.constant_pool));
+            result.attribute_info.push(get_attribute(data, &result.constant_pool));
         }
 
         result

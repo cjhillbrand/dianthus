@@ -2,7 +2,7 @@ use crate::attributes::attribute_info::AttributeInfo;
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_factory::get_attribute;
-use std::collections::VecDeque;
+use serde_json::de::Read;
 
 #[derive(Default)]
 pub struct MethodInfo
@@ -16,7 +16,7 @@ pub struct MethodInfo
 
 impl MethodInfo
 {
-    pub fn new(mut data: &mut VecDeque<u8>, constant_pool: &[Box<dyn ConstantInfo>]) -> MethodInfo
+    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[Box<dyn ConstantInfo>]) -> MethodInfo
     {
         let mut result: MethodInfo = Default::default();
         result.access_flags = data.pop_u16();
@@ -27,7 +27,7 @@ impl MethodInfo
         result.attributes = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attributes.push(get_attribute(&mut data, &constant_pool));
+            result.attributes.push(get_attribute(data, &constant_pool));
         }
 
         result

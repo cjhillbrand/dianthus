@@ -8,6 +8,9 @@ pub trait ReadBytes
     fn pop_u32(&mut self) -> u32;
     fn pop_u64(&mut self) -> u64;
     fn pop_vec(&mut self, length: usize) -> Vec<u8>;
+
+    fn peek_u8(&mut self) -> u8;
+    fn peek_u16(&mut self) -> u16;
 }
 
 impl ReadBytes for VecDeque<u8>
@@ -53,5 +56,16 @@ impl ReadBytes for VecDeque<u8>
         }
 
         result
+    }
+
+    fn peek_u8(&mut self) -> u8 {
+        self[0].clone()
+    }
+
+    fn peek_u16(&mut self) -> u16 {
+        let mut result: u16 = self[0].clone() as u16;
+        result = self[1].clone() as u16 + (result << 8);
+        result
+
     }
 }

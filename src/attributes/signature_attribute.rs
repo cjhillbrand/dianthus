@@ -1,6 +1,5 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
-use std::collections::VecDeque;
 use std::any::Any;
 use core::mem::size_of;
 
@@ -21,7 +20,7 @@ impl AttributeInfo for SignatureAttribute
 
 impl SignatureAttribute
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> SignatureAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> SignatureAttribute
     {
         SignatureAttribute
         {

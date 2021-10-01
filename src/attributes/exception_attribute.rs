@@ -2,7 +2,6 @@ use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_info::AttributeInfo;
 use std::any::Any;
 use core::mem::size_of;
-use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ExceptionAttribute
@@ -22,7 +21,7 @@ impl AttributeInfo for ExceptionAttribute
 
 impl ExceptionAttribute
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> ExceptionAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> ExceptionAttribute
     {
         ExceptionAttribute
         {

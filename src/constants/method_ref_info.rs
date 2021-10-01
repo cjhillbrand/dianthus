@@ -1,8 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
 use std::any::Any;
-use std::collections::VecDeque;
-use crate::vecdeque;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodRefInfo
@@ -20,7 +18,7 @@ impl ConstantInfo for MethodRefInfo
 
 impl MethodRefInfo
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> MethodRefInfo
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> MethodRefInfo
     {
         MethodRefInfo
         {

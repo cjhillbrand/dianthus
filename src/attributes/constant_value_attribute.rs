@@ -1,7 +1,6 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
 use std::any::Any;
-use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ConstantValueAttribute
@@ -20,7 +19,7 @@ impl AttributeInfo for ConstantValueAttribute
 
 impl ConstantValueAttribute
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> ConstantValueAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> ConstantValueAttribute
     {
         ConstantValueAttribute
         {

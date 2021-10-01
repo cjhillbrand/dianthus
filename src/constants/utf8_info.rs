@@ -1,8 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
 use std::any::Any;
-use std::collections::VecDeque;
-use crate::vecdeque;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct Utf8Info
@@ -22,7 +20,7 @@ impl ConstantInfo for Utf8Info
 
 impl Utf8Info
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> Utf8Info
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> Utf8Info
     {
         let mut result: Utf8Info = Default::default();
 

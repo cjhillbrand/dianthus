@@ -1,7 +1,6 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
 use std::any::Any;
-use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct DeprecatedAttribute
@@ -19,7 +18,7 @@ impl AttributeInfo for DeprecatedAttribute
 
 impl DeprecatedAttribute
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> DeprecatedAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> DeprecatedAttribute
     {
         DeprecatedAttribute
         {

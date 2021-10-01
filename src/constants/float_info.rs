@@ -1,7 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
 use std::any::Any;
-use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct FloatInfo
@@ -18,7 +17,7 @@ impl ConstantInfo for FloatInfo
 
 impl FloatInfo
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> FloatInfo
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> FloatInfo
     {
         FloatInfo
         {

@@ -1,6 +1,5 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
-use std::collections::VecDeque;
 use std::any::Any;
 use crate::constants::constant_info::ConstantInfo;
 use crate::attributes::attribute_factory::get_attribute;
@@ -29,7 +28,7 @@ impl AttributeInfo for CodeAttribute
 
 impl CodeAttribute
 {
-    pub fn new(mut data: &mut VecDeque<u8>, constant_pool: &[Box<dyn ConstantInfo>]) -> CodeAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[Box<dyn ConstantInfo>]) -> CodeAttribute
     {
         let mut result: CodeAttribute = Default::default();
         result.attribute_name_index = data.pop_u16();
@@ -42,7 +41,7 @@ impl CodeAttribute
         result.exception_table = Vec::new();
         for _j in 0..result.exception_table_length
         {
-            let exception_info: ExceptionInfo = ExceptionInfo::new(&mut data);
+            let exception_info: ExceptionInfo = ExceptionInfo::new(data);
             result.exception_table.push(exception_info);
         }
 
@@ -50,7 +49,7 @@ impl CodeAttribute
         result.attribute_info = Vec::new();
         for _i in 0..result.attribute_length.clone()
         {
-            result.attribute_info.push(get_attribute(&mut data, &constant_pool));
+            result.attribute_info.push(get_attribute(data, &constant_pool));
         }
 
         result
@@ -68,7 +67,7 @@ pub struct ExceptionInfo
 
 impl ExceptionInfo
 {
-    pub fn new(mut data: &mut VecDeque<u8>) -> ExceptionInfo
+    pub fn new<T: ReadBytes>(mut data: &mut T) -> ExceptionInfo
     {
         ExceptionInfo
         {
