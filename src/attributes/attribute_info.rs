@@ -5,6 +5,11 @@
 /// Annotations: 15,16,17,18,19,20
 ///
 use std::any::Any;
+use crate::attributes::constant_value_attribute::ConstantValueAttribute;
+use crate::attributes::code_attribute::CodeAttribute;
+use crate::attributes::deprecated_attribute::DeprecatedAttribute;
+use crate::attributes::exception_attribute::ExceptionAttribute;
+use crate::attributes::signature_attribute::SignatureAttribute;
 
 pub trait AttributeInfo
 {

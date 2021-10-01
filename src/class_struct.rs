@@ -8,6 +8,7 @@ use crate::method_info::MethodInfo;
 use crate::util::{to_u32, to_u16};
 use crate::constants::constant_factory::get_constant;
 use crate::attributes::attribute_factory::get_attribute;
+use std::collections::VecDeque;
 
 #[derive(Default)]
 struct ClassStruct {
@@ -31,49 +32,48 @@ struct ClassStruct {
 
 impl ClassStruct
 {
-    pub fn new(data: &[u8]) -> ClassStruct
+    pub fn new(mut data: &mut VecDeque<u8>) -> ClassStruct
     {
-        let mut iter = data.iter();
         let mut result: ClassStruct = Default::default();
-        result.magic = to_u32(&mut iter).unwrap();
-        result.minor_version = to_u16(&mut iter).unwrap();
-        result.major_version = to_u16(&mut iter).unwrap();
-        result.constant_pool_count = to_u16(&mut iter).unwrap();
+        result.magic = to_u32(&mut data);
+        result.minor_version = to_u16(&mut data);
+        result.major_version = to_u16(&mut data);
+        result.constant_pool_count = to_u16(&mut data);
         result.constant_pool = Vec::new();
         for _i in 0..result.constant_pool_count.clone()
         {
-            result.constant_pool.push(get_constant(&data));
+            result.constant_pool.push(get_constant(&mut data));
         }
 
-        result.access_flags = to_u16(&mut iter).unwrap();
-        result.this_class = to_u16(&mut iter).unwrap();
-        result.super_class = to_u16(&mut iter).unwrap();
-        result.interfaces_count = to_u16(&mut iter).unwrap();
+        result.access_flags = to_u16(&mut data);
+        result.this_class = to_u16(&mut data);
+        result.super_class = to_u16(&mut data);
+        result.interfaces_count = to_u16(&mut data);
         result.interfaces = Vec::new();
         for _i in 0..result.interfaces_count.clone()
         {
-            result.interfaces.push(to_u16(&mut iter).unwrap());
+            result.interfaces.push(to_u16(&mut data));
         }
 
-        result.fields_count = to_u16(&mut iter).unwrap();
+        result.fields_count = to_u16(&mut data);
         result.field_info = Vec::new();
         for _i in 0..result.fields_count.clone()
         {
-            result.field_info.push(FieldInfo::new(&data, &result.constant_pool));
+            result.field_info.push(FieldInfo::new(&mut data, &result.constant_pool));
         }
 
-        result.methods_count = to_u16(&mut iter).unwrap();
-        result.method_info = Veec::new();
+        result.methods_count = to_u16(&mut data);
+        result.method_info = Vec::new();
         for _i in 0..result.methods_count.clone()
         {
-            result.method_info.push(MethodInfo::new(&data, &result.constant_pool));
+            result.method_info.push(MethodInfo::new(&mut data, &result.constant_pool));
         }
 
-        result.attributes_count = to_u16(&mut iter).unwrap();
+        result.attributes_count = to_u16(&mut data);
         result.attribute_info = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attribute_info(get_attribute(&data, &result.constant_pool));
+            result.attribute_info.push(get_attribute(&mut data, &result.constant_pool));
         }
 
         result

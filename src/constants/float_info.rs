@@ -1,6 +1,7 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::{to_u8, to_u16, to_u32};
 use std::any::Any;
+use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct FloatInfo
@@ -17,14 +18,13 @@ impl ConstantInfo for FloatInfo
 
 impl FloatInfo
 {
-    pub fn new(data: &[u8]) -> FloatInfo
+    pub fn new(mut data: &mut VecDeque<u8>) -> FloatInfo
     {
-        let mut iter = data.iter();
         FloatInfo
         {
-            tag: to_u8(&mut iter).unwrap(),
+            tag: to_u8(&mut data),
             value:  {
-                let bits = to_u32(&mut iter).unwrap();
+                let bits = to_u32(&mut data);
                 FloatInfo::unsigned_to_float(&bits)
             }
         }

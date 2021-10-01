@@ -1,6 +1,7 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::{to_u8, to_u64 };
 use std::any::Any;
+use std::collections::VecDeque;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct DoubleInfo
@@ -17,14 +18,13 @@ impl ConstantInfo for DoubleInfo
 
 impl DoubleInfo
 {
-    pub fn new(data: &[u8]) -> DoubleInfo
+    pub fn new(mut data: &mut VecDeque<u8>) -> DoubleInfo
     {
-        let mut iter = data.iter();
         DoubleInfo
         {
-            tag: to_u8(&mut iter).unwrap(),
+            tag: to_u8(&mut data),
             value: {
-                let bits = to_u64(&mut iter).unwrap();
+                let bits: u64 = to_u64(&mut data);
                 DoubleInfo::unsigned_to_float(&bits)
             }
         }
@@ -46,6 +46,8 @@ mod tests
 {
     use serde_json::Result;
     use crate::constants::double_info::DoubleInfo;
+    use std::collections::VecDeque;
+    use crate::vecdeque;
 
     #[test]
     fn double_info_implements_equality_by_default()
@@ -59,8 +61,8 @@ mod tests
     #[test]
     fn double_info_constructs_expected_struct()
     {
-        let data: Vec<u8> = vec![1, 1, 1, 1, 1, 1, 1, 1, 1];
-        let result: DoubleInfo = DoubleInfo::new(&data);
+        let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1, 1];
+        let result: DoubleInfo = DoubleInfo::new(&mut data);
 
         let bit8: u8 = 1;
         let bit16: u16 = 257;
@@ -72,9 +74,10 @@ mod tests
     #[test]
     fn double_info_implements_equality_correctly()
     {
-        let data: Vec<u8> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let instance1: DoubleInfo = DoubleInfo::new(&data);
-        let instance2: DoubleInfo = DoubleInfo::new(&data);
+        let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let mut data2: VecDeque<u8> = data.clone();
+        let instance1: DoubleInfo = DoubleInfo::new(&mut data);
+        let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
 
         assert_eq!(instance1, instance2);
     }
@@ -82,10 +85,10 @@ mod tests
     #[test]
     fn double_info_implements_equality_correctly_when_not_equal()
     {
-        let data1: Vec<u8> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let data2: Vec<u8> = vec![9, 8, 7, 6, 5, 4, 3, 2, 1];
-        let instance1: DoubleInfo = DoubleInfo::new(&data1);
-        let instance2: DoubleInfo = DoubleInfo::new(&data2);
+        let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let mut data2: VecDeque<u8> = vecdeque![9, 8, 7, 6, 5, 4, 3, 2, 1];
+        let instance1: DoubleInfo = DoubleInfo::new(&mut data1);
+        let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
 
         assert_ne!(instance1, instance2);
     }
@@ -93,8 +96,8 @@ mod tests
     #[test]
     fn double_info_implements_json_serialization_correctly() -> Result<()>
     {
-        let data: Vec<u8> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let instance1: DoubleInfo = DoubleInfo::new(&data);
+        let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let instance1: DoubleInfo = DoubleInfo::new(&mut data);
         let instance2 = instance1.clone();
 
         let json = serde_json::to_string_pretty(&instance1)?;

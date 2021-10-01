@@ -2,6 +2,7 @@ use crate::attributes::attribute_info::AttributeInfo;
 use crate::constants::constant_info::ConstantInfo;
 use crate::util::to_u16;
 use crate::attributes::attribute_factory::get_attribute;
+use std::collections::VecDeque;
 
 #[derive(Default)]
 pub struct FieldInfo
@@ -30,19 +31,18 @@ pub struct FieldInfo
 
 impl FieldInfo
 {
-    pub fn new(data: &[u8], constant_pool: &[Box<dyn ConstantInfo>]) -> FieldInfo
+    pub fn new(mut data: &mut VecDeque<u8>, constant_pool: &[Box<dyn ConstantInfo>]) -> FieldInfo
     {
-        let mut iter = data.iter();
         let mut result: FieldInfo = Default::default();
-        result.access_flags = to_u16(&mut iter).unwrap();
-        result.name_index = to_u16(&mut iter).unwrap();
-        result.descriptor_index = to_u16(&mut iter).unwrap();
-        result.attributes_count = to_u16(&mut iter).unwrap();
+        result.access_flags = to_u16(&mut data);
+        result.name_index = to_u16(&mut data);
+        result.descriptor_index = to_u16(&mut data);
+        result.attributes_count = to_u16(&mut data);
 
         result.attributes = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attributes.push(get_attribute(&data, &constant_pool));
+            result.attributes.push(get_attribute(&mut data, &constant_pool));
         }
 
         result
