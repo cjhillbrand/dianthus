@@ -1,5 +1,5 @@
 pub mod constant_info;
-mod class_info;
+pub mod class_info;
 mod interface_method_ref_info;
 mod string_info;
 mod integer_info;
