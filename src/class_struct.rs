@@ -1,18 +1,19 @@
-use crate::attributes::attribute_info::AttributeInfo;
 use crate::constants::constant_info::ConstantInfo;
 use crate::field_info::FieldInfo;
 use crate::method_info::MethodInfo;
 use crate::read_bytes::ReadBytes;
-use crate::constants::constant_factory::get_constant;
-use crate::attributes::attribute_factory::get_attribute;
+use crate::constants::constant_factory::{get_constant_container};
+use crate::attributes::attribute_factory::get_attribute_container;
+use crate::attributes::attribute_container::AttributeContainer;
+use crate::constants::constant_container::ConstantContainer;
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 struct ClassStruct {
     magic: u32,
     minor_version: u16,
     major_version: u16,
     constant_pool_count: u16,
-    constant_pool: Vec<Box<dyn ConstantInfo>>,
+    constant_pool: Vec<ConstantContainer>,
     access_flags: u16,
     this_class: u16,
     super_class: u16,
@@ -23,7 +24,7 @@ struct ClassStruct {
     methods_count: u16,
     method_info: Vec<MethodInfo>,
     attributes_count: u16,
-    attribute_info: Vec<Box<dyn AttributeInfo>>
+    attribute_info: Vec<AttributeContainer>
 }
 
 impl ClassStruct
@@ -38,7 +39,7 @@ impl ClassStruct
         result.constant_pool = Vec::new();
         for _i in 0..result.constant_pool_count.clone()
         {
-            result.constant_pool.push(get_constant(data));
+            result.constant_pool.push(get_constant_container(data));
         }
 
         result.access_flags = data.pop_u16();
@@ -69,7 +70,7 @@ impl ClassStruct
         result.attribute_info = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attribute_info.push(get_attribute(data, &result.constant_pool));
+            result.attribute_info.push(get_attribute_container(data, &result.constant_pool));
         }
 
         result

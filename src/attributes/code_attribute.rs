@@ -1,10 +1,12 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
-use std::any::Any;
 use crate::constants::constant_info::ConstantInfo;
-use crate::attributes::attribute_factory::get_attribute;
+use crate::attributes::attribute_factory::{get_attribute_container};
+use serde::ser::{Serialize, Serializer, SerializeStruct};
+use crate::attributes::attribute_container::AttributeContainer;
+use crate::constants::constant_container::ConstantContainer;
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct CodeAttribute
 {
     attribute_name_index: u16,
@@ -16,19 +18,18 @@ pub struct CodeAttribute
     exception_table_length: u16,
     exception_table: Vec<ExceptionInfo>,
     attribute_count: u16,
-    attribute_info: Vec<Box<dyn AttributeInfo>>
+    attribute_info: Vec<AttributeContainer>
 }
 
 impl AttributeInfo for CodeAttribute
 {
     fn name_index(&self) -> &u16 { &self.attribute_name_index }
     fn attr_length(&self) -> &u32 { &self.attribute_length }
-    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl CodeAttribute
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[Box<dyn ConstantInfo>]) -> CodeAttribute
+    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute
     {
         let mut result: CodeAttribute = Default::default();
         result.attribute_name_index = data.pop_u16();
@@ -49,12 +50,14 @@ impl CodeAttribute
         result.attribute_info = Vec::new();
         for _i in 0..result.attribute_length.clone()
         {
-            result.attribute_info.push(get_attribute(data, &constant_pool));
+            result.attribute_info.push(get_attribute_container(data, &constant_pool));
         }
 
         result
     }
 }
+
+
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ExceptionInfo

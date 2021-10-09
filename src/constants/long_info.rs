@@ -1,6 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
-use std::any::Any;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct LongInfo
@@ -12,7 +11,6 @@ pub struct LongInfo
 impl ConstantInfo for LongInfo
 {
     fn tag(&self) -> &u8 { &self.tag }
-    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl LongInfo

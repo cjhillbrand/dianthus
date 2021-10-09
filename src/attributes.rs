@@ -5,3 +5,4 @@ pub mod deprecated_attribute;
 pub mod exception_attribute;
 pub mod signature_attribute;
 pub mod attribute_factory;
+pub mod attribute_container;

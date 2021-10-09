@@ -1,6 +1,5 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
-use std::any::Any;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodRefInfo
@@ -13,7 +12,6 @@ pub struct MethodRefInfo
 impl ConstantInfo for MethodRefInfo
 {
     fn tag(&self) -> &u8 { &self.tag }
-    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl MethodRefInfo

@@ -1,10 +1,12 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
-use crate::attributes::attribute_factory::get_attribute;
+use crate::attributes::attribute_factory::{get_attribute_container};
 use serde_json::de::Read;
+use crate::attributes::attribute_container::AttributeContainer;
+use crate::constants::constant_container::ConstantContainer;
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct FieldInfo
 {
     /// Mask of flags used to denote access permissions to
@@ -24,14 +26,12 @@ pub struct FieldInfo
 
     /// Each value of the attributes table must be an
     /// attribute structure. Can have any number of attributes.
-    // TODO: implement Clone, Debug, Serialize, Deserialize for this type
-    //      so other structs can derive it.
-    attributes: Vec<Box<dyn AttributeInfo>>
+    attributes: Vec<AttributeContainer>
 }
 
 impl FieldInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[Box<dyn ConstantInfo>]) -> FieldInfo
+    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[ConstantContainer]) -> FieldInfo
     {
         let mut result: FieldInfo = Default::default();
         result.access_flags = data.pop_u16();
@@ -42,7 +42,7 @@ impl FieldInfo
         result.attributes = Vec::new();
         for _i in 0..result.attributes_count.clone()
         {
-            result.attributes.push(get_attribute(data, &constant_pool));
+            result.attributes.push(get_attribute_container(data, &constant_pool));
         }
 
         result

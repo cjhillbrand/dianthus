@@ -14,3 +14,4 @@ mod double_info;
 mod field_ref_info;
 mod method_ref_info;
 pub mod constant_factory;
+pub mod constant_container;
