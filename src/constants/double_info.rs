@@ -66,7 +66,7 @@ mod tests
         let bit8: u8 = 1;
         let _bit16: u16 = 257;
         assert_eq!(bit8, result.tag);
-        assert_eq!(123.125, result.value, f64:EPSILON);
+        assert!(123.125 - result.value <= f64::EPSILON);
     }
 
     #[test]

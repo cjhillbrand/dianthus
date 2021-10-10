@@ -64,7 +64,7 @@ mod tests
 
         let bit8: u8 = 1;
         assert_eq!(bit8, result.tag);
-        assert_eq!(123.45, result.value, f32::EPSILON);
+        assert!(123.45 - result.value <= f32::EPSILON);
     }
 
     #[test]
