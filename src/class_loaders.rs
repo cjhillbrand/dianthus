@@ -1,5 +1,5 @@
-mod bootstrap_class_loader;
-mod class_loader;
-mod extension_class_loader;
-mod system_class_loader;
+pub mod bootstrap_class_loader;
+pub mod class_loader;
 mod class_loader_container;
+pub mod extension_class_loader;
+pub mod system_class_loader;

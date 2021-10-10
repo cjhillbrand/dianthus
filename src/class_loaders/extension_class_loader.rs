@@ -1,5 +1,5 @@
 use crate::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
-use crate::class_loaders::class_loader::{ClassLoader, get_java_home};
+use crate::class_loaders::class_loader::{get_java_home, ClassLoader};
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 use std::path::PathBuf;
 
@@ -17,6 +17,6 @@ impl ClassLoader for ExtensionClassLoader {
     }
 
     fn parent(&self) -> ClassLoaderContainer {
-        ClassLoaderContainer::Bootstrap(BootStrapClassLoader{ })
+        ClassLoaderContainer::Bootstrap(BootStrapClassLoader {})
     }
 }

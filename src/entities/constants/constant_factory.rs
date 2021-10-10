@@ -1,9 +1,6 @@
 use crate::entities::constants::class_info::ClassInfo;
 use crate::entities::constants::constant_container::ConstantContainer;
-use crate::entities::constants::constant_info::{
-    CLASS, DOUBLE, FIELD_REF, FLOAT, INTEGER, INTERFACE_METHOD_REF, INVOKE_DYNAMIC, LONG,
-    METHOD_HANDLE, METHOD_REF, METHOD_TYPE, NAME_AND_TYPE, STRING, UTF8,
-};
+use crate::entities::constants::constant_info::*;
 use crate::entities::constants::double_info::DoubleInfo;
 use crate::entities::constants::field_ref_info::FieldRefInfo;
 use crate::entities::constants::float_info::FloatInfo;

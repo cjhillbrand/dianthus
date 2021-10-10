@@ -4,8 +4,8 @@
 // at once.
 #![deny(clippy::all)]
 #![allow(clippy::enum_variant_names, clippy::field_reassign_with_default)]
-mod class_loaders;
-mod entities;
+pub mod class_loaders;
+pub mod entities;
 
 extern crate serde;
 extern crate serde_json;

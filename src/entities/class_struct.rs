@@ -34,7 +34,8 @@ impl ClassStruct {
         result.major_version = data.pop_u16();
         result.constant_pool_count = data.pop_u16();
         result.constant_pool = Vec::new();
-        for _i in 0..result.constant_pool_count {
+        result.constant_pool.push(ConstantContainer::None);
+        for _i in 0..result.constant_pool_count - 1 {
             result.constant_pool.push(get_constant_container(data));
         }
 
@@ -104,14 +105,14 @@ mod tests {
         assert_eq!(0xCAFEBABE, result.magic);
         assert_eq!(256, result.minor_version);
         assert_eq!(1, result.major_version);
-        assert_eq!(1, result.constant_pool_count);
-        assert_eq!(1, result.constant_pool.len());
+        assert_eq!(2, result.constant_pool_count);
+        assert_eq!(2, result.constant_pool.len());
 
         let mut constant_pool_vec = vecdeque![
             1, 0, 13, b'C', b'o', b'n', b's', b't', b'a', b'n', b't', b'V', b'a', b'l', b'u', b'e'
         ];
         let expected_constant = ConstantContainer::Utf8Info(Utf8Info::new(&mut constant_pool_vec));
-        assert_eq!(expected_constant, result.constant_pool[0]);
+        assert_eq!(expected_constant, result.constant_pool[1]);
         assert_eq!(1, result.access_flags);
         assert_eq!(1, result.this_class);
         assert_eq!(2, result.super_class);
@@ -124,21 +125,21 @@ mod tests {
         assert_eq!(1, result.fields_count);
         assert_eq!(1, result.field_info.len());
 
-        let mut expected_field_content = vecdeque![0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 2, 2, 0, 0, 1, 1];
+        let mut expected_field_content = vecdeque![0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 2, 0, 0, 1, 1];
         let expected_field = FieldInfo::new(&mut expected_field_content, &result.constant_pool);
         assert_eq!(expected_field, result.field_info[0]);
 
         assert_eq!(1, result.methods_count);
         assert_eq!(1, result.method_info.len());
 
-        let mut expected_method_content = vecdeque![0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 2, 2, 0, 0, 1, 1];
+        let mut expected_method_content = vecdeque![0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 2, 0, 0, 1, 1];
         let expected_method = MethodInfo::new(&mut expected_method_content, &result.constant_pool);
         assert_eq!(expected_method, result.method_info[0]);
 
         assert_eq!(1, result.attributes_count);
         assert_eq!(1, result.attribute_info.len());
 
-        let mut expected_attribute_content = vecdeque![0, 0, 2, 2, 0, 0, 1, 1];
+        let mut expected_attribute_content = vecdeque![0, 1, 2, 2, 0, 0, 1, 1];
         let expected_attribute = AttributeContainer::ConstantAttribute(
             ConstantValueAttribute::new(&mut expected_attribute_content),
         );
@@ -185,7 +186,7 @@ mod tests {
             202, 254, 186, 190, // magic: u32: 3405691582
             1, 0, // minor_version: u16: 256
             0, 1, // major_version: u16: 1
-            0, 1, // constant_pool_count: u16: 1
+            0, 2, // constant_pool_count: u16: 1
             1, //      Utf8Info::tag: 1
             0, 13, //      Utf8Info::length: 13
             b'C', b'o', b'n', b's', b't', b'a', b'n', b't', b'V', b'a', b'l', b'u',
@@ -198,24 +199,24 @@ mod tests {
             0, 2, 0, 4, // interfaces: Vec<u16>: [1,2,3,4]
             0, 1, // fields_count: u16: 1
             0, 1, //      FieldInfo::access_flags: 1
-            0, 0, //      FieldInfo::name_index: 0
+            0, 1, //      FieldInfo::name_index: 1
             0, 0, //      FieldInfo::descriptor_index: 0
             0, 1, //      FieldInfo::attributes_count: 0
-            0, 0, //          ConstantValueAttribute::attribute_name_index: 0
+            0, 1, //          ConstantValueAttribute::attribute_name_index: 1
             2, 2, 0, 0, //          ConstantValueAttribute::attribute_length: 8590065664
             1, 1, //          ConstantValueAttribute::constant_value_index: 257
             // field_info: Vec<FieldInfo>,
             0, 1, // methods_count: u16: 1
             0, 1, //      MethodInfo::access_flags: 1
-            0, 0, //      MethodInfo::name_index: 0
+            0, 1, //      MethodInfo::name_index: 1
             0, 0, //      MethodInfo::descriptor_index: 0
             0, 1, //      MethodInfo::attributes_count: 1
-            0, 0, //          ConstantValueAttribute::attribute_name_index: 0
+            0, 1, //          ConstantValueAttribute::attribute_name_index: 1
             2, 2, 0, 0, //          ConstantValueAttribute::attribute_length: 8590065664
             1, 1, //          ConstantValueAttribute::constant_value_index: 257
             // method_info: Vec<MethodInfo>,
             0, 1, // attributes_count: u16: 1
-            0, 0, //      ConstantValueAttribute::attribute_name_index: 0
+            0, 1, //      ConstantValueAttribute::attribute_name_index: 1
             2, 2, 0, 0, //      ConstantValueAttribute::attribute_length: 8590065664
             1,
             1, //      ConstantValueAttribute::constant_value_index: 257

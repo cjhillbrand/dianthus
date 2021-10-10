@@ -30,6 +30,7 @@ pub enum ConstantContainer {
     NameAndTypeInfo(NameAndTypeInfo),
     StringInfo(StringInfo),
     Utf8Info(Utf8Info),
+    None,
 }
 
 impl ConstantInfo for ConstantContainer {
@@ -49,6 +50,7 @@ impl ConstantInfo for ConstantContainer {
             ConstantContainer::NameAndTypeInfo(v) => v.tag(),
             ConstantContainer::StringInfo(v) => v.tag(),
             ConstantContainer::Utf8Info(v) => v.tag(),
+            ConstantContainer::None => panic!("Tag not defined for index 0 of constant pool"),
         }
     }
 }

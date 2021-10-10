@@ -5,4 +5,6 @@ pub mod code_attribute;
 pub mod constant_value_attribute;
 pub mod deprecated_attribute;
 pub mod exception_attribute;
+pub mod line_number_table_attribute;
 pub mod signature_attribute;
+pub mod source_file_attribute;
