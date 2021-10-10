@@ -1,3 +1,4 @@
+[![All Tests Passing](https://github.com/cjhillbrand/dianthus/actions/workflows/pull-request-build.yml/badge.svg?branch=main)](https://github.com/cjhillbrand/dianthus/actions/workflows/pull-request-build.yml)
 # Dianthus
 This project is being developed due to a passion for compilers and interpreters. 
 As well as a wanting to explore one of the newer programming languages, rust. <br/> <br/>
