@@ -60,20 +60,19 @@ mod tests
     #[test]
     fn double_info_constructs_expected_struct()
     {
-        let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1, 1];
+        let mut data: VecDeque<u8> = get_default_vec();
         let result: DoubleInfo = DoubleInfo::new(&mut data);
 
         let bit8: u8 = 1;
         let bit16: u16 = 257;
         assert_eq!(bit8, result.tag);
-        // todo! this needs to be fixed.
-        // assert_eq!(bit16, result.value);
+        assert_eq!(123.125, result.value);
     }
 
     #[test]
     fn double_info_implements_equality_correctly()
     {
-        let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let mut data: VecDeque<u8> = get_default_vec();
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: DoubleInfo = DoubleInfo::new(&mut data);
         let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
@@ -84,8 +83,9 @@ mod tests
     #[test]
     fn double_info_implements_equality_correctly_when_not_equal()
     {
-        let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let mut data2: VecDeque<u8> = vecdeque![9, 8, 7, 6, 5, 4, 3, 2, 1];
+        let mut data1: VecDeque<u8> = get_default_vec();
+        let mut data2: VecDeque<u8> = data1.clone();
+        data2[0] = data1[0] + 1;
         let instance1: DoubleInfo = DoubleInfo::new(&mut data1);
         let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
 
@@ -95,7 +95,7 @@ mod tests
     #[test]
     fn double_info_implements_json_serialization_correctly() -> Result<()>
     {
-        let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let mut data: VecDeque<u8> = get_default_vec();
         let instance1: DoubleInfo = DoubleInfo::new(&mut data);
         let instance2 = instance1.clone();
 
@@ -104,5 +104,10 @@ mod tests
 
         assert_eq!(instance2, instance3);
         Ok(())
+    }
+
+    fn get_default_vec() -> VecDeque<u8>
+    {
+        vecdeque![1, 64, 94, 200, 0, 0, 0, 0, 0] // tag: 1 value: 123.125
     }
 }
