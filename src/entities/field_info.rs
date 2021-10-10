@@ -14,20 +14,22 @@ pub struct FieldInfo {
 
 impl FieldInfo {
     pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> FieldInfo {
-        let mut result: FieldInfo = Default::default();
-        result.access_flags = data.pop_u16();
-        result.name_index = data.pop_u16();
-        result.descriptor_index = data.pop_u16();
-        result.attributes_count = data.pop_u16();
+        FieldInfo {
+            access_flags: data.pop_u16(),
+            name_index: data.pop_u16(),
+            descriptor_index: data.pop_u16(),
+            attributes_count: data.peek_u16(),
+            attributes: {
+                let count = data.pop_u16();
+                let mut result: Vec<AttributeContainer> = Vec::new();
+                for _i in 0..count {
+                    result
+                        .push(get_attribute_container(data, constant_pool));
+                }
 
-        result.attributes = Vec::new();
-        for _i in 0..result.attributes_count {
-            result
-                .attributes
-                .push(get_attribute_container(data, constant_pool));
+                result
+            }
         }
-
-        result
     }
 }
 

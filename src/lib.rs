@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 // Enum variant name is just a naming convention that I like.
-// field reassign with defualt cant be mitigated since some structs cant be initialized all
-// at once.
+// field reassign I cant figure out how to pass the constant pool around in the intializer
 #![deny(clippy::all)]
 #![allow(clippy::enum_variant_names, clippy::field_reassign_with_default)]
 pub mod class_loaders;

@@ -16,14 +16,14 @@ impl ConstantInfo for Utf8Info {
 
 impl Utf8Info {
     pub fn new<T: ReadBytes>(data: &mut T) -> Utf8Info {
-        let mut result: Utf8Info = Default::default();
-
-        result.tag = data.pop_u8();
-        let length = data.pop_u16();
-        result.length = length;
-        result.value = data.pop_vec(length as usize);
-
-        result
+        Utf8Info {
+            tag: data.pop_u8(),
+            length: data.peek_u16(),
+            value: {
+                let length: usize = data.pop_u16() as usize;
+                data.pop_vec(length)
+            }
+        }
     }
 
     pub fn get_string(&self) -> &str {
