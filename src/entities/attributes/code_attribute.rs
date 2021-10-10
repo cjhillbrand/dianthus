@@ -1,12 +1,11 @@
 use crate::entities::attributes::attribute_container::AttributeContainer;
-use crate::entities::attributes::attribute_info::AttributeInfo;
-use crate::entities::read_bytes::ReadBytes;
-use crate::entities::constants::constant_container::ConstantContainer;
 use crate::entities::attributes::attribute_factory::get_attribute_container;
+use crate::entities::attributes::attribute_info::AttributeInfo;
+use crate::entities::constants::constant_container::ConstantContainer;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct CodeAttribute
-{
+pub struct CodeAttribute {
     attribute_name_index: u16,
     attribute_length: u32,
     max_stack: u16,
@@ -16,19 +15,20 @@ pub struct CodeAttribute
     exception_table_length: u16,
     exception_table: Vec<ExceptionInfo>,
     attribute_count: u16,
-    attribute_info: Vec<AttributeContainer>
+    attribute_info: Vec<AttributeContainer>,
 }
 
-impl AttributeInfo for CodeAttribute
-{
-    fn name_index(&self) -> &u16 { &self.attribute_name_index }
-    fn attr_length(&self) -> &u32 { &self.attribute_length }
+impl AttributeInfo for CodeAttribute {
+    fn name_index(&self) -> &u16 {
+        &self.attribute_name_index
+    }
+    fn attr_length(&self) -> &u32 {
+        &self.attribute_length
+    }
 }
 
-impl CodeAttribute
-{
-    pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute
-    {
+impl CodeAttribute {
+    pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute {
         let mut result: CodeAttribute = Default::default();
         result.attribute_name_index = data.pop_u16();
         result.attribute_length = data.pop_u32();
@@ -39,63 +39,54 @@ impl CodeAttribute
         result.exception_table_length = data.pop_u16();
 
         result.exception_table = Vec::new();
-        for _j in 0..result.exception_table_length
-        {
+        for _j in 0..result.exception_table_length {
             let exception_info: ExceptionInfo = ExceptionInfo::new(data);
             result.exception_table.push(exception_info);
         }
 
         result.attribute_count = data.pop_u16();
         result.attribute_info = Vec::new();
-        for _i in 0..result.attribute_count
-        {
-            result.attribute_info.push(get_attribute_container(data, constant_pool));
+        for _i in 0..result.attribute_count {
+            result
+                .attribute_info
+                .push(get_attribute_container(data, constant_pool));
         }
 
         result
     }
 }
 
-
-
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct ExceptionInfo
-{
+pub struct ExceptionInfo {
     start_pc: u16,
     end_pc: u16,
     handler_pc: u16,
-    catch_type: u16
+    catch_type: u16,
 }
 
-impl ExceptionInfo
-{
-    pub fn new<T: ReadBytes>(data: &mut T) -> ExceptionInfo
-    {
-        ExceptionInfo
-        {
+impl ExceptionInfo {
+    pub fn new<T: ReadBytes>(data: &mut T) -> ExceptionInfo {
+        ExceptionInfo {
             start_pc: data.pop_u16(),
             end_pc: data.pop_u16(),
             handler_pc: data.pop_u16(),
-            catch_type: data.pop_u16()
+            catch_type: data.pop_u16(),
         }
     }
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
+    use crate::vecdeque;
     use serde_json::Result;
     use std::collections::VecDeque;
-    use crate::vecdeque;
-    
 
-    use crate::entities::attributes::code_attribute::{ExceptionInfo, CodeAttribute};
-    use crate::entities::constants::constant_container::ConstantContainer;
+    use crate::entities::attributes::code_attribute::{CodeAttribute, ExceptionInfo};
     use crate::entities::constants::class_info::ClassInfo;
+    use crate::entities::constants::constant_container::ConstantContainer;
 
     #[test]
-    fn exception_info_implements_equality_by_default()
-    {
+    fn exception_info_implements_equality_by_default() {
         let instance1: ExceptionInfo = Default::default();
         let instance2: ExceptionInfo = Default::default();
 
@@ -103,8 +94,7 @@ mod tests
     }
 
     #[test]
-    fn exception_info_constructs_expected_struct()
-    {
+    fn exception_info_constructs_expected_struct() {
         let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
         let result: ExceptionInfo = ExceptionInfo::new(&mut data);
 
@@ -116,8 +106,7 @@ mod tests
     }
 
     #[test]
-    fn exception_info_implements_equality_correctly()
-    {
+    fn exception_info_implements_equality_correctly() {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: ExceptionInfo = ExceptionInfo::new(&mut data);
@@ -127,8 +116,7 @@ mod tests
     }
 
     #[test]
-    fn exception_info_implements_equality_correctly_when_not_equal()
-    {
+    fn exception_info_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
         let instance1: ExceptionInfo = ExceptionInfo::new(&mut data1);
@@ -138,8 +126,7 @@ mod tests
     }
 
     #[test]
-    fn exception_info_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn exception_info_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let instance1: ExceptionInfo = ExceptionInfo::new(&mut data);
         let instance2 = instance1.clone();
@@ -152,8 +139,7 @@ mod tests
     }
 
     #[test]
-    fn code_attribute_implements_equality_by_default()
-    {
+    fn code_attribute_implements_equality_by_default() {
         let instance1: CodeAttribute = Default::default();
         let instance2: CodeAttribute = Default::default();
 
@@ -161,8 +147,7 @@ mod tests
     }
 
     #[test]
-    fn code_attribute_constructs_expected_struct()
-    {
+    fn code_attribute_constructs_expected_struct() {
         let mut data: VecDeque<u8> = get_default_code_attribute_vec();
         let constant_pool: Vec<ConstantContainer> = get_default_constant_container();
         let result: CodeAttribute = CodeAttribute::new(&mut data, constant_pool.as_slice());
@@ -187,8 +172,7 @@ mod tests
         assert_eq!(0, result.attribute_info.len());
     }
 
-    fn code_attribute_implements_equality_correctly()
-    {
+    fn code_attribute_implements_equality_correctly() {
         let mut data: VecDeque<u8> = get_default_code_attribute_vec();
         let mut data2: VecDeque<u8> = data.clone();
         let constant_pool = get_default_constant_container();
@@ -199,8 +183,7 @@ mod tests
     }
 
     #[test]
-    fn code_attribute_implements_equality_correctly_when_not_equal()
-    {
+    fn code_attribute_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = get_default_code_attribute_vec();
         let mut data2: VecDeque<u8> = get_default_code_attribute_vec();
         data2[0] = data1[0] + 1;
@@ -212,8 +195,7 @@ mod tests
     }
 
     #[test]
-    fn code_attribute_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn code_attribute_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = get_default_code_attribute_vec();
         let constant_pool = get_default_constant_container();
 
@@ -227,26 +209,24 @@ mod tests
         Ok(())
     }
 
-    fn get_default_code_attribute_vec() -> VecDeque<u8>
-    {
+    fn get_default_code_attribute_vec() -> VecDeque<u8> {
         vecdeque![
-            1, 2,       // attribute_name_index = 258
+            1, 2, // attribute_name_index = 258
             0, 2, 0, 5, // attribute_length = 131077
-            4, 5,       // max_stack = 1029
-            6, 1,       // max_locals = 1537
+            4, 5, // max_stack = 1029
+            6, 1, // max_locals = 1537
             0, 0, 0, 4, // code_length = 4
             1, 2, 3, 4, // code = 1, 2, 3, 4
-            0, 1,       // exception table length = 1
-                1, 1,   // ExceptionInfo::start_pc = 257
-                1, 2,   // ExceptionInfo::end_pc = 258
-                2, 5,   // ExceptionInfo::handler_pc = 517
-                3, 4,   // ExceptionInfo::catch_type = 772
-            0, 0        // attribute_count = 0
+            0, 1, // exception table length = 1
+            1, 1, // ExceptionInfo::start_pc = 257
+            1, 2, // ExceptionInfo::end_pc = 258
+            2, 5, // ExceptionInfo::handler_pc = 517
+            3, 4, // ExceptionInfo::catch_type = 772
+            0, 0 // attribute_count = 0
         ]
     }
 
-    fn get_default_constant_container() -> Vec<ConstantContainer>
-    {
+    fn get_default_constant_container() -> Vec<ConstantContainer> {
         let const_info: ClassInfo = Default::default();
         vec![ConstantContainer::ClassInfo(const_info)]
     }
