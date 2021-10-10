@@ -7,6 +7,12 @@ jobs:
     name: Rust project
     runs-on: ubuntu-latest
     steps:
+      - name: Get token
+        id: get_token
+        uses: machine-learning-apps/actions-app-token@master
+        with:
+          APP_PEM: ${{ secrets.APP_PK }}
+          APP_ID: ${{ secrets.APP_ID }}
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
@@ -18,7 +24,7 @@ jobs:
           args: --release --all-features
       - uses: actions-rs/clippy-check@v1
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ steps.get_token.outputs.app_token }}
           args: --all-features
       - uses: actions-rs/cargo@v1
         with:
