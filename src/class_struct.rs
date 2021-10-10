@@ -1,4 +1,4 @@
-use crate::constants::constant_info::ConstantInfo;
+
 use crate::field_info::FieldInfo;
 use crate::method_info::MethodInfo;
 use crate::read_bytes::ReadBytes;
@@ -29,7 +29,7 @@ struct ClassStruct {
 
 impl ClassStruct
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> ClassStruct
+    pub fn new<T: ReadBytes>(data: &mut T) -> ClassStruct
     {
         let mut result: ClassStruct = Default::default();
         result.magic = data.pop_u32();
@@ -37,7 +37,7 @@ impl ClassStruct
         result.major_version = data.pop_u16();
         result.constant_pool_count = data.pop_u16();
         result.constant_pool = Vec::new();
-        for _i in 0..result.constant_pool_count.clone()
+        for _i in 0..result.constant_pool_count
         {
             result.constant_pool.push(get_constant_container(data));
         }
@@ -47,28 +47,28 @@ impl ClassStruct
         result.super_class = data.pop_u16();
         result.interfaces_count = data.pop_u16();
         result.interfaces = Vec::new();
-        for _i in 0..result.interfaces_count.clone()
+        for _i in 0..result.interfaces_count
         {
             result.interfaces.push(data.pop_u16());
         }
 
         result.fields_count = data.pop_u16();
         result.field_info = Vec::new();
-        for _i in 0..result.fields_count.clone()
+        for _i in 0..result.fields_count
         {
             result.field_info.push(FieldInfo::new(data, &result.constant_pool));
         }
 
         result.methods_count = data.pop_u16();
         result.method_info = Vec::new();
-        for _i in 0..result.methods_count.clone()
+        for _i in 0..result.methods_count
         {
             result.method_info.push(MethodInfo::new(data, &result.constant_pool));
         }
 
         result.attributes_count = data.pop_u16();
         result.attribute_info = Vec::new();
-        for _i in 0..result.attributes_count.clone()
+        for _i in 0..result.attributes_count
         {
             result.attribute_info.push(get_attribute_container(data, &result.constant_pool));
         }
@@ -91,7 +91,7 @@ mod tests
     use crate::class_struct::ClassStruct;
     use crate::field_info::FieldInfo;
     use crate::method_info::MethodInfo;
-    use crate::constants::constant_container::ConstantContainer::ClassInfo;
+    
 
     #[test]
     fn class_struct_implements_equality_by_default()
@@ -117,10 +117,10 @@ mod tests
         let mut constant_pool_vec = vecdeque![
             1,
             0, 13,
-            'C' as u8, 'o' as u8, 'n' as u8, 's' as u8,
-            't' as u8, 'a' as u8, 'n' as u8, 't' as u8,
-            'V' as u8, 'a' as u8, 'l' as u8, 'u' as u8,
-            'e' as u8];
+            b'C', b'o', b'n', b's',
+            b't', b'a', b'n', b't',
+            b'V', b'a', b'l', b'u',
+            b'e'];
         let expected_constant = ConstantContainer::Utf8Info(Utf8Info::new(&mut constant_pool_vec));
         assert_eq!(expected_constant, result.constant_pool[0]);
         assert_eq!(1, result.access_flags);
@@ -209,10 +209,10 @@ mod tests
             0, 1,       // constant_pool_count: u16: 1
             1,          //      Utf8Info::tag: 1
             0, 13,      //      Utf8Info::length: 13
-            'C' as u8, 'o' as u8, 'n' as u8, 's' as u8,
-            't' as u8, 'a' as u8, 'n' as u8, 't' as u8,
-            'V' as u8, 'a' as u8, 'l' as u8, 'u' as u8,
-            'e' as u8,  //      Utf8Info::value: "ConstantValue"
+            b'C', b'o', b'n', b's',
+            b't', b'a', b'n', b't',
+            b'V', b'a', b'l', b'u',
+            b'e',  //      Utf8Info::value: "ConstantValue"
                         // constant_pool: Vec<ConstantContainer>,
             0, 1,       // access_flags: u16: 1
             0, 1,       // this_class: u16: 1

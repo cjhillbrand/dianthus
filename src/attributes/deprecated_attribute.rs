@@ -16,7 +16,7 @@ impl AttributeInfo for DeprecatedAttribute
 
 impl DeprecatedAttribute
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> DeprecatedAttribute
+    pub fn new<T: ReadBytes>(data: &mut T) -> DeprecatedAttribute
     {
         DeprecatedAttribute
         {

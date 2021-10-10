@@ -1,4 +1,4 @@
-use crate::constants::constant_info::{ConstantInfo, UTF8, INTEGER, FLOAT, DOUBLE, LONG, CLASS,
+use crate::constants::constant_info::{UTF8, INTEGER, FLOAT, DOUBLE, LONG, CLASS,
     STRING, FIELD_REF, METHOD_REF, INTERFACE_METHOD_REF, NAME_AND_TYPE, METHOD_HANDLE, METHOD_TYPE, INVOKE_DYNAMIC};
 use crate::constants::utf8_info::Utf8Info;
 use crate::constants::integer_info::IntegerInfo;
@@ -17,7 +17,7 @@ use crate::constants::invoke_dynamic_info::InvokeDynamicInfo;
 use crate::read_bytes::ReadBytes;
 use crate::constants::constant_container::ConstantContainer;
 
-pub fn get_constant_container<T: ReadBytes>(mut data: &mut T) -> ConstantContainer
+pub fn get_constant_container<T: ReadBytes>(data: &mut T) -> ConstantContainer
 {
     let tag_value: u8 = data.peek_u8();
     match tag_value
@@ -31,7 +31,7 @@ pub fn get_constant_container<T: ReadBytes>(mut data: &mut T) -> ConstantContain
         STRING  => { ConstantContainer::StringInfo(StringInfo::new(data)) },
         FIELD_REF   => { ConstantContainer::FieldRefInfo(FieldRefInfo::new(data)) },
         METHOD_REF  => { ConstantContainer::MethodRefInfo(MethodRefInfo::new(data)) },
-        INTERFACE_METHOD_REF=> { ConstantContainer::InterfaceMethodInfo((InterfaceMethodRefInfo::new(data))) },
+        INTERFACE_METHOD_REF=> { ConstantContainer::InterfaceMethodInfo(InterfaceMethodRefInfo::new(data)) },
         NAME_AND_TYPE       => { ConstantContainer::NameAndTypeInfo(NameAndTypeInfo::new(data)) },
         METHOD_HANDLE       => { ConstantContainer::MethodHandleInfo(MethodHandleInfo::new(data)) },
         METHOD_TYPE         => { ConstantContainer::MethodTypeInfo(MethodTypeInfo::new(data)) },

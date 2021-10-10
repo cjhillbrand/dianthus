@@ -16,7 +16,7 @@ impl ConstantInfo for FieldRefInfo
 
 impl FieldRefInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> FieldRefInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> FieldRefInfo
     {
         FieldRefInfo
         {

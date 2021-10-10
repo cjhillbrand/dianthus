@@ -16,7 +16,7 @@ impl ConstantInfo for InvokeDynamicInfo
 
 impl InvokeDynamicInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> InvokeDynamicInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> InvokeDynamicInfo
     {
         InvokeDynamicInfo
         {

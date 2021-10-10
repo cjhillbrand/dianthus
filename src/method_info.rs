@@ -1,7 +1,7 @@
-use crate::constants::constant_info::ConstantInfo;
+
 use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_factory::{get_attribute_container};
-use serde_json::de::Read;
+
 use crate::attributes::attribute_container::AttributeContainer;
 use crate::constants::constant_container::ConstantContainer;
 
@@ -17,7 +17,7 @@ pub struct MethodInfo
 
 impl MethodInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[ConstantContainer]) -> MethodInfo
+    pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> MethodInfo
     {
         let mut result: MethodInfo = Default::default();
         result.access_flags = data.pop_u16();
@@ -26,9 +26,9 @@ impl MethodInfo
         result.attributes_count = data.pop_u16();
 
         result.attributes = Vec::new();
-        for _i in 0..result.attributes_count.clone()
+        for _i in 0..result.attributes_count
         {
-            result.attributes.push(get_attribute_container(data, &constant_pool));
+            result.attributes.push(get_attribute_container(data, constant_pool));
         }
 
         result

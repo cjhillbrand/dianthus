@@ -1,6 +1,6 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::constants::utf8_info::Utf8Info;
-use crate::attributes::attribute_info::{AttributeInfo};
+
+
+
 use crate::read_bytes::ReadBytes;
 use crate::attributes::code_attribute::CodeAttribute;
 use crate::attributes::constant_value_attribute::ConstantValueAttribute;
@@ -16,9 +16,9 @@ const DEPRECATED: &str = "Deprecated";
 const SIGNATURE: &str = "Signature";
 const EXCEPTION: &str = "Exception";
 
-pub fn get_attribute_container<T: ReadBytes>(mut data: &mut T, constant_pool: &[ConstantContainer]) -> AttributeContainer
+pub fn get_attribute_container<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> AttributeContainer
 {
-    let mut attr_index = data.peek_u16();
+    let attr_index = data.peek_u16();
     let constant_info = &constant_pool[attr_index as usize];
     let attribute_type: &str = match constant_info
     {
@@ -28,7 +28,7 @@ pub fn get_attribute_container<T: ReadBytes>(mut data: &mut T, constant_pool: &[
 
     match attribute_type
     {
-        CODE =>             { AttributeContainer::CodeAttribute(CodeAttribute::new(data, &constant_pool)) },
+        CODE =>             { AttributeContainer::CodeAttribute(CodeAttribute::new(data, constant_pool)) },
         CONSTANT_VALUE =>   { AttributeContainer::ConstantAttribute(ConstantValueAttribute::new(data)) },
         DEPRECATED =>       { AttributeContainer::DeprecatedAttribute(DeprecatedAttribute::new(data)) },
         SIGNATURE =>        { AttributeContainer::SignatureAttribute(SignatureAttribute::new(data)) },

@@ -17,7 +17,7 @@ impl Eq for DoubleInfo { }
 
 impl DoubleInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> DoubleInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> DoubleInfo
     {
         DoubleInfo
         {
@@ -64,9 +64,9 @@ mod tests
         let result: DoubleInfo = DoubleInfo::new(&mut data);
 
         let bit8: u8 = 1;
-        let bit16: u16 = 257;
+        let _bit16: u16 = 257;
         assert_eq!(bit8, result.tag);
-        assert_eq!(123.125, result.value);
+        assert!(123.125 - result.value <= f64::EPSILON);
     }
 
     #[test]

@@ -1,6 +1,6 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
-use core::mem::size_of;
+
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct SignatureAttribute
@@ -18,7 +18,7 @@ impl AttributeInfo for SignatureAttribute
 
 impl SignatureAttribute
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> SignatureAttribute
+    pub fn new<T: ReadBytes>(data: &mut T) -> SignatureAttribute
     {
         SignatureAttribute
         {

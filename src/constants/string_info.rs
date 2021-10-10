@@ -15,7 +15,7 @@ impl ConstantInfo for StringInfo
 
 impl StringInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> StringInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> StringInfo
     {
         StringInfo
         {

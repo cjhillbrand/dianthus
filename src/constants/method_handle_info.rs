@@ -1,6 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
-use std::collections::VecDeque;
+
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodHandleInfo
@@ -17,7 +17,7 @@ impl ConstantInfo for MethodHandleInfo
 
 impl MethodHandleInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> MethodHandleInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> MethodHandleInfo
     {
         MethodHandleInfo
         {
@@ -33,7 +33,7 @@ mod tests
 {
     use serde_json::Result;
     use crate::constants::method_handle_info::MethodHandleInfo;
-    use crate::read_bytes::ReadBytes;
+    
     use std::collections::VecDeque;
     use crate::vecdeque;
 
