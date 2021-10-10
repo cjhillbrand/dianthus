@@ -7,7 +7,7 @@ use crate::entities::method_info::MethodInfo;
 use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-struct ClassStruct {
+pub struct ClassStruct {
     magic: u32,
     minor_version: u16,
     major_version: u16,
