@@ -1,6 +1,6 @@
 use crate::constants::constant_info::ConstantInfo;
 use crate::read_bytes::ReadBytes;
-use std::any::Any;
+use std::str::from_utf8;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct Utf8Info
@@ -15,7 +15,6 @@ pub struct Utf8Info
 impl ConstantInfo for Utf8Info
 {
     fn tag(&self) -> &u8 { &self.tag }
-    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl Utf8Info
@@ -34,7 +33,11 @@ impl Utf8Info
 
     pub fn get_string(&self) -> &str
     {
-        "hello"
+        match std::str::from_utf8(&self.value)
+        {
+            Ok(v) => v,
+            Err(e) => panic!("Could not parse UTF8 value")
+        }
     }
 }
 
@@ -103,5 +106,16 @@ mod tests
 
         assert_eq!(instance2, instance3);
         Ok(())
+    }
+
+    #[test]
+    fn utf8_info_implements_get_string_correctly()
+    {
+        let mut data: VecDeque<u8> = vecdeque![1, 0, 3, 'c' as u8, 'a' as u8, 't' as u8];
+        let result: Utf8Info = Utf8Info::new(&mut data);
+
+        assert_eq!(1, result.tag);
+        assert_eq!(3, result.length);
+        assert_eq!("cat", result.get_string());
     }
 }

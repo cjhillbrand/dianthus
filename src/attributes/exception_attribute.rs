@@ -1,6 +1,5 @@
 use crate::read_bytes::ReadBytes;
 use crate::attributes::attribute_info::AttributeInfo;
-use std::any::Any;
 use core::mem::size_of;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -16,7 +15,6 @@ impl AttributeInfo for ExceptionAttribute
 {
     fn name_index(&self) -> &u16 { &self.attribute_name_index }
     fn attr_length(&self) -> &u32 { &self.attribute_length }
-    fn as_any(&self) -> &dyn Any { self }
 }
 
 impl ExceptionAttribute
