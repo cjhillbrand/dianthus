@@ -7,12 +7,6 @@ jobs:
     name: Rust project
     runs-on: ubuntu-latest
     steps:
-      - name: Get token
-        id: get_token
-        uses: machine-learning-apps/actions-app-token@master
-        with:
-          APP_PEM: ${{ secrets.APP_PK }}
-          APP_ID: ${{ secrets.APP_ID }}
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Install Toolchain
@@ -28,7 +22,7 @@ jobs:
       - name: Run Linter
         uses: actions-rs/clippy-check@v1
         with:
-          token: ${{ steps.get_token.outputs.app_token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-features
       - name: Run Tests
         uses: actions-rs/cargo@v1
