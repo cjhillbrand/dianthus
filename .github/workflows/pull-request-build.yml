@@ -13,19 +13,24 @@ jobs:
         with:
           APP_PEM: ${{ secrets.APP_PK }}
           APP_ID: ${{ secrets.APP_ID }}
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
           components: clippy
-      - uses: actions-rs/cargo@v1
+      - name: Build Repository
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --all-features
-      - uses: actions-rs/clippy-check@v1
+      - name: Run Linter
+        uses: actions-rs/clippy-check@v1
         with:
           token: ${{ steps.get_token.outputs.app_token }}
           args: --all-features
-      - uses: actions-rs/cargo@v1
+      - name: Run Tests
+        uses: actions-rs/cargo@v1
         with:
           command: test
