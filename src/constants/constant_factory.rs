@@ -36,6 +36,6 @@ pub fn get_constant_container<T: ReadBytes>(mut data: &mut T) -> ConstantContain
         METHOD_HANDLE       => { ConstantContainer::MethodHandleInfo(MethodHandleInfo::new(data)) },
         METHOD_TYPE         => { ConstantContainer::MethodTypeInfo(MethodTypeInfo::new(data)) },
         INVOKE_DYNAMIC      => { ConstantContainer::InvokeDynamicInfo(InvokeDynamicInfo::new(data)) }
-        _ => { panic!("Unidentified constant info.") }
+        _ => { panic!("Unidentified constant info: {}.", tag_value) }
     }
 }
