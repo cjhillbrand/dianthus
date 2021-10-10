@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct DoubleInfo
@@ -44,9 +44,9 @@ impl DoubleInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::double_info::DoubleInfo;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::double_info::DoubleInfo;
 
     #[test]
     fn double_info_implements_equality_by_default()

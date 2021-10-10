@@ -1,5 +1,5 @@
-use crate::read_bytes::ReadBytes;
-use crate::attributes::attribute_info::AttributeInfo;
+use crate::entities::attributes::attribute_info::AttributeInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -35,10 +35,10 @@ impl ExceptionAttribute
 #[cfg(test)]
 mod tests
 {
-    use crate::attributes::exception_attribute::ExceptionAttribute;
     use serde_json::Result;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::attributes::exception_attribute::ExceptionAttribute;
 
     #[test]
     fn exception_attribute_implements_equality_by_default()

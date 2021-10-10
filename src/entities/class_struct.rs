@@ -1,11 +1,11 @@
 
-use crate::field_info::FieldInfo;
-use crate::method_info::MethodInfo;
-use crate::read_bytes::ReadBytes;
-use crate::constants::constant_factory::{get_constant_container};
-use crate::attributes::attribute_factory::get_attribute_container;
-use crate::attributes::attribute_container::AttributeContainer;
-use crate::constants::constant_container::ConstantContainer;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::attributes::attribute_container::AttributeContainer;
+use crate::entities::method_info::MethodInfo;
+use crate::entities::field_info::FieldInfo;
+use crate::entities::constants::constant_container::ConstantContainer;
+use crate::entities::constants::constant_factory::get_constant_container;
+use crate::entities::attributes::attribute_factory::get_attribute_container;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 struct ClassStruct {
@@ -84,14 +84,14 @@ mod tests
     use serde_json::Result;
     use crate::vecdeque;
     use std::collections::VecDeque;
-    use crate::constants::constant_container::ConstantContainer;
-    use crate::constants::utf8_info::Utf8Info;
-    use crate::attributes::constant_value_attribute::ConstantValueAttribute;
-    use crate::attributes::attribute_container::AttributeContainer;
-    use crate::class_struct::ClassStruct;
-    use crate::field_info::FieldInfo;
-    use crate::method_info::MethodInfo;
-    
+    use crate::entities::class_struct::ClassStruct;
+    use crate::entities::constants::constant_container::ConstantContainer;
+    use crate::entities::constants::utf8_info::Utf8Info;
+    use crate::entities::field_info::FieldInfo;
+    use crate::entities::method_info::MethodInfo;
+    use crate::entities::attributes::attribute_container::AttributeContainer;
+    use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
+
 
     #[test]
     fn class_struct_implements_equality_by_default()

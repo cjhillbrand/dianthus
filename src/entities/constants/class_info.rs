@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ClassInfo
@@ -29,9 +29,9 @@ impl ClassInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::class_info::ClassInfo;
     use crate::vecdeque;
     use std::collections::VecDeque;
+    use crate::entities::constants::class_info::ClassInfo;
 
     #[test]
     fn class_info_implements_equality_by_default()

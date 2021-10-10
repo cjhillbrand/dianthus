@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct FloatInfo
@@ -43,9 +43,9 @@ impl FloatInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::float_info::FloatInfo;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::float_info::FloatInfo;
 
     #[test]
     fn float_info_implements_equality_by_default()

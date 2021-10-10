@@ -1,5 +1,5 @@
-/// The attributes defined by this specification
-/// as appearing in the attributes table of a field_info/method_info
+/// The entities.attributes defined by this specification
+/// as appearing in the entities.attributes table of a field_info/method_info
 ///
 /// Implemented: 2,3,5,8,9,
 /// Annotations: 15,16,17,18,19,20

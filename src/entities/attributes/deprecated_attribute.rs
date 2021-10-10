@@ -1,5 +1,5 @@
-use crate::attributes::attribute_info::AttributeInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::attributes::attribute_info::AttributeInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct DeprecatedAttribute
@@ -29,10 +29,10 @@ impl DeprecatedAttribute
 #[cfg(test)]
 mod tests
 {
-    use crate::attributes::deprecated_attribute::DeprecatedAttribute;
     use serde_json::Result;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::attributes::deprecated_attribute::DeprecatedAttribute;
 
     #[test]
     fn deprecated_attribute_implements_equality_by_default()
