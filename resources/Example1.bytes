@@ -1,0 +1,97 @@
+ca fe ba be
+00 00
+00 39
+00 0f
+    0a : method ref
+    00 02
+    00 03
+
+    07 : class
+    00 04
+
+    0c : name and type
+    00 05
+    00 06
+
+    01 : UTF8
+    00 10
+    6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74
+
+    01 : UTF8
+    00 06
+    3c 69 6e 69 74 3e
+
+    01 : UTF8
+    00 03
+    28 29 56
+
+    07 : class
+    00 08
+
+    01 : UTF8
+    00 08
+    45 78 61 6d 70 6c 65 31
+
+    01 : UTF8
+    00 04
+    43 6f 64 65
+
+    01 : UTF8
+    00 0f
+    4c 69 6e 65 4e 75 6d 62 65 72 54 61 62 6c 65
+
+    01 : UTF8
+    00 04
+    6d 61 69 6e
+
+    01 : UTF8
+    00 16
+    28 5b 4c 6a 61 76 61 2f 6c 61
+    6e 67 2f 53 74 72 69 6e 67 3b
+    29 56
+
+    01 : UTF8
+    00 0a
+    53 6f 75 72 63 65 46 69 6c 65
+
+    01 : UTF8
+    00 0d
+    45 78 61 6d 70 6c 65 31 2e 6a 61 76 61
+
+00 21 : access_flags
+00 07 : this_class
+00 02 : super_class
+00 00 : interfaces_count
+00 00 : fields_count
+00 02 : methods_count
+    00 01 : access_flags
+    00 05 : name_index
+    00 06 : descriptor_index
+    00 01 : attributes_count
+        00 09 : attr_index [43 6f 64 65:Code]
+        00 00 00 1d : attr_length
+        00 01 : max_stack
+        00 01 : max_locals
+        00 00 00 05 : code_length
+        2a b7 00 01 b1 : code
+        00 00 : exception_table_length
+        00 01 00 0a 00 00 00 06 00 01
+        00 00
+00 01 : attributes_count
+    00 09 : attr_index [43 6f 64 65:Code]
+    00 0b 00 0c : attr_length
+    00 01 : max_stack
+    00 09 : max_locals
+    00 00 00 2e : code_length 46
+    00 02 00 04 00 00 00 0a 07 3c : code
+        10 08 3d 1b 1c 60 3e b1 00 00
+        00 01 00 0a 00 00 00 12 00 04
+        00 00 00 04 00 02 00 05 00 05
+        00 07 00 09 00 08
+
+    00 01 : exception_table_length
+        00 0d : start_pc
+        00 00 : end_pc
+        00 02 : handler_pc
+        00 0e : catch_type
+
