@@ -16,7 +16,7 @@ impl ConstantInfo for InterfaceMethodRefInfo
 
 impl InterfaceMethodRefInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> InterfaceMethodRefInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> InterfaceMethodRefInfo
     {
         InterfaceMethodRefInfo
         {

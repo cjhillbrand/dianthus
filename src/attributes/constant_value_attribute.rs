@@ -17,7 +17,7 @@ impl AttributeInfo for ConstantValueAttribute
 
 impl ConstantValueAttribute
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> ConstantValueAttribute
+    pub fn new<T: ReadBytes>(data: &mut T) -> ConstantValueAttribute
     {
         ConstantValueAttribute
         {

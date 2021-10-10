@@ -1,3 +1,9 @@
+#![allow(dead_code)]
+// Enum variant name is just a naming convention that I like.
+// field reassign with defualt cant be mitigated since some structs cant be initialized all
+// at once.
+#![deny(clippy::all)]
+#![allow(clippy::enum_variant_names, clippy::field_reassign_with_default)]
 mod class_struct;
 mod field_info;
 mod attributes;

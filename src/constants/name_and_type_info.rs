@@ -16,7 +16,7 @@ impl ConstantInfo for NameAndTypeInfo
 
 impl NameAndTypeInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> NameAndTypeInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> NameAndTypeInfo
     {
         NameAndTypeInfo
         {

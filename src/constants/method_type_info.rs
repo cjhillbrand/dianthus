@@ -15,7 +15,7 @@ impl ConstantInfo for MethodTypeInfo
 
 impl MethodTypeInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> MethodTypeInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> MethodTypeInfo
     {
         MethodTypeInfo
         {

@@ -15,7 +15,7 @@ impl ConstantInfo for LongInfo
 
 impl LongInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> LongInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> LongInfo
     {
         LongInfo
         {

@@ -1,8 +1,8 @@
 use crate::attributes::attribute_info::AttributeInfo;
 use crate::read_bytes::ReadBytes;
-use crate::constants::constant_info::ConstantInfo;
+
 use crate::attributes::attribute_factory::{get_attribute_container};
-use serde::ser::{Serialize, Serializer, SerializeStruct};
+
 use crate::attributes::attribute_container::AttributeContainer;
 use crate::constants::constant_container::ConstantContainer;
 
@@ -29,7 +29,7 @@ impl AttributeInfo for CodeAttribute
 
 impl CodeAttribute
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute
+    pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute
     {
         let mut result: CodeAttribute = Default::default();
         result.attribute_name_index = data.pop_u16();
@@ -37,7 +37,7 @@ impl CodeAttribute
         result.max_stack = data.pop_u16();
         result.max_locals = data.pop_u16();
         result.code_length = data.pop_u32();
-        result.code = data.pop_vec(result.code_length.clone() as usize);
+        result.code = data.pop_vec(result.code_length as usize);
         result.exception_table_length = data.pop_u16();
 
         result.exception_table = Vec::new();
@@ -49,9 +49,9 @@ impl CodeAttribute
 
         result.attribute_count = data.pop_u16();
         result.attribute_info = Vec::new();
-        for _i in 0..result.attribute_count.clone()
+        for _i in 0..result.attribute_count
         {
-            result.attribute_info.push(get_attribute_container(data, &constant_pool));
+            result.attribute_info.push(get_attribute_container(data, constant_pool));
         }
 
         result
@@ -71,7 +71,7 @@ pub struct ExceptionInfo
 
 impl ExceptionInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> ExceptionInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> ExceptionInfo
     {
         ExceptionInfo
         {
@@ -90,8 +90,8 @@ mod tests
     use serde_json::Result;
     use std::collections::VecDeque;
     use crate::vecdeque;
-    use crate::attributes::attribute_container::AttributeContainer;
-    use crate::attributes::constant_value_attribute::ConstantValueAttribute;
+    
+    
     use crate::constants::constant_container::ConstantContainer;
     use crate::constants::class_info::ClassInfo;
 

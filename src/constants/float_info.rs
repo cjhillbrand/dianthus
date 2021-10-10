@@ -17,7 +17,7 @@ impl Eq for FloatInfo { }
 
 impl FloatInfo
 {
-    pub fn new<T: ReadBytes>(mut data: &mut T) -> FloatInfo
+    pub fn new<T: ReadBytes>(data: &mut T) -> FloatInfo
     {
         FloatInfo
         {
@@ -64,7 +64,7 @@ mod tests
 
         let bit8: u8 = 1;
         assert_eq!(bit8, result.tag);
-        assert_eq!(123.45, result.value);
+        assert_eq!(123.45, result.value, f32::EPSILON);
     }
 
     #[test]
