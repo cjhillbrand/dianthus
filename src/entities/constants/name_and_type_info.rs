@@ -1,43 +1,38 @@
-use crate::entities::read_bytes::ReadBytes;
 use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct NameAndTypeInfo
-{
+pub struct NameAndTypeInfo {
     tag: u8,
     name_index: u16,
-    descriptor_index: u16
+    descriptor_index: u16,
 }
 
-impl ConstantInfo for NameAndTypeInfo
-{
-    fn tag(&self) -> &u8 { &self.tag }
+impl ConstantInfo for NameAndTypeInfo {
+    fn tag(&self) -> &u8 {
+        &self.tag
+    }
 }
 
-impl NameAndTypeInfo
-{
-    pub fn new<T: ReadBytes>(data: &mut T) -> NameAndTypeInfo
-    {
-        NameAndTypeInfo
-        {
+impl NameAndTypeInfo {
+    pub fn new<T: ReadBytes>(data: &mut T) -> NameAndTypeInfo {
+        NameAndTypeInfo {
             tag: data.pop_u8(),
             name_index: data.pop_u16(),
-            descriptor_index: data.pop_u16()
+            descriptor_index: data.pop_u16(),
         }
     }
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
+    use crate::entities::constants::name_and_type_info::NameAndTypeInfo;
+    use crate::vecdeque;
     use serde_json::Result;
     use std::collections::VecDeque;
-    use crate::vecdeque;
-    use crate::entities::constants::name_and_type_info::NameAndTypeInfo;
 
     #[test]
-    fn name_and_type_info_implements_equality_by_default()
-    {
+    fn name_and_type_info_implements_equality_by_default() {
         let instance1: NameAndTypeInfo = Default::default();
         let instance2: NameAndTypeInfo = Default::default();
 
@@ -45,8 +40,7 @@ mod tests
     }
 
     #[test]
-    fn name_and_type_info_constructs_expected_struct()
-    {
+    fn name_and_type_info_constructs_expected_struct() {
         let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
         let result: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
 
@@ -58,8 +52,7 @@ mod tests
     }
 
     #[test]
-    fn name_and_type_info_implements_equality_correctly()
-    {
+    fn name_and_type_info_implements_equality_correctly() {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
@@ -69,8 +62,7 @@ mod tests
     }
 
     #[test]
-    fn name_and_type_info_implements_equality_correctly_when_not_equal()
-    {
+    fn name_and_type_info_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
         let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data1);
@@ -80,8 +72,7 @@ mod tests
     }
 
     #[test]
-    fn name_and_type_info_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn name_and_type_info_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
         let instance2 = instance1.clone();

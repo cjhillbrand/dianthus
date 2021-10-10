@@ -1,41 +1,36 @@
-use crate::entities::read_bytes::ReadBytes;
 use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct StringInfo
-{
+pub struct StringInfo {
     tag: u8,
-    string_index: u16
+    string_index: u16,
 }
 
-impl ConstantInfo for StringInfo
-{
-    fn tag(&self) -> &u8 { &self.tag }
+impl ConstantInfo for StringInfo {
+    fn tag(&self) -> &u8 {
+        &self.tag
+    }
 }
 
-impl StringInfo
-{
-    pub fn new<T: ReadBytes>(data: &mut T) -> StringInfo
-    {
-        StringInfo
-        {
+impl StringInfo {
+    pub fn new<T: ReadBytes>(data: &mut T) -> StringInfo {
+        StringInfo {
             tag: data.pop_u8(),
-            string_index: data.pop_u16()
+            string_index: data.pop_u16(),
         }
     }
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
+    use crate::entities::constants::string_info::StringInfo;
+    use crate::vecdeque;
     use serde_json::Result;
     use std::collections::VecDeque;
-    use crate::vecdeque;
-    use crate::entities::constants::string_info::StringInfo;
 
     #[test]
-    fn string_info_implements_equality_by_default()
-    {
+    fn string_info_implements_equality_by_default() {
         let instance1: StringInfo = Default::default();
         let instance2: StringInfo = Default::default();
 
@@ -43,8 +38,7 @@ mod tests
     }
 
     #[test]
-    fn string_info_constructs_expected_struct()
-    {
+    fn string_info_constructs_expected_struct() {
         let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
         let result: StringInfo = StringInfo::new(&mut data);
 
@@ -55,8 +49,7 @@ mod tests
     }
 
     #[test]
-    fn string_info_implements_equality_correctly()
-    {
+    fn string_info_implements_equality_correctly() {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: StringInfo = StringInfo::new(&mut data);
@@ -66,8 +59,7 @@ mod tests
     }
 
     #[test]
-    fn string_info_implements_equality_correctly_when_not_equal()
-    {
+    fn string_info_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
         let instance1: StringInfo = StringInfo::new(&mut data1);
@@ -77,8 +69,7 @@ mod tests
     }
 
     #[test]
-    fn string_info_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn string_info_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let instance1: StringInfo = StringInfo::new(&mut data);
         let instance2 = instance1.clone();

@@ -1,3 +1,5 @@
+use crate::entities::constants::class_info::ClassInfo;
+use crate::entities::constants::constant_info::ConstantInfo;
 use crate::entities::constants::double_info::DoubleInfo;
 use crate::entities::constants::field_ref_info::FieldRefInfo;
 use crate::entities::constants::float_info::FloatInfo;
@@ -11,12 +13,9 @@ use crate::entities::constants::method_type_info::MethodTypeInfo;
 use crate::entities::constants::name_and_type_info::NameAndTypeInfo;
 use crate::entities::constants::string_info::StringInfo;
 use crate::entities::constants::utf8_info::Utf8Info;
-use crate::entities::constants::class_info::ClassInfo;
-use crate::entities::constants::constant_info::ConstantInfo;
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub enum ConstantContainer
-{
+pub enum ConstantContainer {
     ClassInfo(ClassInfo),
     DoubleInfo(DoubleInfo),
     FieldRefInfo(FieldRefInfo),
@@ -30,14 +29,12 @@ pub enum ConstantContainer
     MethodTypeInfo(MethodTypeInfo),
     NameAndTypeInfo(NameAndTypeInfo),
     StringInfo(StringInfo),
-    Utf8Info(Utf8Info)
+    Utf8Info(Utf8Info),
 }
 
-impl ConstantInfo for ConstantContainer
-{
+impl ConstantInfo for ConstantContainer {
     fn tag(&self) -> &u8 {
-        match self
-        {
+        match self {
             ConstantContainer::ClassInfo(v) => v.tag(),
             ConstantContainer::DoubleInfo(v) => v.tag(),
             ConstantContainer::FieldRefInfo(v) => v.tag(),
@@ -51,7 +48,7 @@ impl ConstantInfo for ConstantContainer
             ConstantContainer::MethodTypeInfo(v) => v.tag(),
             ConstantContainer::NameAndTypeInfo(v) => v.tag(),
             ConstantContainer::StringInfo(v) => v.tag(),
-            ConstantContainer::Utf8Info(v) => v.tag()
+            ConstantContainer::Utf8Info(v) => v.tag(),
         }
     }
 }

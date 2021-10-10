@@ -1,43 +1,38 @@
-use crate::entities::read_bytes::ReadBytes;
 use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct InvokeDynamicInfo
-{
+pub struct InvokeDynamicInfo {
     tag: u8,
     bootstrap_method_attr_index: u16,
-    name_and_type_index: u16
+    name_and_type_index: u16,
 }
 
-impl ConstantInfo for InvokeDynamicInfo
-{
-    fn tag(&self) -> &u8 { &self.tag }
+impl ConstantInfo for InvokeDynamicInfo {
+    fn tag(&self) -> &u8 {
+        &self.tag
+    }
 }
 
-impl InvokeDynamicInfo
-{
-    pub fn new<T: ReadBytes>(data: &mut T) -> InvokeDynamicInfo
-    {
-        InvokeDynamicInfo
-        {
+impl InvokeDynamicInfo {
+    pub fn new<T: ReadBytes>(data: &mut T) -> InvokeDynamicInfo {
+        InvokeDynamicInfo {
             tag: data.pop_u8(),
             bootstrap_method_attr_index: data.pop_u16(),
-            name_and_type_index: data.pop_u16()
+            name_and_type_index: data.pop_u16(),
         }
     }
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
+    use crate::entities::constants::invoke_dynamic_info::InvokeDynamicInfo;
+    use crate::vecdeque;
     use serde_json::Result;
     use std::collections::VecDeque;
-    use crate::vecdeque;
-    use crate::entities::constants::invoke_dynamic_info::InvokeDynamicInfo;
 
     #[test]
-    fn invoke_dynamic_info_implements_equality_by_default()
-    {
+    fn invoke_dynamic_info_implements_equality_by_default() {
         let instance1: InvokeDynamicInfo = Default::default();
         let instance2: InvokeDynamicInfo = Default::default();
 
@@ -45,8 +40,7 @@ mod tests
     }
 
     #[test]
-    fn invoke_dynamic_info_constructs_expected_struct()
-    {
+    fn invoke_dynamic_info_constructs_expected_struct() {
         let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
         let result: InvokeDynamicInfo = InvokeDynamicInfo::new(&mut data);
 
@@ -58,8 +52,7 @@ mod tests
     }
 
     #[test]
-    fn invoke_dynamic_info_implements_equality_correctly()
-    {
+    fn invoke_dynamic_info_implements_equality_correctly() {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: InvokeDynamicInfo = InvokeDynamicInfo::new(&mut data);
@@ -69,8 +62,7 @@ mod tests
     }
 
     #[test]
-    fn invoke_dynamic_info_implements_equality_correctly_when_not_equal()
-    {
+    fn invoke_dynamic_info_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
         let instance1: InvokeDynamicInfo = InvokeDynamicInfo::new(&mut data1);
@@ -80,8 +72,7 @@ mod tests
     }
 
     #[test]
-    fn invoke_dynamic_info_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn invoke_dynamic_info_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let instance1: InvokeDynamicInfo = InvokeDynamicInfo::new(&mut data);
         let instance2 = instance1.clone();

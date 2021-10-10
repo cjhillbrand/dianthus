@@ -1,8 +1,6 @@
-pub trait ConstantInfo
-{
+pub trait ConstantInfo {
     fn tag(&self) -> &u8;
 }
-
 
 pub const UTF8: u8 = 1;
 pub const INTEGER: u8 = 3;

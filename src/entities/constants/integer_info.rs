@@ -1,42 +1,36 @@
 use crate::entities::constants::constant_info::ConstantInfo;
 use crate::entities::read_bytes::ReadBytes;
 
-
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
-pub struct IntegerInfo
-{
+pub struct IntegerInfo {
     tag: u8,
-    value: i32
+    value: i32,
 }
 
-impl ConstantInfo for IntegerInfo
-{
-    fn tag(&self) -> &u8 { &self.tag }
+impl ConstantInfo for IntegerInfo {
+    fn tag(&self) -> &u8 {
+        &self.tag
+    }
 }
 
-impl IntegerInfo
-{
-    pub fn new<T: ReadBytes>(data: &mut T) -> IntegerInfo
-    {
-        IntegerInfo
-        {
+impl IntegerInfo {
+    pub fn new<T: ReadBytes>(data: &mut T) -> IntegerInfo {
+        IntegerInfo {
             tag: data.pop_u8(),
-            value: data.pop_u32() as i32
+            value: data.pop_u32() as i32,
         }
     }
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
+    use crate::entities::constants::integer_info::IntegerInfo;
+    use crate::vecdeque;
     use serde_json::Result;
     use std::collections::VecDeque;
-    use crate::vecdeque;
-    use crate::entities::constants::integer_info::IntegerInfo;
 
     #[test]
-    fn class_info_implements_equality_by_default()
-    {
+    fn class_info_implements_equality_by_default() {
         let instance1: IntegerInfo = Default::default();
         let instance2: IntegerInfo = Default::default();
 
@@ -44,8 +38,7 @@ mod tests
     }
 
     #[test]
-    fn class_info_constructs_expected_struct()
-    {
+    fn class_info_constructs_expected_struct() {
         let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
         let result: IntegerInfo = IntegerInfo::new(&mut data);
 
@@ -56,8 +49,7 @@ mod tests
     }
 
     #[test]
-    fn class_info_implements_equality_correctly()
-    {
+    fn class_info_implements_equality_correctly() {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = data.clone();
         let instance1: IntegerInfo = IntegerInfo::new(&mut data);
@@ -67,8 +59,7 @@ mod tests
     }
 
     #[test]
-    fn class_info_implements_equality_correctly_when_not_equal()
-    {
+    fn class_info_implements_equality_correctly_when_not_equal() {
         let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
         let instance1: IntegerInfo = IntegerInfo::new(&mut data1);
@@ -78,8 +69,7 @@ mod tests
     }
 
     #[test]
-    fn class_info_implements_json_serialization_correctly() -> Result<()>
-    {
+    fn class_info_implements_json_serialization_correctly() -> Result<()> {
         let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
         let instance1: IntegerInfo = IntegerInfo::new(&mut data);
         let instance2 = instance1.clone();
