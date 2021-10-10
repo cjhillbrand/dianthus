@@ -1,12 +1,12 @@
-use crate::attributes::attribute_info::AttributeInfo;
+use crate::entities::attributes::attribute_info::AttributeInfo;
 
 
 
-use crate::attributes::code_attribute::CodeAttribute;
-use crate::attributes::constant_value_attribute::ConstantValueAttribute;
-use crate::attributes::deprecated_attribute::DeprecatedAttribute;
-use crate::attributes::signature_attribute::SignatureAttribute;
-use crate::attributes::exception_attribute::ExceptionAttribute;
+use crate::entities::attributes::code_attribute::CodeAttribute;
+use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
+use crate::entities::attributes::deprecated_attribute::DeprecatedAttribute;
+use crate::entities::attributes::signature_attribute::SignatureAttribute;
+use crate::entities::attributes::exception_attribute::ExceptionAttribute;
 
 
 

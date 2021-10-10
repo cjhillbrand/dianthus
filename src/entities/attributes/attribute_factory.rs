@@ -1,14 +1,14 @@
 
 
 
-use crate::read_bytes::ReadBytes;
-use crate::attributes::code_attribute::CodeAttribute;
-use crate::attributes::constant_value_attribute::ConstantValueAttribute;
-use crate::attributes::deprecated_attribute::DeprecatedAttribute;
-use crate::attributes::signature_attribute::SignatureAttribute;
-use crate::attributes::exception_attribute::ExceptionAttribute;
-use crate::attributes::attribute_container::AttributeContainer;
-use crate::constants::constant_container::ConstantContainer;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::attributes::code_attribute::CodeAttribute;
+use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
+use crate::entities::attributes::deprecated_attribute::DeprecatedAttribute;
+use crate::entities::attributes::signature_attribute::SignatureAttribute;
+use crate::entities::attributes::exception_attribute::ExceptionAttribute;
+use crate::entities::attributes::attribute_container::AttributeContainer;
+use crate::entities::constants::constant_container::ConstantContainer;
 
 const CONSTANT_VALUE: &str = "ConstantValue";
 const CODE: &str = "Code";

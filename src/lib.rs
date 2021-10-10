@@ -4,24 +4,11 @@
 // at once.
 #![deny(clippy::all)]
 #![allow(clippy::enum_variant_names, clippy::field_reassign_with_default)]
-mod class_struct;
-mod field_info;
-mod attributes;
-mod read_bytes;
-mod constants;
-mod method_info;
+mod entities;
 
 extern crate serde;
 extern crate serde_json;
 #[macro_use] extern crate serde_derive;
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
 
 #[macro_export]
 macro_rules! vecdeque {

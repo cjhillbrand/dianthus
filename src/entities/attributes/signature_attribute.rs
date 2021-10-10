@@ -1,5 +1,5 @@
-use crate::attributes::attribute_info::AttributeInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::attributes::attribute_info::AttributeInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -32,10 +32,10 @@ impl SignatureAttribute
 #[cfg(test)]
 mod tests
 {
-    use crate::attributes::signature_attribute::SignatureAttribute;
     use serde_json::Result;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::attributes::signature_attribute::SignatureAttribute;
 
     #[test]
     fn signature_attribute_implements_equality_by_default()

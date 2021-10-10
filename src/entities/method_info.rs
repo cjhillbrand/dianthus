@@ -1,9 +1,7 @@
-
-use crate::read_bytes::ReadBytes;
-use crate::attributes::attribute_factory::{get_attribute_container};
-
-use crate::attributes::attribute_container::AttributeContainer;
-use crate::constants::constant_container::ConstantContainer;
+use crate::entities::attributes::attribute_factory::get_attribute_container;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::constants::constant_container::ConstantContainer;
+use crate::entities::attributes::attribute_container::AttributeContainer;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodInfo
@@ -41,11 +39,11 @@ mod tests
     use serde_json::Result;
     use crate::vecdeque;
     use std::collections::VecDeque;
-    use crate::method_info::MethodInfo;
-    use crate::constants::constant_container::ConstantContainer;
-    use crate::constants::utf8_info::Utf8Info;
-    use crate::attributes::constant_value_attribute::ConstantValueAttribute;
-    use crate::attributes::attribute_container::AttributeContainer;
+    use crate::entities::constants::constant_container::ConstantContainer;
+    use crate::entities::method_info::MethodInfo;
+    use crate::entities::attributes::attribute_container::AttributeContainer;
+    use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
+    use crate::entities::constants::utf8_info::Utf8Info;
 
     #[test]
     fn method_info_implements_equality_by_default()

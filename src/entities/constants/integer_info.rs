@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -30,9 +30,9 @@ impl IntegerInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::integer_info::IntegerInfo;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::integer_info::IntegerInfo;
 
     #[test]
     fn class_info_implements_equality_by_default()

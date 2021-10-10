@@ -1,10 +1,8 @@
-use crate::attributes::attribute_info::AttributeInfo;
-use crate::read_bytes::ReadBytes;
-
-use crate::attributes::attribute_factory::{get_attribute_container};
-
-use crate::attributes::attribute_container::AttributeContainer;
-use crate::constants::constant_container::ConstantContainer;
+use crate::entities::attributes::attribute_container::AttributeContainer;
+use crate::entities::attributes::attribute_info::AttributeInfo;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::constants::constant_container::ConstantContainer;
+use crate::entities::attributes::attribute_factory::get_attribute_container;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct CodeAttribute
@@ -86,14 +84,14 @@ impl ExceptionInfo
 #[cfg(test)]
 mod tests
 {
-    use crate::attributes::code_attribute::{ExceptionInfo, CodeAttribute};
     use serde_json::Result;
     use std::collections::VecDeque;
     use crate::vecdeque;
     
-    
-    use crate::constants::constant_container::ConstantContainer;
-    use crate::constants::class_info::ClassInfo;
+
+    use crate::entities::attributes::code_attribute::{ExceptionInfo, CodeAttribute};
+    use crate::entities::constants::constant_container::ConstantContainer;
+    use crate::entities::constants::class_info::ClassInfo;
 
     #[test]
     fn exception_info_implements_equality_by_default()

@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct InterfaceMethodRefInfo
@@ -31,9 +31,9 @@ impl InterfaceMethodRefInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::interface_method_ref_info::InterfaceMethodRefInfo;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::interface_method_ref_info::InterfaceMethodRefInfo;
 
     #[test]
     fn interface_method_ref_implements_equality_by_default()

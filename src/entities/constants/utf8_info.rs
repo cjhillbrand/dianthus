@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
 
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -7,8 +7,6 @@ pub struct Utf8Info
 {
     tag: u8,
     length: u16,
-    // Mapping this to a string looks complex.
-    // refer back to documentation for this.
     value: Vec<u8>
 }
 
@@ -45,9 +43,9 @@ impl Utf8Info
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::utf8_info::Utf8Info;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::utf8_info::Utf8Info;
 
     #[test]
     fn utf8_info_implements_equality_by_default()

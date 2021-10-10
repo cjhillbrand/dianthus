@@ -1,5 +1,5 @@
-use crate::constants::constant_info::ConstantInfo;
-use crate::read_bytes::ReadBytes;
+use crate::entities::read_bytes::ReadBytes;
+use crate::entities::constants::constant_info::ConstantInfo;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct LongInfo
@@ -29,9 +29,9 @@ impl LongInfo
 mod tests
 {
     use serde_json::Result;
-    use crate::constants::long_info::LongInfo;
     use std::collections::VecDeque;
     use crate::vecdeque;
+    use crate::entities::constants::long_info::LongInfo;
 
     #[test]
     fn long_info_implements_equality_by_default()

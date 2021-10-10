@@ -1,18 +1,18 @@
-use crate::constants::double_info::DoubleInfo;
-use crate::constants::field_ref_info::FieldRefInfo;
-use crate::constants::float_info::FloatInfo;
-use crate::constants::integer_info::IntegerInfo;
-use crate::constants::interface_method_ref_info::InterfaceMethodRefInfo;
-use crate::constants::invoke_dynamic_info::InvokeDynamicInfo;
-use crate::constants::long_info::LongInfo;
-use crate::constants::method_handle_info::MethodHandleInfo;
-use crate::constants::method_ref_info::MethodRefInfo;
-use crate::constants::method_type_info::MethodTypeInfo;
-use crate::constants::name_and_type_info::NameAndTypeInfo;
-use crate::constants::string_info::StringInfo;
-use crate::constants::utf8_info::Utf8Info;
-use crate::constants::class_info::ClassInfo;
-use crate::constants::constant_info::ConstantInfo;
+use crate::entities::constants::double_info::DoubleInfo;
+use crate::entities::constants::field_ref_info::FieldRefInfo;
+use crate::entities::constants::float_info::FloatInfo;
+use crate::entities::constants::integer_info::IntegerInfo;
+use crate::entities::constants::interface_method_ref_info::InterfaceMethodRefInfo;
+use crate::entities::constants::invoke_dynamic_info::InvokeDynamicInfo;
+use crate::entities::constants::long_info::LongInfo;
+use crate::entities::constants::method_handle_info::MethodHandleInfo;
+use crate::entities::constants::method_ref_info::MethodRefInfo;
+use crate::entities::constants::method_type_info::MethodTypeInfo;
+use crate::entities::constants::name_and_type_info::NameAndTypeInfo;
+use crate::entities::constants::string_info::StringInfo;
+use crate::entities::constants::utf8_info::Utf8Info;
+use crate::entities::constants::class_info::ClassInfo;
+use crate::entities::constants::constant_info::ConstantInfo;
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub enum ConstantContainer
