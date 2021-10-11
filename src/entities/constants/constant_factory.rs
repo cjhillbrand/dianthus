@@ -17,26 +17,24 @@ use crate::entities::constants::utf8_info::Utf8Info;
 use crate::entities::read_bytes::ReadBytes;
 
 pub fn get_constant_container<T: ReadBytes>(data: &mut T) -> ConstantContainer {
-    let tag_value: u8 = data.peek_u8();
-    match tag_value {
-        UTF8 => ConstantContainer::Utf8Info(Utf8Info::new(data)),
-        INTEGER => ConstantContainer::IntegerInfo(IntegerInfo::new(data)),
-        FLOAT => ConstantContainer::FloatInfo(FloatInfo::new(data)),
-        LONG => ConstantContainer::LongInfo(LongInfo::new(data)),
-        DOUBLE => ConstantContainer::DoubleInfo(DoubleInfo::new(data)),
-        CLASS => ConstantContainer::ClassInfo(ClassInfo::new(data)),
-        STRING => ConstantContainer::StringInfo(StringInfo::new(data)),
-        FIELD_REF => ConstantContainer::FieldRefInfo(FieldRefInfo::new(data)),
-        METHOD_REF => ConstantContainer::MethodRefInfo(MethodRefInfo::new(data)),
-        INTERFACE_METHOD_REF => {
-            ConstantContainer::InterfaceMethodInfo(InterfaceMethodRefInfo::new(data))
-        }
-        NAME_AND_TYPE => ConstantContainer::NameAndTypeInfo(NameAndTypeInfo::new(data)),
-        METHOD_HANDLE => ConstantContainer::MethodHandleInfo(MethodHandleInfo::new(data)),
-        METHOD_TYPE => ConstantContainer::MethodTypeInfo(MethodTypeInfo::new(data)),
-        INVOKE_DYNAMIC => ConstantContainer::InvokeDynamicInfo(InvokeDynamicInfo::new(data)),
-        _ => {
-            panic!("Unidentified constant info: {}.", tag_value)
-        }
-    }
+	let tag_value: u8 = data.peek_u8();
+	match tag_value {
+		UTF8 => ConstantContainer::Utf8Info(Utf8Info::new(data)),
+		INTEGER => ConstantContainer::IntegerInfo(IntegerInfo::new(data)),
+		FLOAT => ConstantContainer::FloatInfo(FloatInfo::new(data)),
+		LONG => ConstantContainer::LongInfo(LongInfo::new(data)),
+		DOUBLE => ConstantContainer::DoubleInfo(DoubleInfo::new(data)),
+		CLASS => ConstantContainer::ClassInfo(ClassInfo::new(data)),
+		STRING => ConstantContainer::StringInfo(StringInfo::new(data)),
+		FIELD_REF => ConstantContainer::FieldRefInfo(FieldRefInfo::new(data)),
+		METHOD_REF => ConstantContainer::MethodRefInfo(MethodRefInfo::new(data)),
+		INTERFACE_METHOD_REF => ConstantContainer::InterfaceMethodInfo(InterfaceMethodRefInfo::new(data)),
+		NAME_AND_TYPE => ConstantContainer::NameAndTypeInfo(NameAndTypeInfo::new(data)),
+		METHOD_HANDLE => ConstantContainer::MethodHandleInfo(MethodHandleInfo::new(data)),
+		METHOD_TYPE => ConstantContainer::MethodTypeInfo(MethodTypeInfo::new(data)),
+		INVOKE_DYNAMIC => ConstantContainer::InvokeDynamicInfo(InvokeDynamicInfo::new(data)),
+		_ => {
+			panic!("Unidentified constant info: {}.", tag_value)
+		}
+	}
 }

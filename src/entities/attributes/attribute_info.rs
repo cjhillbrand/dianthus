@@ -3,10 +3,9 @@
 ///
 /// Implemented: 2,3,5,8,9,
 /// Annotations: 15,16,17,18,19,20
-///
 pub trait AttributeInfo {
-    fn name_index(&self) -> &u16;
-    fn attr_length(&self) -> &u32;
+	fn name_index(&self) -> &u16;
+	fn attr_length(&self) -> &u32;
 }
 
 /*
