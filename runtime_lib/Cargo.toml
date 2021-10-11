@@ -1,6 +1,6 @@
 [package]
 name = "runtime_lib"
-authors = "CJ cjhillbrand@gmail.com"
+authors = [ "CJ cjhillbrand@gmail.com" ]
 version = "0.1.0"
 edition = "2018"
 description = "The runtime library used by the Java Virtual Machine."
