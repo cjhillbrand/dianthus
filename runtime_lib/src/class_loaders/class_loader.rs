@@ -44,3 +44,32 @@ pub fn get_class_path() -> String {
 		)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use std::env;
+
+	use crate::class_loaders::class_loader::{get_class_path, get_java_home};
+
+	#[test]
+	#[ignore]
+	fn get_class_path_resolves_environment_variable() {
+		let class_path: String = get_class_path();
+		println!("Class path: {}", class_path);
+	}
+
+	#[test]
+	#[ignore]
+	fn get_java_home_resolves_environment_variable() {
+		let java_home: String = get_java_home();
+		println!("Java home: {}", java_home);
+	}
+
+	#[test]
+	#[ignore]
+	fn print_env_variables() {
+		for (n, v) in env::vars() {
+			println!("{}: {}", n, v);
+		}
+	}
+}
