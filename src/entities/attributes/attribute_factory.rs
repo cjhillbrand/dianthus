@@ -17,27 +17,22 @@ const EXCEPTION: &str = "Exception";
 const LINE_NUMBER_TABLE: &str = "LineNumberTable";
 const SOURCE_FILE: &str = "SourceFile";
 
-pub fn get_attribute_container<T: ReadBytes>(
-    data: &mut T,
-    constant_pool: &[ConstantContainer],
-) -> AttributeContainer {
-    let attr_index = data.peek_u16();
-    let constant_info = &constant_pool[attr_index as usize];
-    let attribute_type: &str = match constant_info {
-        ConstantContainer::Utf8Info(v) => v.get_string(),
-        _ => panic!("Expected enum value of utf8info."),
-    };
+pub fn get_attribute_container<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> AttributeContainer {
+	let attr_index = data.peek_u16();
+	let constant_info = &constant_pool[attr_index as usize];
+	let attribute_type: &str = match constant_info {
+		ConstantContainer::Utf8Info(v) => v.get_string(),
+		_ => panic!("Expected enum value of utf8info.")
+	};
 
-    match attribute_type {
-        CODE => AttributeContainer::CodeAttribute(CodeAttribute::new(data, constant_pool)),
-        CONSTANT_VALUE => AttributeContainer::ConstantAttribute(ConstantValueAttribute::new(data)),
-        DEPRECATED => AttributeContainer::DeprecatedAttribute(DeprecatedAttribute::new(data)),
-        SIGNATURE => AttributeContainer::SignatureAttribute(SignatureAttribute::new(data)),
-        EXCEPTION => AttributeContainer::ExceptionAttribute(ExceptionAttribute::new(data)),
-        LINE_NUMBER_TABLE => {
-            AttributeContainer::LineNumberTableAttribute(LineNumberTableAttribute::new(data))
-        }
-        SOURCE_FILE => AttributeContainer::SourceFileAttribute(SourceFileAttribute::new(data)),
-        &_ => panic!("Unidentified attribute: {}", attribute_type),
-    }
+	match attribute_type {
+		CODE => AttributeContainer::CodeAttribute(CodeAttribute::new(data, constant_pool)),
+		CONSTANT_VALUE => AttributeContainer::ConstantAttribute(ConstantValueAttribute::new(data)),
+		DEPRECATED => AttributeContainer::DeprecatedAttribute(DeprecatedAttribute::new(data)),
+		SIGNATURE => AttributeContainer::SignatureAttribute(SignatureAttribute::new(data)),
+		EXCEPTION => AttributeContainer::ExceptionAttribute(ExceptionAttribute::new(data)),
+		LINE_NUMBER_TABLE => AttributeContainer::LineNumberTableAttribute(LineNumberTableAttribute::new(data)),
+		SOURCE_FILE => AttributeContainer::SourceFileAttribute(SourceFileAttribute::new(data)),
+		&_ => panic!("Unidentified attribute: {}", attribute_type)
+	}
 }

@@ -1,5 +1,5 @@
 pub trait ConstantInfo {
-    fn tag(&self) -> &u8;
+	fn tag(&self) -> &u8;
 }
 
 pub const UTF8: u8 = 1;

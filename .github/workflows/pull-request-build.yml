@@ -14,16 +14,21 @@ jobs:
         with:
           toolchain: nightly
           components: clippy
-      - name: Build Repository
+      - name: Rust fmt
         uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --release --all-features
+          command: fmt
+          args: -- --check
       - name: Run Linter
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-features
+      - name: Build Repository
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
       - name: Run Tests
         uses: actions-rs/cargo@v1
         with:

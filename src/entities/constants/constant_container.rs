@@ -16,41 +16,41 @@ use crate::entities::constants::utf8_info::Utf8Info;
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub enum ConstantContainer {
-    ClassInfo(ClassInfo),
-    DoubleInfo(DoubleInfo),
-    FieldRefInfo(FieldRefInfo),
-    FloatInfo(FloatInfo),
-    IntegerInfo(IntegerInfo),
-    InterfaceMethodInfo(InterfaceMethodRefInfo),
-    InvokeDynamicInfo(InvokeDynamicInfo),
-    LongInfo(LongInfo),
-    MethodHandleInfo(MethodHandleInfo),
-    MethodRefInfo(MethodRefInfo),
-    MethodTypeInfo(MethodTypeInfo),
-    NameAndTypeInfo(NameAndTypeInfo),
-    StringInfo(StringInfo),
-    Utf8Info(Utf8Info),
-    None,
+	ClassInfo(ClassInfo),
+	DoubleInfo(DoubleInfo),
+	FieldRefInfo(FieldRefInfo),
+	FloatInfo(FloatInfo),
+	IntegerInfo(IntegerInfo),
+	InterfaceMethodInfo(InterfaceMethodRefInfo),
+	InvokeDynamicInfo(InvokeDynamicInfo),
+	LongInfo(LongInfo),
+	MethodHandleInfo(MethodHandleInfo),
+	MethodRefInfo(MethodRefInfo),
+	MethodTypeInfo(MethodTypeInfo),
+	NameAndTypeInfo(NameAndTypeInfo),
+	StringInfo(StringInfo),
+	Utf8Info(Utf8Info),
+	None
 }
 
 impl ConstantInfo for ConstantContainer {
-    fn tag(&self) -> &u8 {
-        match self {
-            ConstantContainer::ClassInfo(v) => v.tag(),
-            ConstantContainer::DoubleInfo(v) => v.tag(),
-            ConstantContainer::FieldRefInfo(v) => v.tag(),
-            ConstantContainer::FloatInfo(v) => v.tag(),
-            ConstantContainer::IntegerInfo(v) => v.tag(),
-            ConstantContainer::InterfaceMethodInfo(v) => v.tag(),
-            ConstantContainer::InvokeDynamicInfo(v) => v.tag(),
-            ConstantContainer::LongInfo(v) => v.tag(),
-            ConstantContainer::MethodHandleInfo(v) => v.tag(),
-            ConstantContainer::MethodRefInfo(v) => v.tag(),
-            ConstantContainer::MethodTypeInfo(v) => v.tag(),
-            ConstantContainer::NameAndTypeInfo(v) => v.tag(),
-            ConstantContainer::StringInfo(v) => v.tag(),
-            ConstantContainer::Utf8Info(v) => v.tag(),
-            ConstantContainer::None => panic!("Tag not defined for index 0 of constant pool"),
-        }
-    }
+	fn tag(&self) -> &u8 {
+		match self {
+			ConstantContainer::ClassInfo(v) => v.tag(),
+			ConstantContainer::DoubleInfo(v) => v.tag(),
+			ConstantContainer::FieldRefInfo(v) => v.tag(),
+			ConstantContainer::FloatInfo(v) => v.tag(),
+			ConstantContainer::IntegerInfo(v) => v.tag(),
+			ConstantContainer::InterfaceMethodInfo(v) => v.tag(),
+			ConstantContainer::InvokeDynamicInfo(v) => v.tag(),
+			ConstantContainer::LongInfo(v) => v.tag(),
+			ConstantContainer::MethodHandleInfo(v) => v.tag(),
+			ConstantContainer::MethodRefInfo(v) => v.tag(),
+			ConstantContainer::MethodTypeInfo(v) => v.tag(),
+			ConstantContainer::NameAndTypeInfo(v) => v.tag(),
+			ConstantContainer::StringInfo(v) => v.tag(),
+			ConstantContainer::Utf8Info(v) => v.tag(),
+			ConstantContainer::None => panic!("Tag not defined for index 0 of constant pool")
+		}
+	}
 }
