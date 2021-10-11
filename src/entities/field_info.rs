@@ -10,10 +10,6 @@ pub struct FieldInfo {
 	descriptor_index: u16,
 	attributes_count: u16,
 	attributes: Vec<AttributeContainer>
-
-
-
-
 }
 
 impl FieldInfo {
