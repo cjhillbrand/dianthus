@@ -6,6 +6,9 @@ description = "Dianthus application"
 
 [dependencies]
 runtime_lib = { path = "runtime_lib" }
+serde = "0.9"
+serde_json = "0.9"
+serde_derive = "0.9"
 
 [workspace]
 members = [

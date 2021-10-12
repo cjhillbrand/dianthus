@@ -1,4 +1,4 @@
-#[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub enum JvmValue {
 	Boolean(bool),
 	Byte(u8),
@@ -12,3 +12,5 @@ pub enum JvmValue {
 	Double(f64),
 	PlaceHolder
 }
+
+impl Eq for JvmValue {}

@@ -6,5 +6,9 @@ mod run_time_data;
 mod stack_frame;
 
 extern crate runtime_lib;
+extern crate serde;
+extern crate serde_json;
+#[macro_use]
+extern crate serde_derive;
 
 fn main() {}
