@@ -1,3 +1,12 @@
+[package]
+name = "dianthus"
+authors = [ "CJ cjhillbrand@gmail.com" ]
+version = "0.1.0"
+description = "Dianthus application"
+
+[dependencies]
+runtime_lib = { path = "runtime_lib" }
+
 [workspace]
 members = [
     "runtime_lib"
