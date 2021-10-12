@@ -4,6 +4,7 @@
 mod jvm_value;
 mod run_time_data;
 mod stack_frame;
+mod class_executor;
 
 extern crate runtime_lib;
 extern crate serde;

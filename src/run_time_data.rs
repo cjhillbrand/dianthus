@@ -10,3 +10,16 @@ pub struct RunTimeData {
 	heap: Vec<Box<dyn Any>>,
 	method_area: HashMap<String, ClassStruct>
 }
+
+impl RunTimeData
+{
+	pub fn new() -> RunTimeData
+	{
+		RunTimeData {
+			program_counters: Vec::new(),
+			stacks: Vec::new(),
+			heap: Vec::new(),
+			method_area: HashMap::new()
+		}
+	}
+}
