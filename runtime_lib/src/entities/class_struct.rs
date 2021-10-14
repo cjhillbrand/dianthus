@@ -6,6 +6,8 @@ use crate::entities::field_info::FieldInfo;
 use crate::entities::method_info::MethodInfo;
 use crate::entities::read_bytes::ReadBytes;
 
+use std::collections::HashMap;
+
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct ClassStruct {
 	magic: u32,
@@ -19,9 +21,9 @@ pub struct ClassStruct {
 	interfaces_count: u16,
 	interfaces: Vec<u16>,
 	fields_count: u16,
-	field_info: Vec<FieldInfo>,
+	field_info: HashMap<String, FieldInfo>,
 	methods_count: u16,
-	method_info: Vec<MethodInfo>,
+	method_info: HashMap<String, MethodInfo>,
 	attributes_count: u16,
 	attribute_info: Vec<AttributeContainer>
 }
@@ -49,15 +51,17 @@ impl ClassStruct {
 		}
 
 		result.fields_count = data.pop_u16();
-		result.field_info = Vec::new();
+		result.field_info = HashMap::new();
 		for _i in 0..result.fields_count {
-			result.field_info.push(FieldInfo::new(data, &result.constant_pool));
+			let field_info: FieldInfo = FieldInfo::new(data, &result.constant_pool);
+			result.field_info.insert(field_info.get_name(&result.constant_pool).to_string(), field_info);
 		}
 
 		result.methods_count = data.pop_u16();
-		result.method_info = Vec::new();
+		result.method_info = HashMap::new();
 		for _i in 0..result.methods_count {
-			result.method_info.push(MethodInfo::new(data, &result.constant_pool));
+			let method_info: MethodInfo = MethodInfo::new(data, &result.constant_pool);
+			result.method_info.insert(method_info.get_name(&result.constant_pool).to_string(), method_info);
 		}
 
 		result.attributes_count = data.pop_u16();
@@ -69,6 +73,34 @@ impl ClassStruct {
 		}
 
 		result
+	}
+
+	pub fn get_name(&self) -> &str
+	{
+		let index: u16 = self.this_class.clone();
+		match &self.constant_pool[index as usize]
+		{
+			ConstantContainer::Utf8Info(v) => { v.get_string() },
+			_ => { panic!("Expected a UTF8Info at index: {}", index) }
+		}
+	}
+
+	pub fn get_method(&self, name: &str) -> &MethodInfo
+	{
+		match self.method_info.get(name)
+		{
+			Some(method) => { method },
+			None => panic!("Method not found: {}", name)
+		}
+	}
+
+	pub fn get_field(&self, name: &str) -> &FieldInfo
+	{
+		match self.field_info.get(name)
+		{
+			Some(method) => { method },
+			None => panic!("Method not found: {}", name)
+		}
 	}
 }
 

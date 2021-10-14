@@ -22,4 +22,9 @@ impl RunTimeData
 			method_area: HashMap::new()
 		}
 	}
+
+	pub fn add_class(&self, class: ClassStruct)
+	{
+		self.method_area.insert(class.get_name(), class);
+	}
 }

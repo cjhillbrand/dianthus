@@ -12,4 +12,16 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
-fn main() {}
+use class_executor::ClassExecutor;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    println!("{:?}", args);
+
+    if args.len() < 2 {
+        panic!("Expected exactly one file name to be supplied to the command line.")
+    }
+
+    let mut class_executor: ClassExecutor = ClassExecutor::new();
+
+}

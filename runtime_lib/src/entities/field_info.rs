@@ -30,6 +30,16 @@ impl FieldInfo {
 			}
 		}
 	}
+
+	pub fn get_name<'a>(&self, constant_pool: &'a[ConstantContainer]) -> &'a str
+	{
+		let index: u16 = self.name_index.clone();
+		match &constant_pool[index as usize]
+		{
+			ConstantContainer::Utf8Info(v) => { v.get_string() },
+			_ => { panic!("Expected a UTF8Info at index: {}", index) }
+		}
+	}
 }
 
 #[cfg(test)]

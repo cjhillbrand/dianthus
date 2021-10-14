@@ -3,13 +3,15 @@ use crate::entities::attributes::attribute_factory::get_attribute_container;
 use crate::entities::constants::constant_container::ConstantContainer;
 use crate::entities::read_bytes::ReadBytes;
 
+use std::collections::HashMap;
+
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodInfo {
 	access_flags: u16,
 	name_index: u16,
 	descriptor_index: u16,
 	attributes_count: u16,
-	attributes: Vec<AttributeContainer>
+	attributes: HashMap<String, AttributeContainer>
 }
 
 impl MethodInfo {
@@ -21,13 +23,33 @@ impl MethodInfo {
 			attributes_count: data.peek_u16(),
 			attributes: {
 				let count = data.pop_u16();
-				let mut result: Vec<AttributeContainer> = Vec::new();
+				let mut result: HashMap<String, AttributeContainer> = HashMap::new();
 				for _i in 0..count {
-					result.push(get_attribute_container(data, constant_pool));
+					let container: AttributeContainer = get_attribute_container(data, constant_pool);
+					result.insert(container.get_name(constant_pool).to_string(), container);
 				}
 
 				result
 			}
+		}
+	}
+
+	pub fn get_attribute(&self, name: &str) -> &AttributeContainer
+	{
+		match self.attributes.get(name)
+		{
+			Some(attribute) => { attribute },
+			None => panic!("Could not find attribute {} in self {:#?}", name, self)
+		}
+	}
+
+	pub fn get_name<'a>(&self, constant_pool: &'a[ConstantContainer]) -> &'a str
+	{
+		let index: u16 = self.name_index.clone();
+		match &constant_pool[index as usize]
+		{
+			ConstantContainer::Utf8Info(v) => { v.get_string() },
+			_ => { panic!("Expected a UTF8Info at index: {}", index) }
 		}
 	}
 }
