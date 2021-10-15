@@ -1,5 +1,6 @@
 #[cfg(test)]
 pub mod model_builder {
+	use crate::entities::attributes::attribute_container::AttributeContainer;
 	use crate::entities::attributes::code_attribute::{CodeAttribute, ExceptionInfo};
 	use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
 	use crate::entities::attributes::constants::*;
@@ -15,12 +16,9 @@ pub mod model_builder {
 			5,
 			5,
 			5,
-			6,
 			vec![0, 1, 2, 3, 4, 5],
-			1,
-			vec![],
-			1,
-			vec![]
+			vec![create_exception_info(), create_exception_info()],
+			create_attributes()
 		)
 	}
 
@@ -37,14 +35,23 @@ pub mod model_builder {
 	}
 
 	pub fn create_line_number_table() -> LineNumberTableAttribute {
-		LineNumberTableAttribute::new_test_model(LINE_NUMBER_TABLE.to_string(), 10, 1, vec![])
+		LineNumberTableAttribute::new_test_model(LINE_NUMBER_TABLE.to_string(), 10, vec![])
 	}
 
 	pub fn create_table_element() -> TableElement { TableElement::new_test_model(1, 2) }
 
-	pub fn create_signature() -> SignatureAttribute { SignatureAttribute::new_test_model(SIGNATURE.to_string(), 4, 1) }
+	pub fn create_signature() -> SignatureAttribute {
+		SignatureAttribute::new_test_model(SIGNATURE.to_string(), 4, "Sig".to_string())
+	}
 
 	pub fn create_source_file() -> SourceFileAttribute {
 		SourceFileAttribute::new_test_model(SOURCE_FILE.to_string(), 4, 1)
+	}
+
+	pub fn create_attributes() -> Vec<AttributeContainer> {
+		vec![
+			AttributeContainer::SignatureAttribute(create_signature()),
+			AttributeContainer::SourceFileAttribute(create_source_file()),
+		]
 	}
 }

@@ -18,16 +18,17 @@ impl LongInfo {
 			value: data.pop_u64() as i64
 		}
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, value: i64) -> LongInfo { LongInfo { tag, value } }
 }
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
 	use crate::entities::constants::long_info::LongInfo;
-	use crate::vecdeque;
+	use crate::entities::constants::test_fixture::model_builder::create_long_info;
 
 	#[test]
 	fn long_info_implements_equality_by_default() {
@@ -38,40 +39,25 @@ mod tests {
 	}
 
 	#[test]
-	fn long_info_constructs_expected_struct() {
-		let mut data: VecDeque<u8> = vecdeque![1, 0, 0, 0, 0, 0, 1, 0, 1];
-		let result: LongInfo = LongInfo::new(&mut data);
-
-		let bit8: u8 = 1;
-		let bit64: i64 = 65537; // 1152921504606846976;
-		assert_eq!(bit8, result.tag);
-		assert_eq!(bit64, result.value);
-	}
-
-	#[test]
 	fn long_info_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
-		let mut data2: VecDeque<u8> = data.clone();
-		let instance1: LongInfo = LongInfo::new(&mut data);
-		let instance2: LongInfo = LongInfo::new(&mut data2);
+		let instance1: LongInfo = create_long_info();
+		let instance2: LongInfo = create_long_info();
 
 		assert_eq!(instance1, instance2);
 	}
 
 	#[test]
 	fn long_info_implements_equality_correctly_when_not_equal() {
-		let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
-		let mut data2: VecDeque<u8> = vecdeque![9, 8, 7, 6, 5, 4, 3, 2, 1];
-		let instance1: LongInfo = LongInfo::new(&mut data1);
-		let instance2: LongInfo = LongInfo::new(&mut data2);
+		let instance1: LongInfo = create_long_info();
+		let mut instance2: LongInfo = create_long_info();
+		instance2.tag += 1;
 
 		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn long_info_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8, 9];
-		let instance1: LongInfo = LongInfo::new(&mut data);
+		let instance1: LongInfo = create_long_info();
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;

@@ -20,6 +20,15 @@ impl MethodHandleInfo {
 			reference_index: data.pop_u16()
 		}
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, reference_kind: u8, reference_index: u16) -> MethodHandleInfo {
+		MethodHandleInfo {
+			tag,
+			reference_kind,
+			reference_index
+		}
+	}
 }
 
 #[cfg(test)]

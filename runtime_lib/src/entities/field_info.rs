@@ -7,8 +7,7 @@ use crate::entities::read_bytes::ReadBytes;
 pub struct FieldInfo {
 	access_flags: u16,
 	name: String,
-	descriptor_index: u16,
-	attributes_count: u16,
+	descriptor: String,
 	attributes: Vec<AttributeContainer>
 }
 
@@ -17,8 +16,7 @@ impl FieldInfo {
 		FieldInfo {
 			access_flags: data.pop_u16(),
 			name: constant_pool[data.pop_u16() as usize].get_string(),
-			descriptor_index: data.pop_u16(),
-			attributes_count: data.peek_u16(),
+			descriptor: constant_pool[data.pop_u16() as usize].get_string(),
 			attributes: {
 				let count = data.pop_u16();
 				let mut result: Vec<AttributeContainer> = Vec::new();
@@ -31,19 +29,27 @@ impl FieldInfo {
 		}
 	}
 
+	#[cfg(test)]
+	pub(crate) fn new_test_model(
+		access_flags: u16, name: String, descriptor: String, attributes: Vec<AttributeContainer>
+	) -> FieldInfo {
+		FieldInfo {
+			access_flags,
+			name,
+			descriptor,
+			attributes
+		}
+	}
+
 	pub fn get_name(&self) -> &str { &self.name }
 }
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
-	use crate::entities::constants::constant_container::ConstantContainer;
-	use crate::entities::constants::utf8_info::Utf8Info;
 	use crate::entities::field_info::FieldInfo;
-	use crate::vecdeque;
+	use crate::entities::test_fixture::model_builder::create_field;
 
 	#[test]
 	fn field_info_implements_equality_by_default() {
@@ -55,33 +61,24 @@ mod tests {
 
 	#[test]
 	fn field_info_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data.clone();
-		let constant_pool = get_default_cp();
-		let instance1: FieldInfo = FieldInfo::new(&mut data, &constant_pool);
-		let instance2: FieldInfo = FieldInfo::new(&mut data2, &constant_pool);
+		let instance1: FieldInfo = create_field();
+		let instance2: FieldInfo = create_field();
 
 		assert_eq!(instance1, instance2);
 	}
 
 	#[test]
 	fn field_info_implements_equality_correctly_when_not_equal() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data.clone();
-		data2[0] = data[0] + 1;
-		let constant_pool = get_default_cp();
-		let instance1: FieldInfo = FieldInfo::new(&mut data, &constant_pool);
-		let instance2: FieldInfo = FieldInfo::new(&mut data2, &constant_pool);
+		let instance1: FieldInfo = create_field();
+		let mut instance2: FieldInfo = create_field();
+		instance2.access_flags += 1;
 
 		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn field_info_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let constant_pool = get_default_cp();
-
-		let instance1: FieldInfo = FieldInfo::new(&mut data, &constant_pool);
+		let instance1: FieldInfo = create_field();
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;
@@ -89,28 +86,5 @@ mod tests {
 
 		assert_eq!(instance2, instance3);
 		Ok(())
-	}
-
-	fn get_default_vec() -> VecDeque<u8> {
-		vecdeque![
-			0, 1, // access_flags
-			0, 123, // name_index
-			0, 5, // descriptor_index
-			0, 1, // attributes_count
-			0, 0, // ConstantValueAttribute::attribute_name_index
-			1, 1, 1, 1, // ConstantValueAttribute::attribute_length
-			0, 2 // ConstantValueAttribute::constant_value_index
-		]
-	}
-
-	fn get_default_cp() -> Vec<ConstantContainer> {
-		let attr_name: &str = "ConstantValue";
-		let mut attr_contents = vecdeque![
-			0, // tag
-			0, 13, // length
-		];
-		attr_contents.extend(attr_name.as_bytes().iter().copied());
-
-		vec![ConstantContainer::Utf8Info(Utf8Info::new(&mut attr_contents))]
 	}
 }

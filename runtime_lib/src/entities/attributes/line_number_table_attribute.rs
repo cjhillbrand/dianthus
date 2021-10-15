@@ -6,7 +6,6 @@ use crate::entities::read_bytes::ReadBytes;
 pub struct LineNumberTableAttribute {
 	attribute_name: String,
 	attribute_length: u32,
-	table_length: u16,
 	table: Vec<TableElement>
 }
 
@@ -21,7 +20,6 @@ impl LineNumberTableAttribute {
 		LineNumberTableAttribute {
 			attribute_name: constant_pool[data.pop_u16() as usize].get_string(),
 			attribute_length: data.pop_u32(),
-			table_length: data.peek_u16(),
 			table: {
 				let length: u16 = data.pop_u16();
 				let mut result: Vec<TableElement> = Vec::new();
@@ -35,12 +33,11 @@ impl LineNumberTableAttribute {
 
 	#[cfg(test)]
 	pub(crate) fn new_test_model(
-		attribute_name: String, attribute_length: u32, table_length: u16, table: Vec<TableElement>
+		attribute_name: String, attribute_length: u32, table: Vec<TableElement>
 	) -> LineNumberTableAttribute {
 		LineNumberTableAttribute {
 			attribute_name,
 			attribute_length,
-			table_length,
 			table
 		}
 	}

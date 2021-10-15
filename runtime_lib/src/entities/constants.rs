@@ -15,4 +15,5 @@ mod method_ref_info;
 mod method_type_info;
 mod name_and_type_info;
 mod string_info;
+pub mod test_fixture;
 pub mod utf8_info;

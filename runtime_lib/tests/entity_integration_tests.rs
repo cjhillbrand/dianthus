@@ -89,4 +89,30 @@ fn class_struct_constructs_expected_struct() {
 			AttributeContainer::ConstantAttribute(ConstantValueAttribute::new(&mut content_vec));
 		assert_eq!(expected_attribute, result.attributes[0]);
 	}
+
+		#[test]
+	fn code_attribute_constructs_expected_struct() {
+		let mut data: VecDeque<u8> = get_default_code_attribute_vec();
+		let constant_pool: Vec<ConstantContainer> = get_default_constant_container();
+		let result: CodeAttribute = CodeAttribute::new(&mut data, constant_pool.as_slice());
+
+		// assert_eq!(258, result.attribute_name_index);
+		assert_eq!(131077, result.attribute_length);
+		assert_eq!(1029, result.max_stack);
+		assert_eq!(1537, result.max_locals);
+		assert_eq!(4, result.code_length);
+
+		let expected_code: Vec<u8> = vec![1, 2, 3, 4];
+		assert_eq!(expected_code, result.code);
+
+		assert_eq!(1, result.exception_table_length);
+
+		let mut expected_exception_vec = vecdeque![1, 1, 1, 2, 2, 5, 3, 4];
+		let expected_exception = ExceptionInfo::new(&mut expected_exception_vec);
+		assert_eq!(1, result.exception_table.len());
+		assert_eq!(expected_exception, result.exception_table[0]);
+
+		assert_eq!(0, result.attribute_count);
+		assert_eq!(0, result.attribute_info.len());
+	}
 */

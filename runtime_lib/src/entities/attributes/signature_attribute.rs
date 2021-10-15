@@ -6,7 +6,7 @@ use crate::entities::read_bytes::ReadBytes;
 pub struct SignatureAttribute {
 	attribute_name: String,
 	attribute_length: u32,
-	signature_index: u16
+	signature: String
 }
 
 impl AttributeInfo for SignatureAttribute {
@@ -20,18 +20,18 @@ impl SignatureAttribute {
 		SignatureAttribute {
 			attribute_name: constant_pool[data.pop_u16() as usize].get_string(),
 			attribute_length: data.pop_u32(),
-			signature_index: data.pop_u16()
+			signature: constant_pool[data.pop_u16() as usize].get_string()
 		}
 	}
 
 	#[cfg(test)]
 	pub(crate) fn new_test_model(
-		attribute_name: String, attribute_length: u32, signature_index: u16
+		attribute_name: String, attribute_length: u32, signature: String
 	) -> SignatureAttribute {
 		SignatureAttribute {
 			attribute_name,
 			attribute_length,
-			signature_index
+			signature
 		}
 	}
 }
@@ -63,7 +63,7 @@ mod tests {
 	fn signature_attribute_implements_equality_correctly_when_not_equal() {
 		let instance1: SignatureAttribute = create_signature();
 		let mut instance2: SignatureAttribute = create_signature();
-		instance2.signature_index += 1;
+		instance2.attribute_length += 1;
 
 		assert_ne!(instance1, instance2);
 	}

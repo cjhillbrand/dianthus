@@ -13,18 +13,13 @@ pub struct ClassStruct {
 	magic: u32,
 	minor_version: u16,
 	major_version: u16,
-	constant_pool_count: u16,
 	constant_pool: Vec<ConstantContainer>,
 	access_flags: u16,
 	this_class: u16,
 	super_class: u16,
-	interfaces_count: u16,
 	interfaces: Vec<u16>,
-	fields_count: u16,
 	field_info: HashMap<String, FieldInfo>,
-	methods_count: u16,
 	method_info: HashMap<String, MethodInfo>,
-	attributes_count: u16,
 	attribute_info: Vec<AttributeContainer>
 }
 
@@ -34,47 +29,68 @@ impl ClassStruct {
 		result.magic = data.pop_u32();
 		result.minor_version = data.pop_u16();
 		result.major_version = data.pop_u16();
-		result.constant_pool_count = data.pop_u16();
+		let constants_count: u16 = data.pop_u16();
 		result.constant_pool = Vec::new();
 		result.constant_pool.push(ConstantContainer::None);
-		for _i in 0..result.constant_pool_count - 1 {
+		for _i in 0..constants_count - 1 {
 			result.constant_pool.push(get_constant_container(data));
 		}
 
 		result.access_flags = data.pop_u16();
 		result.this_class = data.pop_u16();
 		result.super_class = data.pop_u16();
-		result.interfaces_count = data.pop_u16();
+		let interfaces_count: u16 = data.pop_u16();
 		result.interfaces = Vec::new();
-		for _i in 0..result.interfaces_count {
+		for _i in 0..interfaces_count {
 			result.interfaces.push(data.pop_u16());
 		}
 
-		result.fields_count = data.pop_u16();
+		let fields_count: u16 = data.pop_u16();
 		result.field_info = HashMap::new();
-		for _i in 0..result.fields_count {
+		for _i in 0..fields_count {
 			let field_info: FieldInfo = FieldInfo::new(data, &result.constant_pool);
 			result.field_info.insert(field_info.get_name().to_string(), field_info);
 		}
 
-		result.methods_count = data.pop_u16();
+		let methods_count: u16 = data.pop_u16();
 		result.method_info = HashMap::new();
-		for _i in 0..result.methods_count {
+		for _i in 0..methods_count {
 			let method_info: MethodInfo = MethodInfo::new(data, &result.constant_pool);
 			result
 				.method_info
 				.insert(method_info.get_name().to_string(), method_info);
 		}
 
-		result.attributes_count = data.pop_u16();
+		let attr_count: u16 = data.pop_u16();
 		result.attribute_info = Vec::new();
-		for _i in 0..result.attributes_count {
+		for _i in 0..attr_count {
 			result
 				.attribute_info
 				.push(get_attribute_container(data, &result.constant_pool));
 		}
 
 		result
+	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(
+		magic: u32, minor_version: u16, major_version: u16, constant_pool: Vec<ConstantContainer>, access_flags: u16,
+		this_class: u16, super_class: u16, interfaces: Vec<u16>, field_info: HashMap<String, FieldInfo>,
+		method_info: HashMap<String, MethodInfo>, attribute_info: Vec<AttributeContainer>
+	) -> ClassStruct {
+		ClassStruct {
+			magic,
+			minor_version,
+			major_version,
+			constant_pool,
+			access_flags,
+			this_class,
+			super_class,
+			interfaces,
+			field_info,
+			method_info,
+			attribute_info
+		}
 	}
 
 	pub fn get_name(&self) -> &str {
@@ -104,12 +120,10 @@ impl ClassStruct {
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
 	use crate::entities::class_struct::ClassStruct;
-	use crate::vecdeque;
+	use crate::entities::test_fixture::model_builder::create_class;
 
 	#[test]
 	fn class_struct_implements_equality_by_default() {
@@ -121,30 +135,24 @@ mod tests {
 
 	#[test]
 	fn class_struct_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data.clone();
-
-		let result: ClassStruct = ClassStruct::new(&mut data);
-		let result2: ClassStruct = ClassStruct::new(&mut data2);
+		let result: ClassStruct = create_class();
+		let result2: ClassStruct = create_class();
 		assert_eq!(result, result2);
 	}
 
 	#[test]
 	fn class_struct_implements_equality_correctly_when_not_equal() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data.clone();
-		data2[0] = data[0] + 1;
+		let instance1: ClassStruct = create_class();
+		let mut instance2: ClassStruct = create_class();
+		instance2.this_class += 1;
 
-		let result: ClassStruct = ClassStruct::new(&mut data);
-		let result2: ClassStruct = ClassStruct::new(&mut data2);
-		assert_ne!(result, result2);
+		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn class_struct_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = get_default_vec();
+		let instance1: ClassStruct = create_class();
 
-		let instance1: ClassStruct = ClassStruct::new(&mut data);
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;
@@ -152,48 +160,5 @@ mod tests {
 
 		assert_eq!(instance2, instance3);
 		Ok(())
-	}
-
-	fn get_default_vec() -> VecDeque<u8> {
-		vecdeque![
-			202, 254, 186, 190, // magic: u32: 3405691582
-			1, 0, // minor_version: u16: 256
-			0, 1, // major_version: u16: 1
-			0, 2, // constant_pool_count: u16: 1
-			1, //      Utf8Info::tag: 1
-			0, 13, //      Utf8Info::length: 13
-			b'C', b'o', b'n', b's', b't', b'a', b'n', b't', b'V', b'a', b'l', b'u',
-			b'e', //      Utf8Info::value: "ConstantValue"
-			// constant_pool: Vec<ConstantContainer>,
-			0, 1, // access_flags: u16: 1
-			0, 1, // this_class: u16: 1
-			0, 2, // super_class: u16: 2
-			0, 2, // interfaces_count: u16: 4
-			0, 2, 0, 4, // interfaces: Vec<u16>: [1,2,3,4]
-			0, 1, // fields_count: u16: 1
-			0, 1, //      FieldInfo::access_flags: 1
-			0, 1, //      FieldInfo::name_index: 1
-			0, 0, //      FieldInfo::descriptor_index: 0
-			0, 1, //      FieldInfo::attributes_count: 0
-			0, 1, //          ConstantValueAttribute::attribute_name_index: 1
-			2, 2, 0, 0, //          ConstantValueAttribute::attribute_length: 8590065664
-			1, 1, //          ConstantValueAttribute::constant_value_index: 257
-			// field_info: Vec<FieldInfo>,
-			0, 1, // methods_count: u16: 1
-			0, 1, //      MethodInfo::access_flags: 1
-			0, 1, //      MethodInfo::name_index: 1
-			0, 0, //      MethodInfo::descriptor_index: 0
-			0, 1, //      MethodInfo::attributes_count: 1
-			0, 1, //          ConstantValueAttribute::attribute_name_index: 1
-			2, 2, 0, 0, //          ConstantValueAttribute::attribute_length: 8590065664
-			1, 1, //          ConstantValueAttribute::constant_value_index: 257
-			// method_info: Vec<MethodInfo>,
-			0, 1, // attributes_count: u16: 1
-			0, 1, //      ConstantValueAttribute::attribute_name_index: 1
-			2, 2, 0, 0, //      ConstantValueAttribute::attribute_length: 8590065664
-			1,
-			1, /*      ConstantValueAttribute::constant_value_index: 257
-			    * attribute_info: Vec<AttributeContainer> */
-		]
 	}
 }
