@@ -6,7 +6,7 @@ use crate::entities::read_bytes::ReadBytes;
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct FieldInfo {
 	access_flags: u16,
-	name_index: u16,
+	name: String,
 	descriptor_index: u16,
 	attributes_count: u16,
 	attributes: Vec<AttributeContainer>
@@ -16,7 +16,7 @@ impl FieldInfo {
 	pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> FieldInfo {
 		FieldInfo {
 			access_flags: data.pop_u16(),
-			name_index: data.pop_u16(),
+			name: constant_pool[data.pop_u16() as usize].get_string(),
 			descriptor_index: data.pop_u16(),
 			attributes_count: data.peek_u16(),
 			attributes: {
@@ -31,15 +31,7 @@ impl FieldInfo {
 		}
 	}
 
-	pub fn get_name<'a>(&self, constant_pool: &'a[ConstantContainer]) -> &'a str
-	{
-		let index: u16 = self.name_index.clone();
-		match &constant_pool[index as usize]
-		{
-			ConstantContainer::Utf8Info(v) => { v.get_string() },
-			_ => { panic!("Expected a UTF8Info at index: {}", index) }
-		}
-	}
+	pub fn get_name(&self) -> &str { &self.name }
 }
 
 #[cfg(test)]
@@ -48,8 +40,6 @@ mod tests {
 
 	use serde_json::Result;
 
-	use crate::entities::attributes::attribute_container::AttributeContainer;
-	use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
 	use crate::entities::constants::constant_container::ConstantContainer;
 	use crate::entities::constants::utf8_info::Utf8Info;
 	use crate::entities::field_info::FieldInfo;
@@ -61,25 +51,6 @@ mod tests {
 		let instance2: FieldInfo = Default::default();
 
 		assert_eq!(instance1, instance2);
-	}
-
-	#[test]
-	fn field_info_constructs_expected_struct() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let constant_pool = get_default_cp();
-		let result: FieldInfo = FieldInfo::new(&mut data, &constant_pool);
-
-		assert_eq!(1, result.access_flags);
-		assert_eq!(123, result.name_index);
-		assert_eq!(5, result.descriptor_index);
-		assert_eq!(1, result.attributes_count);
-
-		assert_eq!(1, result.attributes.len());
-
-		let mut content_vec: VecDeque<u8> = vecdeque![0, 0, 1, 1, 1, 1, 0, 2];
-		let expected_attribute: AttributeContainer =
-			AttributeContainer::ConstantAttribute(ConstantValueAttribute::new(&mut content_vec));
-		assert_eq!(expected_attribute, result.attributes[0]);
 	}
 
 	#[test]

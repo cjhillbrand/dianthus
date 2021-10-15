@@ -6,7 +6,6 @@ use crate::entities::attributes::exception_attribute::ExceptionAttribute;
 use crate::entities::attributes::line_number_table_attribute::LineNumberTableAttribute;
 use crate::entities::attributes::signature_attribute::SignatureAttribute;
 use crate::entities::attributes::source_file_attribute::SourceFileAttribute;
-use crate::entities::constants::constant_container::ConstantContainer;
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub enum AttributeContainer {
@@ -19,29 +18,16 @@ pub enum AttributeContainer {
 	SourceFileAttribute(SourceFileAttribute)
 }
 
-impl AttributeContainer
-{
-	pub fn get_name<'a>(&self, constant_pool: &'a[ConstantContainer]) -> &'a str
-	{
-		let index: u16 = self.name_index().clone();
-		match &constant_pool[index as usize]
-		{
-			ConstantContainer::Utf8Info(v) => { v.get_string() },
-			_ => { panic!("Expected a UTF8Info at index: {}", index) }
-		}
-	}
-}
-
 impl AttributeInfo for AttributeContainer {
-	fn name_index(&self) -> &u16 {
+	fn name(&self) -> &str {
 		match self {
-			AttributeContainer::CodeAttribute(v) => v.name_index(),
-			AttributeContainer::ConstantAttribute(v) => v.name_index(),
-			AttributeContainer::DeprecatedAttribute(v) => v.name_index(),
-			AttributeContainer::SignatureAttribute(v) => v.name_index(),
-			AttributeContainer::ExceptionAttribute(v) => v.name_index(),
-			AttributeContainer::LineNumberTableAttribute(v) => v.name_index(),
-			AttributeContainer::SourceFileAttribute(v) => v.name_index()
+			AttributeContainer::CodeAttribute(v) => v.name(),
+			AttributeContainer::ConstantAttribute(v) => v.name(),
+			AttributeContainer::DeprecatedAttribute(v) => v.name(),
+			AttributeContainer::SignatureAttribute(v) => v.name(),
+			AttributeContainer::ExceptionAttribute(v) => v.name(),
+			AttributeContainer::LineNumberTableAttribute(v) => v.name(),
+			AttributeContainer::SourceFileAttribute(v) => v.name()
 		}
 	}
 

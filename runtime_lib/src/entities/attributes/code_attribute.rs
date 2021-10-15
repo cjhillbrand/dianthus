@@ -6,7 +6,7 @@ use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct CodeAttribute {
-	attribute_name_index: u16,
+	attribute_name: String,
 	attribute_length: u32,
 	max_stack: u16,
 	max_locals: u16,
@@ -19,7 +19,7 @@ pub struct CodeAttribute {
 }
 
 impl AttributeInfo for CodeAttribute {
-	fn name_index(&self) -> &u16 { &self.attribute_name_index }
+	fn name(&self) -> &str { &self.attribute_name }
 
 	fn attr_length(&self) -> &u32 { &self.attribute_length }
 }
@@ -27,7 +27,7 @@ impl AttributeInfo for CodeAttribute {
 impl CodeAttribute {
 	pub fn new<T: ReadBytes>(data: &mut T, constant_pool: &[ConstantContainer]) -> CodeAttribute {
 		let mut result: CodeAttribute = Default::default();
-		result.attribute_name_index = data.pop_u16();
+		result.attribute_name = constant_pool[data.pop_u16() as usize].get_string();
 		result.attribute_length = data.pop_u32();
 		result.max_stack = data.pop_u16();
 		result.max_locals = data.pop_u16();
@@ -49,6 +49,25 @@ impl CodeAttribute {
 
 		result
 	}
+
+	pub(crate) fn new_test_model(
+		attribute_name: String, attribute_length: u32, max_stack: u16, max_locals: u16, code_length: u32,
+		code: Vec<u8>, exception_table_length: u16, exception_table: Vec<ExceptionInfo>, attribute_count: u16,
+		attribute_info: Vec<AttributeContainer>
+	) -> CodeAttribute {
+		CodeAttribute {
+			attribute_name,
+			attribute_length,
+			max_stack,
+			max_locals,
+			code_length,
+			code,
+			exception_table_length,
+			exception_table,
+			attribute_count,
+			attribute_info
+		}
+	}
 }
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
@@ -66,6 +85,16 @@ impl ExceptionInfo {
 			end_pc: data.pop_u16(),
 			handler_pc: data.pop_u16(),
 			catch_type: data.pop_u16()
+		}
+	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(start_pc: u16, end_pc: u16, handler_pc: u16, catch_type: u16) -> ExceptionInfo {
+		ExceptionInfo {
+			start_pc,
+			end_pc,
+			handler_pc,
+			catch_type
 		}
 	}
 }
@@ -148,7 +177,7 @@ mod tests {
 		let constant_pool: Vec<ConstantContainer> = get_default_constant_container();
 		let result: CodeAttribute = CodeAttribute::new(&mut data, constant_pool.as_slice());
 
-		assert_eq!(258, result.attribute_name_index);
+		// assert_eq!(258, result.attribute_name_index);
 		assert_eq!(131077, result.attribute_length);
 		assert_eq!(1029, result.max_stack);
 		assert_eq!(1537, result.max_locals);
@@ -200,7 +229,6 @@ mod tests {
 
 		let json = serde_json::to_string_pretty(&instance1)?;
 		let instance3: CodeAttribute = serde_json::from_str(&json)?;
-
 		assert_eq!(instance2, instance3);
 		Ok(())
 	}

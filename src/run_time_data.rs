@@ -11,10 +11,8 @@ pub struct RunTimeData {
 	method_area: HashMap<String, ClassStruct>
 }
 
-impl RunTimeData
-{
-	pub fn new() -> RunTimeData
-	{
+impl RunTimeData {
+	pub fn new() -> RunTimeData {
 		RunTimeData {
 			program_counters: Vec::new(),
 			stacks: Vec::new(),
@@ -23,8 +21,12 @@ impl RunTimeData
 		}
 	}
 
-	pub fn add_class(&self, class: ClassStruct)
-	{
-		self.method_area.insert(class.get_name(), class);
+	pub fn add_class(&mut self, class: ClassStruct) { self.method_area.insert(class.get_name().to_string(), class); }
+
+	pub fn get_class(&self, name: &str) -> &ClassStruct {
+		match &self.method_area.get(name) {
+			Some(class) => class,
+			None => panic!("Could not find class: {}", name)
+		}
 	}
 }

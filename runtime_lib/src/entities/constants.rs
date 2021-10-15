@@ -2,6 +2,7 @@ pub mod class_info;
 pub mod constant_container;
 pub mod constant_factory;
 pub mod constant_info;
+pub mod constants;
 mod double_info;
 mod field_ref_info;
 mod float_info;

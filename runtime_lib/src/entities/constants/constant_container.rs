@@ -33,6 +33,17 @@ pub enum ConstantContainer {
 	None
 }
 
+impl ConstantContainer {
+	pub fn get_string(&self) -> String {
+		match self {
+			ConstantContainer::Utf8Info(v) => v.get_string().to_string(),
+			_ => {
+				panic!("Not a UTF8info constant: {:#?}", self)
+			}
+		}
+	}
+}
+
 impl ConstantInfo for ConstantContainer {
 	fn tag(&self) -> &u8 {
 		match self {

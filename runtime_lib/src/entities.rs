@@ -1,6 +1,6 @@
-mod attributes;
+pub mod attributes;
 pub mod class_struct;
-mod constants;
-mod field_info;
-mod method_info;
+pub mod constants;
+pub mod field_info;
+pub mod method_info;
 mod read_bytes;
