@@ -94,7 +94,7 @@ impl ClassStruct {
 	}
 
 	pub fn get_name(&self) -> &str {
-		let index: u16 = self.this_class.clone();
+		let index: u16 = self.this_class;
 		match &self.constant_pool[index as usize] {
 			ConstantContainer::Utf8Info(v) => v.get_string(),
 			_ => {
