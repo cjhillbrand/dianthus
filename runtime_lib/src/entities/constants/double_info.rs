@@ -24,6 +24,9 @@ impl DoubleInfo {
 		}
 	}
 
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, value: f64) -> DoubleInfo { DoubleInfo { tag, value } }
+
 	fn unsigned_to_float(bits: &u64) -> f64 {
 		let s: f64 = if (bits >> 63) == 0 { 1.0 } else { -1.0 };
 		let e = ((bits >> 52) & 0x7ff) as i64;
@@ -39,12 +42,10 @@ impl DoubleInfo {
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
 	use crate::entities::constants::double_info::DoubleInfo;
-	use crate::vecdeque;
+	use crate::entities::constants::test_fixture::model_builder::create_double_info;
 
 	#[test]
 	fn double_info_implements_equality_by_default() {
@@ -55,41 +56,25 @@ mod tests {
 	}
 
 	#[test]
-	fn double_info_constructs_expected_struct() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let result: DoubleInfo = DoubleInfo::new(&mut data);
-
-		let bit8: u8 = 1;
-		let _bit16: u16 = 257;
-		assert_eq!(bit8, result.tag);
-		assert!(123.125 - result.value <= f64::EPSILON);
-	}
-
-	#[test]
 	fn double_info_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data.clone();
-		let instance1: DoubleInfo = DoubleInfo::new(&mut data);
-		let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
+		let instance1: DoubleInfo = create_double_info();
+		let instance2: DoubleInfo = create_double_info();
 
 		assert_eq!(instance1, instance2);
 	}
 
 	#[test]
 	fn double_info_implements_equality_correctly_when_not_equal() {
-		let mut data1: VecDeque<u8> = get_default_vec();
-		let mut data2: VecDeque<u8> = data1.clone();
-		data2[0] = data1[0] + 1;
-		let instance1: DoubleInfo = DoubleInfo::new(&mut data1);
-		let instance2: DoubleInfo = DoubleInfo::new(&mut data2);
+		let instance1: DoubleInfo = create_double_info();
+		let mut instance2: DoubleInfo = create_double_info();
+		instance2.tag += 1;
 
 		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn double_info_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = get_default_vec();
-		let instance1: DoubleInfo = DoubleInfo::new(&mut data);
+		let instance1: DoubleInfo = create_double_info();
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;
@@ -97,9 +82,5 @@ mod tests {
 
 		assert_eq!(instance2, instance3);
 		Ok(())
-	}
-
-	fn get_default_vec() -> VecDeque<u8> {
-		vecdeque![1, 64, 94, 200, 0, 0, 0, 0, 0] // tag: 1 value: 123.125
 	}
 }

@@ -18,6 +18,11 @@ impl MethodTypeInfo {
 			descriptor_index: data.pop_u16()
 		}
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, descriptor_index: u16) -> MethodTypeInfo {
+		MethodTypeInfo { tag, descriptor_index }
+	}
 }
 
 #[cfg(test)]

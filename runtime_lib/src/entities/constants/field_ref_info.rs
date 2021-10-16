@@ -20,6 +20,15 @@ impl FieldRefInfo {
 			name_and_type_index: data.pop_u16()
 		}
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, class_index: u16, name_and_type_index: u16) -> FieldRefInfo {
+		FieldRefInfo {
+			tag,
+			class_index,
+			name_and_type_index
+		}
+	}
 }
 
 #[cfg(test)]

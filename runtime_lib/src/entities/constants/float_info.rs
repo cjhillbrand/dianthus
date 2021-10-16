@@ -35,16 +35,17 @@ impl FloatInfo {
 		let base: f32 = 2.0;
 		s * m as f32 * base.powf((e - 150) as f32)
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, value: f32) -> FloatInfo { FloatInfo { tag, value } }
 }
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
 	use crate::entities::constants::float_info::FloatInfo;
-	use crate::vecdeque;
+	use crate::entities::constants::test_fixture::model_builder::create_float_info;
 
 	#[test]
 	fn float_info_implements_equality_by_default() {
@@ -55,40 +56,25 @@ mod tests {
 	}
 
 	#[test]
-	fn float_info_constructs_expected_struct() {
-		let mut data: VecDeque<u8> = get_default_veq();
-		let result: FloatInfo = FloatInfo::new(&mut data);
-
-		let bit8: u8 = 1;
-		assert_eq!(bit8, result.tag);
-		assert!(123.45 - result.value <= f32::EPSILON);
-	}
-
-	#[test]
 	fn float_info_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = get_default_veq();
-		let mut data2: VecDeque<u8> = data.clone();
-		let instance1: FloatInfo = FloatInfo::new(&mut data);
-		let instance2: FloatInfo = FloatInfo::new(&mut data2);
+		let instance1: FloatInfo = create_float_info();
+		let instance2: FloatInfo = create_float_info();
 
 		assert_eq!(instance1, instance2);
 	}
 
 	#[test]
 	fn float_info_implements_equality_correctly_when_not_equal() {
-		let mut data1: VecDeque<u8> = get_default_veq();
-		let mut data2: VecDeque<u8> = data1.clone();
-		data2[0] = data1[0] + 1;
-		let instance1: FloatInfo = FloatInfo::new(&mut data1);
-		let instance2: FloatInfo = FloatInfo::new(&mut data2);
+		let instance1: FloatInfo = create_float_info();
+		let mut instance2: FloatInfo = create_float_info();
+		instance2.tag += 1;
 
 		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn float_info_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = get_default_veq();
-		let instance1: FloatInfo = FloatInfo::new(&mut data);
+		let instance1: FloatInfo = create_float_info();
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;
@@ -96,9 +82,5 @@ mod tests {
 
 		assert_eq!(instance2, instance3);
 		Ok(())
-	}
-
-	fn get_default_veq() -> VecDeque<u8> {
-		vecdeque![1, 66, 246, 230, 102] // 123.45
 	}
 }

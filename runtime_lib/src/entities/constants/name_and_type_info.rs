@@ -20,16 +20,23 @@ impl NameAndTypeInfo {
 			descriptor_index: data.pop_u16()
 		}
 	}
+
+	#[cfg(test)]
+	pub(crate) fn new_test_model(tag: u8, name_index: u16, descriptor_index: u16) -> NameAndTypeInfo {
+		NameAndTypeInfo {
+			tag,
+			name_index,
+			descriptor_index
+		}
+	}
 }
 
 #[cfg(test)]
 mod tests {
-	use std::collections::VecDeque;
-
 	use serde_json::Result;
 
 	use crate::entities::constants::name_and_type_info::NameAndTypeInfo;
-	use crate::vecdeque;
+	use crate::entities::constants::test_fixture::model_builder::create_name_and_type_info;
 
 	#[test]
 	fn name_and_type_info_implements_equality_by_default() {
@@ -40,41 +47,25 @@ mod tests {
 	}
 
 	#[test]
-	fn name_and_type_info_constructs_expected_struct() {
-		let mut data: VecDeque<u8> = vecdeque![1, 1, 1, 1, 1, 1, 1, 1];
-		let result: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
-
-		let bit8: u8 = 1;
-		let bit16: u16 = 257;
-		assert_eq!(bit8, result.tag);
-		assert_eq!(bit16, result.name_index);
-		assert_eq!(bit16, result.descriptor_index);
-	}
-
-	#[test]
 	fn name_and_type_info_implements_equality_correctly() {
-		let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
-		let mut data2: VecDeque<u8> = data.clone();
-		let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
-		let instance2: NameAndTypeInfo = NameAndTypeInfo::new(&mut data2);
+		let instance1: NameAndTypeInfo = create_name_and_type_info();
+		let instance2: NameAndTypeInfo = create_name_and_type_info();
 
 		assert_eq!(instance1, instance2);
 	}
 
 	#[test]
 	fn name_and_type_info_implements_equality_correctly_when_not_equal() {
-		let mut data1: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
-		let mut data2: VecDeque<u8> = vecdeque![8, 7, 6, 5, 4, 3, 2, 1];
-		let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data1);
-		let instance2: NameAndTypeInfo = NameAndTypeInfo::new(&mut data2);
+		let instance1: NameAndTypeInfo = create_name_and_type_info();
+		let mut instance2: NameAndTypeInfo = create_name_and_type_info();
+		instance2.tag += 1;
 
 		assert_ne!(instance1, instance2);
 	}
 
 	#[test]
 	fn name_and_type_info_implements_json_serialization_correctly() -> Result<()> {
-		let mut data: VecDeque<u8> = vecdeque![1, 2, 3, 4, 5, 6, 7, 8];
-		let instance1: NameAndTypeInfo = NameAndTypeInfo::new(&mut data);
+		let instance1: NameAndTypeInfo = create_name_and_type_info();
 		let instance2 = instance1.clone();
 
 		let json = serde_json::to_string_pretty(&instance1)?;

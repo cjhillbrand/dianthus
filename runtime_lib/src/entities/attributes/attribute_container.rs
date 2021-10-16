@@ -19,15 +19,15 @@ pub enum AttributeContainer {
 }
 
 impl AttributeInfo for AttributeContainer {
-	fn name_index(&self) -> &u16 {
+	fn name(&self) -> &str {
 		match self {
-			AttributeContainer::CodeAttribute(v) => v.name_index(),
-			AttributeContainer::ConstantAttribute(v) => v.name_index(),
-			AttributeContainer::DeprecatedAttribute(v) => v.name_index(),
-			AttributeContainer::SignatureAttribute(v) => v.name_index(),
-			AttributeContainer::ExceptionAttribute(v) => v.name_index(),
-			AttributeContainer::LineNumberTableAttribute(v) => v.name_index(),
-			AttributeContainer::SourceFileAttribute(v) => v.name_index()
+			AttributeContainer::CodeAttribute(v) => v.name(),
+			AttributeContainer::ConstantAttribute(v) => v.name(),
+			AttributeContainer::DeprecatedAttribute(v) => v.name(),
+			AttributeContainer::SignatureAttribute(v) => v.name(),
+			AttributeContainer::ExceptionAttribute(v) => v.name(),
+			AttributeContainer::LineNumberTableAttribute(v) => v.name(),
+			AttributeContainer::SourceFileAttribute(v) => v.name()
 		}
 	}
 

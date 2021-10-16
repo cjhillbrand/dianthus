@@ -2,7 +2,12 @@
 // Enum variant name is just a naming convention that I like.
 // field reassign I cant figure out how to pass the constant pool around in the intializer
 #![deny(clippy::all)]
-#![allow(clippy::enum_variant_names, clippy::field_reassign_with_default)]
+#![allow(
+	clippy::enum_variant_names,
+	clippy::field_reassign_with_default,
+	clippy::too_many_arguments,
+	clippy::module_inception
+)]
 pub mod class_loaders;
 pub mod entities;
 
@@ -37,4 +42,13 @@ macro_rules! vecdeque {
             _map
         }
     };
+}
+
+#[macro_export]
+macro_rules! hashmap {
+    ($( $key: expr => $val: expr ),*) => {{
+         let mut map = ::std::collections::HashMap::new();
+         $( map.insert($key, $val); )*
+         map
+    }}
 }
