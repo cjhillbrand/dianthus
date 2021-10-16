@@ -47,6 +47,7 @@ impl CodeAttribute {
 		result
 	}
 
+	#[cfg(test)]
 	pub(crate) fn new_test_model(
 		attribute_name: String, attribute_length: u32, max_stack: u16, max_locals: u16, code: Vec<u8>,
 		exception_table: Vec<ExceptionInfo>, attribute_info: Vec<AttributeContainer>
@@ -61,6 +62,12 @@ impl CodeAttribute {
 			attribute_info
 		}
 	}
+
+	pub fn get_max_stack(&self) -> u16 { self.max_stack.clone() }
+
+	pub fn get_max_locals(&self) -> u16 { self.max_locals.clone() }
+
+	pub fn get_code(&self) -> &Vec<u8> { &self.code }
 }
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]

@@ -7,8 +7,12 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 use runtime_lib::entities::attributes::constants::CODE;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::method_info::MethodInfo;
+use stack_frame::StackFrame;
+
+use std::collections::VecDeque;
 
 const MAIN: &str = "main";
+const INIT: &str = "<init>";
 
 pub struct ClassExecutor {
 	run_time_data: RunTimeData,
@@ -26,9 +30,19 @@ impl ClassExecutor {
 	pub fn execute(&mut self, init_class: &str) {
 		let class: ClassStruct = self.class_loader.load_class(init_class);
 		self.run_time_data.add_class(class);
+		self.run_time_data.set_pc(0, 0);
 		let class_ref: &ClassStruct = self.run_time_data.get_class(init_class);
-		let main_method: &MethodInfo = class_ref.get_method(MAIN);
-		let _entry_point: &CodeAttribute = ClassExecutor::derive_code_attribute(main_method);
+		let init_method: &MethodInfo = class_ref.get_method(INIT);
+		let entry_point: &CodeAttribute = ClassExecutor::derive_code_attribute(init_method);
+
+		let stack = ClassExecutor::create_stack_frame(entry_point);
+		self.run_time_data.add_stack(stack);
+
+		// 2. execute code that is in init.
+		// 3. remove stack frame for init.
+		// 4. create a stack frame for main.
+		// 5. execute code that is in main.
+		// 6. remove stack frame for main.
 	}
 
 	fn derive_code_attribute(method: &MethodInfo) -> &CodeAttribute {
@@ -49,5 +63,15 @@ impl ClassExecutor {
 			AttributeContainer::CodeAttribute(v) => v,
 			_ => panic!("Attribute returned is not a code attribute.")
 		}
+	}
+
+	fn create_stack_frame(code_attribute: &CodeAttribute) -> VecDeque<StackFrame>
+	{
+		let stack_frame: StackFrame = StackFrame::new(
+			code_attribute.get_max_locals() as usize,
+			code_attribute.get_max_stack() as usize);
+		let mut stack: VecDeque<StackFrame> = VecDeque::new();
+		stack.push_front(stack_frame);
+		stack
 	}
 }
