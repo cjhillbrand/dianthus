@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use run_time_data::RunTimeData;
 use runtime_lib::class_loaders::class_loader::ClassLoader;
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
@@ -8,8 +10,6 @@ use runtime_lib::entities::attributes::constants::CODE;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::method_info::MethodInfo;
 use stack_frame::StackFrame;
-
-use std::collections::VecDeque;
 
 const MAIN: &str = "main";
 const INIT: &str = "<init>";
@@ -65,11 +65,11 @@ impl ClassExecutor {
 		}
 	}
 
-	fn create_stack_frame(code_attribute: &CodeAttribute) -> VecDeque<StackFrame>
-	{
+	fn create_stack_frame(code_attribute: &CodeAttribute) -> VecDeque<StackFrame> {
 		let stack_frame: StackFrame = StackFrame::new(
 			code_attribute.get_max_locals() as usize,
-			code_attribute.get_max_stack() as usize);
+			code_attribute.get_max_stack() as usize
+		);
 		let mut stack: VecDeque<StackFrame> = VecDeque::new();
 		stack.push_front(stack_frame);
 		stack

@@ -12,7 +12,7 @@ pub struct RunTimeData {
 }
 
 impl RunTimeData {
-	pub fn new() -> RunTimeData{
+	pub fn new() -> RunTimeData {
 		RunTimeData {
 			program_counters: Vec::new(),
 			stacks: Vec::new(),
@@ -30,23 +30,11 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn set_pc(&mut self, thread: usize, value: usize)
-	{
-		self.program_counters[thread] = value;
-	}
+	pub fn set_pc(&mut self, thread: usize, value: usize) { self.program_counters[thread] = value; }
 
-	pub fn get_pc(&self, thread: usize) -> usize
-	{
-		self.program_counters[thread].clone()
-	}
+	pub fn get_pc(&self, thread: usize) -> usize { self.program_counters[thread].clone() }
 
-	pub fn add_stack(&mut self, stack: VecDeque<StackFrame>)
-	{
-		self.stacks.push(stack)
-	}
+	pub fn add_stack(&mut self, stack: VecDeque<StackFrame>) { self.stacks.push(stack) }
 
-	pub fn get_stack(&self, thread: usize) -> &VecDeque<StackFrame>
-	{
-		&self.stacks[thread]
-	}
+	pub fn get_stack(&self, thread: usize) -> &VecDeque<StackFrame> { &self.stacks[thread] }
 }
