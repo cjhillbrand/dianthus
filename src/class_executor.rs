@@ -10,36 +10,44 @@ use runtime_lib::entities::attributes::constants::CODE;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::method_info::MethodInfo;
 use stack_frame::StackFrame;
+use dispatchers::dispatcher_container::DispatcherContainer;
+use dispatchers::dispatcher::{create_dispatcher, Dispatcher};
 
 const MAIN: &str = "main";
 const INIT: &str = "<init>";
 
 pub struct ClassExecutor {
 	run_time_data: RunTimeData,
-	class_loader: ClassLoaderContainer
+	class_loader: ClassLoaderContainer,
+	dispatcher: Box<DispatcherContainer>
 }
 
 impl ClassExecutor {
 	pub fn new() -> ClassExecutor {
 		ClassExecutor {
 			run_time_data: RunTimeData::new(),
-			class_loader: ClassLoaderContainer::System(SystemClassLoader {})
+			class_loader: ClassLoaderContainer::System(SystemClassLoader {}),
+			dispatcher: create_dispatcher()
 		}
 	}
 
 	pub fn execute(&mut self, init_class: &str) {
 		let class: ClassStruct = self.class_loader.load_class(init_class);
-		self.run_time_data.add_class(class);
+		let class_ref: Box<ClassStruct> = Box::new(class);
+		self.run_time_data.add_class(class_ref.clone()); // does this clone the whole value or just pointer?
 		self.run_time_data.set_pc(0, 0);
-		let class_ref: &ClassStruct = self.run_time_data.get_class(init_class);
+
 		let init_method: &MethodInfo = class_ref.get_method(INIT);
 		let entry_point: &CodeAttribute = ClassExecutor::derive_code_attribute(init_method);
 
 		let stack = ClassExecutor::create_stack_frame(entry_point);
-		self.run_time_data.add_stack(stack);
 
-		// 2. execute code that is in init.
-		// 3. remove stack frame for init.
+		self.run_time_data.add_stack(stack);
+		self.dispatcher.dispatch(0, &self.run_time_data, entry_point);
+
+		let stack = self.run_time_data.get_stack_mut(0);
+		stack.pop_front();
+
 		// 4. create a stack frame for main.
 		// 5. execute code that is in main.
 		// 6. remove stack frame for main.
