@@ -19,7 +19,7 @@ const INIT: &str = "<init>";
 pub struct ClassExecutor {
 	run_time_data: RunTimeData,
 	class_loader: ClassLoaderContainer,
-	dispatcher: Box<DispatcherContainer>
+	dispatcher: DispatcherContainer
 }
 
 impl ClassExecutor {

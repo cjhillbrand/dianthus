@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct InvokeDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl InvokeDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> InvokeDispatcher
-	{
-		InvokeDispatcher { next }
-	}
-}
+pub struct InvokeDispatcher { }
 
 impl Dispatcher for InvokeDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -24,7 +13,7 @@ impl Dispatcher for InvokeDispatcher {
 			INVOKESPECIAL => { panic!("INVOKESPECIAL not implemented") },
 			INVOKESTATIC => { panic!("INVOKESTATIC not implemented") },
 			INVOKEVIRTUAL => { panic!("INVOKEVIRTUAL not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

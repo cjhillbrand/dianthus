@@ -14,6 +14,7 @@ use dispatchers::jump_dispatcher::JumpDispatcher;
 use dispatchers::long_dispatcher::LongDispatcher;
 use dispatchers::monitor_dispatcher::MonitorDispatcher;
 use dispatchers::short_dispatcher::ShortDispatcher;
+use dispatchers::compare_dispatcher::CompareDispatcher;
 
 pub trait Dispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute);
@@ -24,19 +25,23 @@ pub trait Dispatcher {
 	}
 }
 
-pub fn create_dispatcher() -> Box<DispatcherContainer>
+pub fn create_dispatcher() -> DispatcherContainer
 {
-	let none_dispatcher = Box::new(DispatcherContainer::NONE);
-	let array_dispatcher = Box::new(DispatcherContainer::ARRAY(Box::new(ArrayDispatcher::new(none_dispatcher))));
-	let class_dispatcher = Box::new(DispatcherContainer::CLASS(Box::new(ClassDispatcher::new(array_dispatcher))));
-	let control_dispatcher = Box::new(DispatcherContainer::CONTROL(Box::new(ControlDispatcher::new(class_dispatcher))));
-	let double_dispatcher = Box::new(DispatcherContainer::DOUBLE(Box::new(DoubleDispatcher::new(control_dispatcher))));
-	let dup_dispatcher = Box::new(DispatcherContainer::DUP(Box::new(DupDispatcher::new(double_dispatcher))));
-	let float_dispatcher = Box::new(DispatcherContainer::FLOAT(Box::new(FloatDispatcher::new(dup_dispatcher))));
-	let int_dispatcher = Box::new(DispatcherContainer::INT(Box::new(IntDispatcher::new(float_dispatcher))));
-	let invoke_dispatcher = Box::new(DispatcherContainer::INVOKE(Box::new(InvokeDispatcher::new(int_dispatcher))));
-	let jump_dispatcher = Box::new(DispatcherContainer::JUMP(Box::new(JumpDispatcher::new(invoke_dispatcher))));
-	let long_dispatcher = Box::new(DispatcherContainer::LONG(Box::new(LongDispatcher::new(jump_dispatcher))));
-	let monitor_dispatcher = Box::new(DispatcherContainer::MONITOR(Box::new(MonitorDispatcher::new(long_dispatcher))));
-	Box::new(DispatcherContainer::SHORT(Box::new(ShortDispatcher::new(monitor_dispatcher))))
+	DispatcherContainer::new(
+		vec![
+			Box::new(ArrayDispatcher {}),
+			Box::new(ClassDispatcher {}),
+			Box::new(CompareDispatcher {}),
+			Box::new(ControlDispatcher {}),
+			Box::new(DoubleDispatcher {}),
+			Box::new(DupDispatcher {}),
+			Box::new(FloatDispatcher {}),
+			Box::new(IntDispatcher {}),
+			Box::new(InvokeDispatcher {}),
+			Box::new(JumpDispatcher {}),
+			Box::new(LongDispatcher {}),
+			Box::new(MonitorDispatcher {}),
+			Box::new(ShortDispatcher {})
+		]
+	)
 }

@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct DoubleDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl DoubleDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> DoubleDispatcher
-	{
-		DoubleDispatcher { next }
-	}
-}
+pub struct DoubleDispatcher { }
 
 impl Dispatcher for DoubleDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -45,7 +34,7 @@ impl Dispatcher for DoubleDispatcher {
 			DSTORE_2 => { panic!("DSTORE_2 not implemented") },
 			DSTORE_3 => { panic!("DSTORE_3 not implemented") },
 			DSUB => { panic!("DSUB not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

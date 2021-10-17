@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct ArrayDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl ArrayDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> ArrayDispatcher
-	{
-		ArrayDispatcher { next }
-	}
-}
+pub struct ArrayDispatcher { }
 
 impl Dispatcher for ArrayDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -36,7 +25,7 @@ impl Dispatcher for ArrayDispatcher {
 			BIPUSH => { panic!("BIPUSH not implemented") },
 			CALOAD => { panic!("CALOAD not implemented") },
 			CASTORE => { panic!("CASTORE not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

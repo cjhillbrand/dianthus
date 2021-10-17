@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct IntDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl IntDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> IntDispatcher
-	{
-		IntDispatcher { next }
-	}
-}
+pub struct IntDispatcher { }
 
 impl Dispatcher for IntDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -45,7 +34,7 @@ impl Dispatcher for IntDispatcher {
 			ISUB => panic!("ISUB not implemented"),
 			IUSHR => panic!("IUSHR not implemented"),
 			IXOR => panic!("IXOR not implemented"),
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

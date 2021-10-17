@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct FloatDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl FloatDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> FloatDispatcher
-	{
-		FloatDispatcher { next }
-	}
-}
+pub struct FloatDispatcher { }
 
 impl Dispatcher for FloatDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -42,7 +31,7 @@ impl Dispatcher for FloatDispatcher {
 			FSTORE => { panic!("FSTORE not implemented") },
 			FSORE_N => { panic!("FSTORE_N not implemented") },
 			FSUB => { panic!("FSUB not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

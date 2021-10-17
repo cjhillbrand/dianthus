@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct LongDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl LongDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> LongDispatcher
-	{
-		LongDispatcher { next }
-	}
-}
+pub struct LongDispatcher { }
 
 impl Dispatcher for LongDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -47,7 +36,7 @@ impl Dispatcher for LongDispatcher {
 			LSUB => { panic!("LSUB not implemented") },
 			LUSHR => { panic!("LUSHR not implemented") },
 			LXOR => { panic!("LXOR not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }

@@ -2,19 +2,8 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
-use dispatchers::dispatcher_container::DispatcherContainer;
 
-pub struct ControlDispatcher {
-	next: Box<DispatcherContainer>
-}
-
-impl ControlDispatcher
-{
-	pub fn new(next: Box<DispatcherContainer>) -> ControlDispatcher
-	{
-		ControlDispatcher { next }
-	}
-}
+pub struct ControlDispatcher { }
 
 impl Dispatcher for ControlDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
@@ -29,7 +18,7 @@ impl Dispatcher for ControlDispatcher {
 			SWAP => { panic!("SWAP not implemented") },
 			TABLESWITCH => { panic!("TABLESWITCH not implemented") },
 			WIDE => { panic!("WIDE not implemented") },
-			_ => self.next.dispatch(thread_id, runtime_data, code)
+			_ => {  }
 		}
 	}
 }
