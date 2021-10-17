@@ -27,5 +27,10 @@ impl StackFrame {
 		}
 	}
 
+	pub fn get_local_var(&self, index: usize) -> JvmValue
+	{
+		self.local_variables[index].clone()
+	}
+
 	pub fn set_local_var(&mut self, value: JvmValue, index: usize) { self.local_variables[index] = value; }
 }

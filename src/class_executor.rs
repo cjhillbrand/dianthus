@@ -47,6 +47,10 @@ impl ClassExecutor {
 		loop {
 			self.dispatcher
 				.dispatch(current_thread, &mut self.run_time_data, entry_point);
+			if self.run_time_data.is_stack_empty(current_thread)
+			{
+				break
+			}
 		}
 
 		// let stack = self.run_time_data.get_stack_mut(current_thread);

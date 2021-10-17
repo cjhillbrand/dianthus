@@ -62,9 +62,6 @@ impl Dispatcher for ArrayDispatcher {
 			BASTORE => {
 				panic!("BASTORE not implemented")
 			}
-			BIPUSH => {
-				panic!("BIPUSH not implemented")
-			}
 			CALOAD => {
 				panic!("CALOAD not implemented")
 			}

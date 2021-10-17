@@ -9,13 +9,14 @@ pub struct IntDispatcher {}
 impl Dispatcher for IntDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id, runtime_data, code) {
+			BIPUSH => bipush(thread_id, runtime_data, code),
 			I2B => panic!("I2B not implemented"),
 			I2C => panic!("I2C not implemented"),
 			I2D => panic!("I2D not implemented"),
 			I2F => panic!("I2F not implemented"),
 			I2L => panic!("I2L not implemented"),
 			I2S => panic!("I2S not implemented"),
-			IADD => panic!("IADD not implemented"),
+			IADD => iadd(thread_id, runtime_data, code),
 			IALOAD => panic!("IALOAD not implemented"),
 			IAND => panic!("IAND not implemented"),
 			IASTORE => panic!("IASTORE not implemented"),
@@ -28,7 +29,10 @@ impl Dispatcher for IntDispatcher {
 			ICONST_5 => iconst_5(thread_id, runtime_data, code),
 			IDIV => panic!("IDIV not implemented"),
 			ILOAD => panic!("ILOAD not implemented"),
-			ILOAD_N => panic!("ILOAD_N not implemented"),
+			ILOAD_0 => iload_0(thread_id, runtime_data, code),
+			ILOAD_1 => iload_1(thread_id, runtime_data, code),
+			ILOAD_2 => iload_2(thread_id, runtime_data, code),
+			ILOAD_3 => iload_3(thread_id, runtime_data, code),
 			IMUL => panic!("IMUL not implemented"),
 			INEG => panic!("INEG not implemented"),
 			IOR => panic!("IOR not implemented"),
