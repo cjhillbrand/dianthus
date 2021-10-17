@@ -1,5 +1,7 @@
 use std::collections::VecDeque;
 
+use dispatchers::dispatcher::{create_dispatcher, Dispatcher};
+use dispatchers::dispatcher_container::DispatcherContainer;
 use run_time_data::RunTimeData;
 use runtime_lib::class_loaders::class_loader::ClassLoader;
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
@@ -10,8 +12,6 @@ use runtime_lib::entities::attributes::constants::CODE;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::method_info::MethodInfo;
 use stack_frame::StackFrame;
-use dispatchers::dispatcher_container::DispatcherContainer;
-use dispatchers::dispatcher::{create_dispatcher, Dispatcher};
 
 const MAIN: &str = "main";
 const INIT: &str = "<init>";
@@ -45,9 +45,9 @@ impl ClassExecutor {
 		self.run_time_data.add_stack(stack);
 
 		loop {
-			self.dispatcher.dispatch(current_thread.clone(), &mut self.run_time_data, entry_point);
+			self.dispatcher
+				.dispatch(current_thread.clone(), &mut self.run_time_data, entry_point);
 		}
-
 
 		// let stack = self.run_time_data.get_stack_mut(current_thread);
 		// stack.pop_front();

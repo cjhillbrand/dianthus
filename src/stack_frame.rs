@@ -16,27 +16,16 @@ impl StackFrame {
 		}
 	}
 
-	pub fn push_on_stack(&mut self, value: JvmValue)
-	{
-		self.operand_stack.push_front(value);
-	}
+	pub fn push_on_stack(&mut self, value: JvmValue) { self.operand_stack.push_front(value); }
 
-	pub fn get_operand_stack_mut(&mut self) -> &mut VecDeque<JvmValue>
-	{
-		&mut self.operand_stack
-	}
+	pub fn get_operand_stack_mut(&mut self) -> &mut VecDeque<JvmValue> { &mut self.operand_stack }
 
-	pub fn pop_stack(&mut self) -> JvmValue
-	{
-		match self.operand_stack.pop_front()
-		{
-			Some(value) => { value },
+	pub fn pop_stack(&mut self) -> JvmValue {
+		match self.operand_stack.pop_front() {
+			Some(value) => value,
 			None => panic!("Stack is empty :(")
 		}
 	}
 
-	pub fn set_local_var(&mut self, value: JvmValue, index: usize)
-	{
-		self.local_variables[index] = value;
-	}
+	pub fn set_local_var(&mut self, value: JvmValue, index: usize) { self.local_variables[index] = value; }
 }

@@ -1,10 +1,10 @@
 use dispatchers::dispatcher::Dispatcher;
-use run_time_data::RunTimeData;
-use opcodes::*;
-use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 use implementations::int_implementation::*;
+use opcodes::*;
+use run_time_data::RunTimeData;
+use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 
-pub struct IntDispatcher { }
+pub struct IntDispatcher {}
 
 impl Dispatcher for IntDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
@@ -44,7 +44,9 @@ impl Dispatcher for IntDispatcher {
 			ISUB => panic!("ISUB not implemented"),
 			IUSHR => panic!("IUSHR not implemented"),
 			IXOR => panic!("IXOR not implemented"),
-			_ => { return false; }
+			_ => {
+				return false;
+			}
 		}
 
 		true
