@@ -11,7 +11,10 @@ impl DispatcherContainer {
 }
 impl Dispatcher for DispatcherContainer {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
-		println!("Instrunction: {:#01x}", self.get_instruction(thread_id, runtime_data, code));
+		println!(
+			"Instrunction: {:#01x}",
+			self.get_instruction(thread_id, runtime_data, code)
+		);
 		for dispatcher in &self.dispatchers {
 			if dispatcher.dispatch(thread_id, runtime_data, code) {
 				println!("{:#?}", runtime_data.print_stacks());
