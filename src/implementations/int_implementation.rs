@@ -57,6 +57,7 @@ fn istore_n(thread_id: usize, runtime_data: &mut RunTimeData, index: usize) {
 
 	let value: JvmValue = current_stack_frame.pop_stack();
 	current_stack_frame.set_local_var(value, index);
+	runtime_data.increment_pc(thread_id, 1);
 }
 
 pub fn istore_0(thread_id: usize, runtime_data: &mut RunTimeData, _code: &CodeAttribute) {
