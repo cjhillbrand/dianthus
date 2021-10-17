@@ -7,7 +7,7 @@ pub struct CompareDispatcher {}
 
 impl Dispatcher for CompareDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
-		match self.get_instruction(thread_id.clone(), runtime_data, code) {
+		match self.get_instruction(thread_id, runtime_data, code) {
 			IF_ACMPEQ => {
 				panic!("IFACMPEQ is not implemented")
 			}

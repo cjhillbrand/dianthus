@@ -46,7 +46,7 @@ impl ClassExecutor {
 
 		loop {
 			self.dispatcher
-				.dispatch(current_thread.clone(), &mut self.run_time_data, entry_point);
+				.dispatch(current_thread, &mut self.run_time_data, entry_point);
 		}
 
 		// let stack = self.run_time_data.get_stack_mut(current_thread);

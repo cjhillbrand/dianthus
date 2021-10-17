@@ -12,7 +12,7 @@ impl DispatcherContainer {
 impl Dispatcher for DispatcherContainer {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		for dispatcher in &self.dispatchers {
-			if dispatcher.dispatch(thread_id.clone(), runtime_data, code) {
+			if dispatcher.dispatch(thread_id, runtime_data, code) {
 				println!("{:#?}", runtime_data.print_stacks());
 				return true;
 			}

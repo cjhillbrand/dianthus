@@ -7,7 +7,7 @@ pub struct ShortDispatcher {}
 
 impl Dispatcher for ShortDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
-		match self.get_instruction(thread_id.clone(), runtime_data, code) {
+		match self.get_instruction(thread_id, runtime_data, code) {
 			SALOAD => {
 				panic!("SALOAD not implemented")
 			}

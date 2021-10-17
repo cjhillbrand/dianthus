@@ -4,6 +4,7 @@ use std::collections::{HashMap, VecDeque};
 use runtime_lib::entities::class_struct::ClassStruct;
 use stack_frame::StackFrame;
 
+#[derive(Default)]
 pub struct RunTimeData {
 	program_counters: Vec<usize>,
 	stacks: Vec<VecDeque<StackFrame>>,
@@ -23,7 +24,7 @@ impl RunTimeData {
 
 	pub fn add_class(&mut self, class: Box<ClassStruct>) {
 		let name = class.get_name().to_string();
-		self.method_area.insert(name.clone(), class);
+		self.method_area.insert(name, class);
 	}
 
 	pub fn get_class(&self, name: &str) -> &ClassStruct {

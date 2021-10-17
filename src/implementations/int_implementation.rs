@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 use stack_frame::StackFrame;
 
 fn iconst_n(thread_id: usize, runtime_data: &mut RunTimeData, value: i32) {
-	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id.clone());
+	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
 	let current_stack_frame = match stack.front_mut() {
 		Some(frame) => frame,
 		None => {
@@ -47,7 +47,7 @@ pub fn iconst_5(thread_id: usize, runtime_data: &mut RunTimeData, _code: &CodeAt
 }
 
 fn istore_n(thread_id: usize, runtime_data: &mut RunTimeData, index: usize) {
-	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id.clone());
+	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
 	let current_stack_frame = match stack.front_mut() {
 		Some(frame) => frame,
 		None => {

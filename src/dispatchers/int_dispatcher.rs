@@ -8,7 +8,7 @@ pub struct IntDispatcher {}
 
 impl Dispatcher for IntDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
-		match self.get_instruction(thread_id.clone(), runtime_data, code) {
+		match self.get_instruction(thread_id, runtime_data, code) {
 			I2B => panic!("I2B not implemented"),
 			I2C => panic!("I2C not implemented"),
 			I2D => panic!("I2D not implemented"),
