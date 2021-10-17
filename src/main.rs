@@ -2,8 +2,11 @@
 #![deny(clippy::all)]
 
 mod class_executor;
+mod dispatchers;
+mod implementations;
 mod jvm_value;
-mod run_time_data;
+mod opcodes;
+pub mod run_time_data;
 mod stack_frame;
 
 extern crate runtime_lib;
@@ -24,5 +27,6 @@ fn main() {
 		panic!("Expected exactly one file name to be supplied to the command line.")
 	}
 
-	let _class_executor: ClassExecutor = ClassExecutor::new();
+	let mut class_executor: ClassExecutor = ClassExecutor::new();
+	class_executor.execute(&args[1]);
 }
