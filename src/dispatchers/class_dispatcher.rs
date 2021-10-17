@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct ClassDispatcher { }
 
 impl Dispatcher for ClassDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			GETFIELD => { panic!("GETFIELD not implemented") },
 			GETSTATIC => { panic!("GETSTATIC not implemented") },
@@ -18,7 +18,7 @@ impl Dispatcher for ClassDispatcher {
 			PUTSTATIC => { panic!("PUTSTATIC not implemented") },
 			RET => { panic!("RET not implemented") },
 			RETURN => { panic!("RETURN not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

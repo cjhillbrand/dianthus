@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct FloatDispatcher { }
 
 impl Dispatcher for FloatDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			F2I => { panic!("F2I not implemented") },
 			F2L => { panic!("F2L not implemented") },
@@ -31,7 +31,7 @@ impl Dispatcher for FloatDispatcher {
 			FSTORE => { panic!("FSTORE not implemented") },
 			FSORE_N => { panic!("FSTORE_N not implemented") },
 			FSUB => { panic!("FSUB not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

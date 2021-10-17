@@ -6,11 +6,11 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct MonitorDispatcher { }
 
 impl Dispatcher for MonitorDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			MONITORENTER => { panic!("MONITORENTER is not implemented") },
 			MONITOREXIT => { panic!("MONITOREXIT is not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

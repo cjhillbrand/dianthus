@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct CompareDispatcher { }
 
 impl Dispatcher for CompareDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			IF_ACMPEQ => { panic!("IFACMPEQ is not implemented") },
 			IF_ACMPNE => { panic!("IFACMPNE is not implemented") },
@@ -24,7 +24,7 @@ impl Dispatcher for CompareDispatcher {
 			IFGT => { panic!("IFGT is not implemented") },
 			IFNONNULL => { panic!("IFNONULL is not implemented") },
 			IFNULL => { panic!("IFNULL is not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

@@ -2,11 +2,12 @@ use dispatchers::dispatcher::Dispatcher;
 use run_time_data::RunTimeData;
 use opcodes::*;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
+use implementations::int_implementation::*;
 
 pub struct IntDispatcher { }
 
 impl Dispatcher for IntDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			I2B => panic!("I2B not implemented"),
 			I2C => panic!("I2C not implemented"),
@@ -18,7 +19,13 @@ impl Dispatcher for IntDispatcher {
 			IALOAD => panic!("IALOAD not implemented"),
 			IAND => panic!("IAND not implemented"),
 			IASTORE => panic!("IASTORE not implemented"),
-			ICONST_N => panic!("ICONST_N not implemented"),
+			ICONST_M1 => iconst_m1(thread_id, runtime_data, code),
+			ICONST_0 => iconst_0(thread_id, runtime_data, code),
+			ICONST_1 => iconst_1(thread_id, runtime_data, code),
+			ICONST_2 => iconst_2(thread_id, runtime_data, code),
+			ICONST_3 => iconst_3(thread_id, runtime_data, code),
+			ICONST_4 => iconst_4(thread_id, runtime_data, code),
+			ICONST_5 => iconst_5(thread_id, runtime_data, code),
 			IDIV => panic!("IDIV not implemented"),
 			ILOAD => panic!("ILOAD not implemented"),
 			ILOAD_N => panic!("ILOAD_N not implemented"),
@@ -30,11 +37,16 @@ impl Dispatcher for IntDispatcher {
 			ISHL => panic!("ISHL not implemented"),
 			ISHR => panic!("ISHR not implemented"),
 			ISTORE => panic!("ISTORE not implemented"),
-			ISTORE_N => panic!("ISTORE_N not implemented"),
+			ISTORE_0 => istore_0(thread_id, runtime_data, code),
+			ISTORE_1 => istore_1(thread_id, runtime_data, code),
+			ISTORE_2 => istore_2(thread_id, runtime_data, code),
+			ISTORE_3 => istore_3(thread_id, runtime_data, code),
 			ISUB => panic!("ISUB not implemented"),
 			IUSHR => panic!("IUSHR not implemented"),
 			IXOR => panic!("IXOR not implemented"),
-			_ => {  }
+			_ => { return false; }
 		}
+
+		true
 	}
 }

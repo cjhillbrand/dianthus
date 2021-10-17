@@ -7,6 +7,7 @@ mod jvm_value;
 mod opcodes;
 pub mod run_time_data;
 mod stack_frame;
+mod implementations;
 
 extern crate runtime_lib;
 extern crate serde;

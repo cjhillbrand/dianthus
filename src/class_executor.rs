@@ -37,16 +37,20 @@ impl ClassExecutor {
 		self.run_time_data.add_class(class_ref.clone()); // does this clone the whole value or just pointer?
 		let current_thread = self.run_time_data.new_pc();
 
-		let init_method: &MethodInfo = class_ref.get_method(INIT);
+		let init_method: &MethodInfo = class_ref.get_method(MAIN);
 		let entry_point: &CodeAttribute = ClassExecutor::derive_code_attribute(init_method);
 
 		let stack = ClassExecutor::create_stack_frame(entry_point);
 
 		self.run_time_data.add_stack(stack);
-		self.dispatcher.dispatch(0, &self.run_time_data, entry_point);
 
-		let stack = self.run_time_data.get_stack_mut(current_thread);
-		stack.pop_front();
+		loop {
+			self.dispatcher.dispatch(current_thread.clone(), &mut self.run_time_data, entry_point);
+		}
+
+
+		// let stack = self.run_time_data.get_stack_mut(current_thread);
+		// stack.pop_front();
 
 		// 4. create a stack frame for main.
 		// 5. execute code that is in main.

@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct DoubleDispatcher { }
 
 impl Dispatcher for DoubleDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			D2F => { panic!("D2F not implemented") },
 			D2I => { panic!("D2I not implemented") },
@@ -34,7 +34,7 @@ impl Dispatcher for DoubleDispatcher {
 			DSTORE_2 => { panic!("DSTORE_2 not implemented") },
 			DSTORE_3 => { panic!("DSTORE_3 not implemented") },
 			DSUB => { panic!("DSUB not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

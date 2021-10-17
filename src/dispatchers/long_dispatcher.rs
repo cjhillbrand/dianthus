@@ -6,7 +6,7 @@ use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 pub struct LongDispatcher { }
 
 impl Dispatcher for LongDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
 		match self.get_instruction(thread_id.clone(), runtime_data, code) {
 			L2D => { panic!("L2D not implemented") },
 			L2F => { panic!("L2F not implemented") },
@@ -36,7 +36,7 @@ impl Dispatcher for LongDispatcher {
 			LSUB => { panic!("LSUB not implemented") },
 			LUSHR => { panic!("LUSHR not implemented") },
 			LXOR => { panic!("LXOR not implemented") },
-			_ => {  }
+			_ => { false }
 		}
 	}
 }

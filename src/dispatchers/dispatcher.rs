@@ -17,7 +17,7 @@ use dispatchers::short_dispatcher::ShortDispatcher;
 use dispatchers::compare_dispatcher::CompareDispatcher;
 
 pub trait Dispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute);
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool;
 	fn get_instruction(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) -> u8 {
 		let pc: usize = runtime_data.get_pc(thread_id);
 		let code_bytes: &Vec<u8> = code.get_code();
