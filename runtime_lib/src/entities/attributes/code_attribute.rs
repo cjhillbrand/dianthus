@@ -63,9 +63,9 @@ impl CodeAttribute {
 		}
 	}
 
-	pub fn get_max_stack(&self) -> u16 { self.max_stack.clone() }
+	pub fn get_max_stack(&self) -> u16 { self.max_stack }
 
-	pub fn get_max_locals(&self) -> u16 { self.max_locals.clone() }
+	pub fn get_max_locals(&self) -> u16 { self.max_locals }
 
 	pub fn get_code(&self) -> &Vec<u8> { &self.code }
 }

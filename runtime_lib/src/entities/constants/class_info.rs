@@ -19,7 +19,7 @@ impl ClassInfo {
 		}
 	}
 
-	pub fn name_index(&self) -> u16 { self.name_index.clone() }
+	pub fn name_index(&self) -> u16 { self.name_index }
 
 	#[cfg(test)]
 	pub(crate) fn new_test_model(tag: u8, name_index: u16) -> ClassInfo { ClassInfo { tag, name_index } }
