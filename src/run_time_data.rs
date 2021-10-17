@@ -33,7 +33,16 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn set_pc(&mut self, thread: usize, value: usize) { self.program_counters[thread] = value; }
+	pub fn new_pc(&mut self) -> usize
+	{
+		self.program_counters.push(0);
+		self.program_counters.len()
+	}
+
+	pub fn set_pc(&mut self, thread: usize, value: usize)
+	{
+		self.program_counters[thread] = value;
+	}
 
 	pub fn get_pc(&self, thread: usize) -> usize { self.program_counters[thread] }
 

@@ -26,5 +26,6 @@ fn main() {
 		panic!("Expected exactly one file name to be supplied to the command line.")
 	}
 
-	let _class_executor: ClassExecutor = ClassExecutor::new();
+	let mut class_executor: ClassExecutor = ClassExecutor::new();
+	class_executor.execute(&args[1]);
 }

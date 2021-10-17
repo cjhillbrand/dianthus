@@ -94,11 +94,17 @@ impl ClassStruct {
 	}
 
 	pub fn get_name(&self) -> &str {
-		let index: u16 = self.this_class;
+		let index: u16 = self.this_class.clone();
 		match &self.constant_pool[index as usize] {
-			ConstantContainer::Utf8Info(v) => v.get_string(),
+			ConstantContainer::ClassInfo(v) => {
+				match &self.constant_pool[v.name_index() as usize]
+				{
+					ConstantContainer::Utf8Info(v) => { v.get_string() },
+					_ => panic!("Expected a UTF8Info at index: {}", index)
+				}
+			},
 			_ => {
-				panic!("Expected a UTF8Info at index: {}", index)
+				panic!("Expected a ClassInfo at index: {}", index)
 			}
 		}
 	}
