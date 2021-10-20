@@ -13,6 +13,10 @@ pub struct RunTimeData {
 	method_area: HashMap<String, Box<ClassStruct>>
 }
 
+impl Default for RunTimeData {
+	fn default() -> RunTimeData { RunTimeData::new() }
+}
+
 impl RunTimeData {
 	pub fn new() -> RunTimeData {
 		RunTimeData {
@@ -40,7 +44,7 @@ impl RunTimeData {
 		self.stacks.len() - 1
 	}
 
-	pub fn is_stack_empty(&self, thread: usize) -> bool { self.stacks[thread].len() == 0 }
+	pub fn is_stack_empty(&self, thread: usize) -> bool { self.stacks[thread].is_empty() }
 
 	pub fn get_stack_mut(&mut self, thread: usize) -> &mut VecDeque<StackFrame> { &mut self.stacks[thread] }
 
