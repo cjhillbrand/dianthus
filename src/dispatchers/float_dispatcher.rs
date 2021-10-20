@@ -1,13 +1,12 @@
 use dispatchers::dispatcher::Dispatcher;
 use opcodes::*;
 use run_time_data::RunTimeData;
-use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
 
 pub struct FloatDispatcher {}
 
 impl Dispatcher for FloatDispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool {
-		match self.get_instruction(thread_id, runtime_data, code) {
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData) -> bool {
+		match self.get_instruction(thread_id, runtime_data) {
 			F2I => {
 				panic!("F2I not implemented")
 			}
