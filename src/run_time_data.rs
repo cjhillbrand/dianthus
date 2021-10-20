@@ -1,10 +1,10 @@
 use std::any::Any;
 use std::collections::{HashMap, VecDeque};
 
-use runtime_lib::entities::class_struct::ClassStruct;
-use stack_frame::StackFrame;
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
 use runtime_lib::class_loaders::system_class_loader::SystemClassLoader;
+use runtime_lib::entities::class_struct::ClassStruct;
+use stack_frame::StackFrame;
 
 pub struct RunTimeData {
 	stacks: Vec<VecDeque<StackFrame>>,
@@ -35,16 +35,12 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn new_thread(&mut self, stack: VecDeque<StackFrame>) -> usize
-	{
+	pub fn new_thread(&mut self, stack: VecDeque<StackFrame>) -> usize {
 		self.stacks.push(stack);
 		self.stacks.len() - 1
 	}
 
-	pub fn is_stack_empty(&self, thread: usize) -> bool
-	{
-		self.stacks[thread].len() == 0
-	}
+	pub fn is_stack_empty(&self, thread: usize) -> bool { self.stacks[thread].len() == 0 }
 
 	pub fn get_stack_mut(&mut self, thread: usize) -> &mut VecDeque<StackFrame> { &mut self.stacks[thread] }
 

@@ -43,11 +43,9 @@ impl ClassExecutor {
 		let current_thread = self.run_time_data.new_thread(stack);
 
 		loop {
-			self.dispatcher
-				.dispatch(current_thread, &mut self.run_time_data);
-			if self.run_time_data.is_stack_empty(current_thread)
-			{
-				break
+			self.dispatcher.dispatch(current_thread, &mut self.run_time_data);
+			if self.run_time_data.is_stack_empty(current_thread) {
+				break;
 			}
 		}
 

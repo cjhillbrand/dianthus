@@ -1,2 +1,2 @@
-pub mod int_implementation;
 pub mod class_implementation;
+pub mod int_implementation;

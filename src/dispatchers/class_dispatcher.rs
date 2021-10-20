@@ -1,7 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::class_implementation::*;
 use opcodes::*;
 use run_time_data::RunTimeData;
-use implementations::class_implementation::*;
 
 pub struct ClassDispatcher {}
 

@@ -12,16 +12,15 @@ use dispatchers::jump_dispatcher::JumpDispatcher;
 use dispatchers::long_dispatcher::LongDispatcher;
 use dispatchers::monitor_dispatcher::MonitorDispatcher;
 use dispatchers::short_dispatcher::ShortDispatcher;
+use stack_frame::StackFrame;
 
 use crate::run_time_data::RunTimeData;
-use stack_frame::StackFrame;
 
 pub trait Dispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData) -> bool;
 	fn get_instruction(&self, thread_id: usize, runtime_data: &RunTimeData) -> u8 {
 		let current_stack = runtime_data.get_stack(thread_id);
-		let frame: &StackFrame = match current_stack.front()
-		{
+		let frame: &StackFrame = match current_stack.front() {
 			Some(frame) => frame,
 			None => panic!("No stack frame on stack: {}", thread_id)
 		};
