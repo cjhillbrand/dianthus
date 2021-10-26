@@ -12,15 +12,21 @@ use dispatchers::jump_dispatcher::JumpDispatcher;
 use dispatchers::long_dispatcher::LongDispatcher;
 use dispatchers::monitor_dispatcher::MonitorDispatcher;
 use dispatchers::short_dispatcher::ShortDispatcher;
-use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
+use stack_frame::StackFrame;
 
 use crate::run_time_data::RunTimeData;
 
 pub trait Dispatcher {
-	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData, code: &CodeAttribute) -> bool;
-	fn get_instruction(&self, thread_id: usize, runtime_data: &RunTimeData, code: &CodeAttribute) -> u8 {
-		let pc: usize = runtime_data.get_pc(thread_id);
-		let code_bytes: &Vec<u8> = code.get_code();
+	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData) -> bool;
+	fn get_instruction(&self, thread_id: usize, runtime_data: &RunTimeData) -> u8 {
+		let current_stack = runtime_data.get_stack(thread_id);
+		let frame: &StackFrame = match current_stack.front() {
+			Some(frame) => frame,
+			None => panic!("No stack frame on stack: {}", thread_id)
+		};
+
+		let pc: usize = frame.get_pc();
+		let code_bytes: &Vec<u8> = frame.get_code();
 		code_bytes[pc]
 	}
 }

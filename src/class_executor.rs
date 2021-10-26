@@ -35,18 +35,18 @@ impl ClassExecutor {
 		let class: ClassStruct = self.class_loader.load_class(init_class);
 		let class_ref: Box<ClassStruct> = Box::new(class);
 		self.run_time_data.add_class(class_ref.clone()); // does this clone the whole value or just pointer?
-		let current_thread = self.run_time_data.new_pc();
 
 		let init_method: &MethodInfo = class_ref.get_method(MAIN);
 		let entry_point: &CodeAttribute = ClassExecutor::derive_code_attribute(init_method);
 
 		let stack = ClassExecutor::create_stack_frame(entry_point);
-
-		self.run_time_data.add_stack(stack);
+		let current_thread = self.run_time_data.new_thread(stack);
 
 		loop {
-			self.dispatcher
-				.dispatch(current_thread, &mut self.run_time_data, entry_point);
+			self.dispatcher.dispatch(current_thread, &mut self.run_time_data);
+			if self.run_time_data.is_stack_empty(current_thread) {
+				break;
+			}
 		}
 
 		// let stack = self.run_time_data.get_stack_mut(current_thread);
@@ -80,7 +80,9 @@ impl ClassExecutor {
 	fn create_stack_frame(code_attribute: &CodeAttribute) -> VecDeque<StackFrame> {
 		let stack_frame: StackFrame = StackFrame::new(
 			code_attribute.get_max_locals() as usize,
-			code_attribute.get_max_stack() as usize
+			code_attribute.get_max_stack() as usize,
+			// We should not be cloning here....
+			Box::new(code_attribute.clone())
 		);
 		let mut stack: VecDeque<StackFrame> = VecDeque::new();
 		stack.push_front(stack_frame);
