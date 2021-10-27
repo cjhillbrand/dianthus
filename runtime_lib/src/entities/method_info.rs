@@ -3,6 +3,8 @@ use crate::entities::attributes::attribute_factory::get_attribute_container;
 use crate::entities::attributes::attribute_info::AttributeInfo;
 use crate::entities::constants::constant_container::ConstantContainer;
 use crate::entities::read_bytes::ReadBytes;
+use crate::entities::attributes::code_attribute::CodeAttribute;
+use crate::entities::attributes::constants::CODE;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodInfo {
@@ -27,6 +29,26 @@ impl MethodInfo {
 
 				result
 			}
+		}
+	}
+
+	pub fn derive_code_attribute(&self) -> &CodeAttribute {
+		let code_attrs: Vec<&AttributeContainer> = self.get_attributes(CODE);
+		assert!(
+			!(code_attrs.len() > 1),
+			"There are more than 1 code attributes in the method: {}",
+			self.get_name()
+		);
+
+		assert!(
+			!code_attrs.is_empty(),
+			"there are no code attributes in the method: {}",
+			self.get_name()
+		);
+
+		match &code_attrs[0] {
+			AttributeContainer::CodeAttribute(v) => v,
+			_ => panic!("Attribute returned is not a code attribute.")
 		}
 	}
 

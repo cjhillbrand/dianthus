@@ -119,6 +119,11 @@ impl ClassStruct {
 			None => panic!("Method not found: {}", name)
 		}
 	}
+
+	pub fn get_constant_pool(&self) -> &Vec<ConstantContainer>
+	{
+		&self.constant_pool
+	}
 }
 
 #[cfg(test)]

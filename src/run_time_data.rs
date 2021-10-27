@@ -1,15 +1,17 @@
-use std::any::Any;
 use std::collections::{HashMap, VecDeque};
 
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
 use runtime_lib::class_loaders::system_class_loader::SystemClassLoader;
 use runtime_lib::entities::class_struct::ClassStruct;
 use stack_frame::StackFrame;
+use runtime_lib::entities::constants::constant_container::ConstantContainer;
+use heap::Heap;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct RunTimeData {
 	stacks: Vec<VecDeque<StackFrame>>,
 	class_loader: ClassLoaderContainer,
-	heap: Vec<Box<dyn Any>>,
+	heap: Heap,
 	method_area: HashMap<String, Box<ClassStruct>>
 }
 
@@ -22,7 +24,7 @@ impl RunTimeData {
 		RunTimeData {
 			stacks: Vec::new(),
 			class_loader: ClassLoaderContainer::System(SystemClassLoader {}),
-			heap: Vec::new(),
+			heap: Heap::new(),
 			method_area: HashMap::new()
 		}
 	}
@@ -39,6 +41,11 @@ impl RunTimeData {
 		}
 	}
 
+	pub fn get_constant_pool(&self, class_name: &str) -> &Vec<ConstantContainer>
+	{
+		self.get_class(class_name).get_constant_pool()
+	}
+
 	pub fn new_thread(&mut self, stack: VecDeque<StackFrame>) -> usize {
 		self.stacks.push(stack);
 		self.stacks.len() - 1
@@ -50,7 +57,9 @@ impl RunTimeData {
 
 	pub fn get_stack(&self, thread: usize) -> &VecDeque<StackFrame> { &self.stacks[thread] }
 
-	pub fn print_stacks(&self) {
-		println!("{:?}", self.stacks);
+	pub fn push_stack(&mut self, frame: StackFrame, thread: usize) {
+		let current_stack: &mut VecDeque<StackFrame> = &mut self.stacks[thread];
+
+		current_stack.push_front(frame);
 	}
 }

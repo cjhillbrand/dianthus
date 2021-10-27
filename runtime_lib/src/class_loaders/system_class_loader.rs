@@ -5,6 +5,7 @@ use crate::class_loaders::class_loader::ClassLoader;
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 use crate::class_loaders::extension_class_loader::ExtensionClassLoader;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct SystemClassLoader {}
 
 impl ClassLoader for SystemClassLoader {

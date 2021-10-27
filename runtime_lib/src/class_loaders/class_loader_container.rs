@@ -5,6 +5,7 @@ use crate::class_loaders::class_loader::ClassLoader;
 use crate::class_loaders::extension_class_loader::ExtensionClassLoader;
 use crate::class_loaders::system_class_loader::SystemClassLoader;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub enum ClassLoaderContainer {
 	Bootstrap(BootStrapClassLoader),
 	Extension(ExtensionClassLoader),

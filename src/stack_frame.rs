@@ -8,20 +8,24 @@ pub struct StackFrame {
 	local_variables: Vec<JvmValue>,
 	operand_stack: VecDeque<JvmValue>,
 	code_attribute: Box<CodeAttribute>,
-	program_counter: usize
+	program_counter: usize,
+	executing_class: String
 }
 
 impl StackFrame {
-	pub fn new(local_num: usize, max_stack: usize, code_attribute: Box<CodeAttribute>) -> StackFrame {
+	pub fn new(local_num: usize, max_stack: usize, code_attribute: Box<CodeAttribute>, executing_class: String) -> StackFrame {
 		StackFrame {
 			local_variables: vec![JvmValue::PlaceHolder; local_num],
 			operand_stack: VecDeque::with_capacity(max_stack),
 			code_attribute,
-			program_counter: 0
+			program_counter: 0,
+			executing_class
 		}
 	}
 
 	pub fn get_pc(&self) -> usize { self.program_counter }
+
+	pub fn get_executing_class(&self) -> &str { &self.executing_class }
 
 	pub fn increment_pc(&mut self, increment: usize) { self.program_counter += increment }
 
@@ -38,7 +42,22 @@ impl StackFrame {
 		}
 	}
 
+	pub fn get_stack_value(&self, index: usize) -> &JvmValue
+	{
+		&self.operand_stack[index]
+	}
+
 	pub fn get_local_var(&self, index: usize) -> JvmValue { self.local_variables[index].clone() }
 
 	pub fn set_local_var(&mut self, value: JvmValue, index: usize) { self.local_variables[index] = value; }
+
+	pub fn create_stack_frame(class_name: &str, code_attribute: &CodeAttribute) -> StackFrame {
+		StackFrame::new(
+			code_attribute.get_max_locals() as usize,
+			code_attribute.get_max_stack() as usize,
+			// We should not be cloning here....
+			Box::new(code_attribute.clone()),
+			class_name.to_string()
+		)
+	}
 }

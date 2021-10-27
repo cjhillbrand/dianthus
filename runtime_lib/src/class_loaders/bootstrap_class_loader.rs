@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use crate::class_loaders::class_loader::{get_java_home, ClassLoader};
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct BootStrapClassLoader {}
 
 const RELATIVE_PATH: &str = "/jre/lib";

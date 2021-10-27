@@ -4,6 +4,7 @@ use crate::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
 use crate::class_loaders::class_loader::{get_java_home, ClassLoader};
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct ExtensionClassLoader {}
 
 const RELATIVE_PATH: &str = "/lib/ext";

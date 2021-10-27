@@ -29,6 +29,16 @@ impl NameAndTypeInfo {
 			descriptor_index
 		}
 	}
+
+	pub fn get_name_index(&self) -> u16
+	{
+		self.name_index
+	}
+
+	pub fn get_descriptor_index(&self) -> u16
+	{
+		self.descriptor_index
+	}
 }
 
 #[cfg(test)]
