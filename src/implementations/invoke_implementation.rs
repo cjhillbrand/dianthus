@@ -58,7 +58,6 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData)
     let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);
 
     let mut range = get_args_count(&method_signature);
-    print!("Range: {}", range);
     for mut i in 0..range
     {
         let value: &JvmValue = current_stack_frame.get_stack_value(i);

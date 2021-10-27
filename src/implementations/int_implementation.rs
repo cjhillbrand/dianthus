@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use jvm_value::JvmValue;
+use jvm_value::{JvmValue, to_int};
 use run_time_data::RunTimeData;
 use stack_frame::StackFrame;
 
@@ -115,3 +115,26 @@ pub fn istore_1(thread_id: usize, runtime_data: &mut RunTimeData) { istore_n(thr
 pub fn istore_2(thread_id: usize, runtime_data: &mut RunTimeData) { istore_n(thread_id, runtime_data, 2); }
 
 pub fn istore_3(thread_id: usize, runtime_data: &mut RunTimeData) { istore_n(thread_id, runtime_data, 3); }
+
+pub fn i_return(thread_id: usize, runtime_data: &mut RunTimeData) {
+	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
+	let current_stack_frame = match stack.front_mut() {
+		Some(frame) => frame,
+		None => {
+			panic!("could not resolve stack frame.")
+		}
+	};
+
+	let return_value: JvmValue = current_stack_frame.pop_stack();
+	stack.pop_front();
+	let casted_value: JvmValue = to_int(return_value);
+	let new_stack_frame = match stack.front_mut() {
+		Some(frame) => frame,
+		None => {
+			panic!("could not resolve stack frame.")
+		}
+	};
+
+	new_stack_frame.push_on_stack(casted_value);
+	new_stack_frame.increment_pc(1)
+}

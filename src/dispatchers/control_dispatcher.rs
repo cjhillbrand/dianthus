@@ -1,6 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
 use opcodes::*;
 use run_time_data::RunTimeData;
+use implementations::control_implementation::nop;
 
 pub struct ControlDispatcher {}
 
@@ -11,13 +12,15 @@ impl Dispatcher for ControlDispatcher {
 			CHECKCAST => panic!("CHECKCAST not implemented"),
 			IINC => panic!("IINC not implemented"),
 			LOOKUPSWITCH => panic!("LOOKUPSWITCH not implemented"),
-			NOP => panic!("NOP not implemented"),
+			NOP => nop(thread_id, runtime_data),
 			POP => panic!("POP not implemented"),
 			POP2 => panic!("POP2 not implemented"),
 			SWAP => panic!("SWAP not implemented"),
 			TABLESWITCH => panic!("TABLESWITCH not implemented"),
 			WIDE => panic!("WIDE not implemented"),
-			_ => false
+			_ => { return false }
 		}
+
+		true
 	}
 }
