@@ -21,6 +21,10 @@ impl MethodRefInfo {
 		}
 	}
 
+	pub fn get_class_index(&self) -> u16 { self.class_index }
+
+	pub fn get_name_and_type_index(&self) -> u16 { self.name_and_type_index }
+
 	#[cfg(test)]
 	pub(crate) fn new_test_model(tag: u8, class_index: u16, name_and_type_index: u16) -> MethodRefInfo {
 		MethodRefInfo {

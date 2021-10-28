@@ -36,7 +36,7 @@ impl Dispatcher for IntDispatcher {
 			INEG => panic!("INEG not implemented"),
 			IOR => panic!("IOR not implemented"),
 			IREM => panic!("IREM not implemented"),
-			IRETURN => panic!("IRETURN not implemented"),
+			IRETURN => i_return(thread_id, runtime_data),
 			ISHL => panic!("ISHL not implemented"),
 			ISHR => panic!("ISHR not implemented"),
 			ISTORE => panic!("ISTORE not implemented"),

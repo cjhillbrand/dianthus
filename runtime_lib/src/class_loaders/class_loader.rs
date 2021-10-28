@@ -14,7 +14,10 @@ pub trait ClassLoader {
 		let mut path: PathBuf = self.path_buf();
 		path.push(file);
 		path.set_extension("class");
-
+		// check if class file, check if .jar
+		// if .jar use zip archive, and find correct file. May want to have
+		// each class loader keep track of classes that it knows of.
+		// or first go, we could see how long it takes to load them all? idk
 		match fs::read(&path) {
 			Ok(data_vec) => {
 				let mut data: VecDeque<u8> = VecDeque::from_iter(data_vec);

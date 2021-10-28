@@ -13,7 +13,7 @@ impl Dispatcher for DispatcherContainer {
 		println!("Instrunction: {:#01x}", self.get_instruction(thread_id, runtime_data));
 		for dispatcher in &self.dispatchers {
 			if dispatcher.dispatch(thread_id, runtime_data) {
-				println!("{:#?}", runtime_data.print_stacks());
+				println!("{:#?}", runtime_data);
 				return true;
 			}
 		}

@@ -5,7 +5,7 @@ use runtime_lib::entities::class_struct::ClassStruct;
 #[test]
 #[ignore]
 fn system_class_loader_loads_class_in_current_directory() {
-	let file: &str = "../resources/Example1";
+	let file: &str = "../resources/ExampleMethod2";
 	let loader: SystemClassLoader = SystemClassLoader {};
 
 	let result: ClassStruct = loader.load_class(file);
