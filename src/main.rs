@@ -1,20 +1,21 @@
 #![allow(dead_code)]
 #![deny(clippy::all)]
+#![allow(clippy::mut_range_bound)]
 
 mod class_executor;
 mod dispatchers;
+mod heap;
 mod implementations;
+mod jvm_object;
 mod jvm_value;
 mod opcodes;
 pub mod run_time_data;
 mod stack_frame;
-mod jvm_object;
-mod heap;
 
+extern crate rand;
 extern crate runtime_lib;
 extern crate serde;
 extern crate serde_json;
-extern crate rand;
 #[macro_use]
 extern crate serde_derive;
 

@@ -1,7 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::long_implementation::{lconst_0, lconst_1};
 use opcodes::*;
 use run_time_data::RunTimeData;
-use implementations::long_implementation::{lconst_0, lconst_1};
 
 pub struct LongDispatcher {}
 
@@ -32,12 +32,8 @@ impl Dispatcher for LongDispatcher {
 			LCMP => {
 				panic!("LCMP not implemented")
 			}
-			LCONST_0 => {
-				lconst_0(thread_id, runtime_data)
-			}
-			LCONST_1 => {
-				lconst_1(thread_id, runtime_data)
-			}
+			LCONST_0 => lconst_0(thread_id, runtime_data),
+			LCONST_1 => lconst_1(thread_id, runtime_data),
 			LDC => {
 				panic!("LDC not implemented")
 			}
@@ -92,7 +88,7 @@ impl Dispatcher for LongDispatcher {
 			LXOR => {
 				panic!("LXOR not implemented")
 			}
-			_ => { return false }
+			_ => return false
 		}
 
 		true

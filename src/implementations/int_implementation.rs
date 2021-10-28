@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use jvm_value::{JvmValue, to_int};
+use jvm_value::{to_int, JvmValue};
 use run_time_data::RunTimeData;
 use stack_frame::StackFrame;
 

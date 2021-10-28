@@ -1,10 +1,10 @@
 use crate::entities::attributes::attribute_container::AttributeContainer;
 use crate::entities::attributes::attribute_factory::get_attribute_container;
 use crate::entities::attributes::attribute_info::AttributeInfo;
-use crate::entities::constants::constant_container::ConstantContainer;
-use crate::entities::read_bytes::ReadBytes;
 use crate::entities::attributes::code_attribute::CodeAttribute;
 use crate::entities::attributes::constants::CODE;
+use crate::entities::constants::constant_container::ConstantContainer;
+use crate::entities::read_bytes::ReadBytes;
 
 #[derive(Default, PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub struct MethodInfo {

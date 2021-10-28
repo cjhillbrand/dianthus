@@ -1,7 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::invoke_implementation::invoke_static;
 use opcodes::*;
 use run_time_data::RunTimeData;
-use implementations::invoke_implementation::invoke_static;
 
 pub struct InvokeDispatcher {}
 
@@ -13,7 +13,7 @@ impl Dispatcher for InvokeDispatcher {
 			INVOKESPECIAL => panic!("INVOKESPECIAL not implemented"),
 			INVOKESTATIC => invoke_static(thread_id, runtime_data),
 			INVOKEVIRTUAL => panic!("INVOKEVIRTUAL not implemented"),
-			_ => { return false }
+			_ => return false
 		}
 
 		true

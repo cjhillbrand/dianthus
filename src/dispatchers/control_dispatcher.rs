@@ -1,7 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::control_implementation::nop;
 use opcodes::*;
 use run_time_data::RunTimeData;
-use implementations::control_implementation::nop;
 
 pub struct ControlDispatcher {}
 
@@ -18,7 +18,7 @@ impl Dispatcher for ControlDispatcher {
 			SWAP => panic!("SWAP not implemented"),
 			TABLESWITCH => panic!("TABLESWITCH not implemented"),
 			WIDE => panic!("WIDE not implemented"),
-			_ => { return false }
+			_ => return false
 		}
 
 		true

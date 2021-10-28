@@ -1,11 +1,11 @@
 use std::collections::{HashMap, VecDeque};
 
+use heap::Heap;
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
 use runtime_lib::class_loaders::system_class_loader::SystemClassLoader;
 use runtime_lib::entities::class_struct::ClassStruct;
-use stack_frame::StackFrame;
 use runtime_lib::entities::constants::constant_container::ConstantContainer;
-use heap::Heap;
+use stack_frame::StackFrame;
 
 #[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct RunTimeData {
@@ -41,8 +41,7 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn get_constant_pool(&self, class_name: &str) -> &Vec<ConstantContainer>
-	{
+	pub fn get_constant_pool(&self, class_name: &str) -> &Vec<ConstantContainer> {
 		self.get_class(class_name).get_constant_pool()
 	}
 

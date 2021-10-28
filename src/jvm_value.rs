@@ -13,8 +13,7 @@ pub enum JvmValue {
 	PlaceHolder
 }
 
-pub fn to_int(value: JvmValue) -> JvmValue
-{
+pub fn to_int(value: JvmValue) -> JvmValue {
 	match value {
 		JvmValue::Boolean(v) => JvmValue::Int(v as i32),
 		JvmValue::Byte(v) => JvmValue::Int(v as i32),

@@ -13,7 +13,9 @@ pub struct StackFrame {
 }
 
 impl StackFrame {
-	pub fn new(local_num: usize, max_stack: usize, code_attribute: Box<CodeAttribute>, executing_class: String) -> StackFrame {
+	pub fn new(
+		local_num: usize, max_stack: usize, code_attribute: Box<CodeAttribute>, executing_class: String
+	) -> StackFrame {
 		StackFrame {
 			local_variables: vec![JvmValue::PlaceHolder; local_num],
 			operand_stack: VecDeque::with_capacity(max_stack),
@@ -42,10 +44,7 @@ impl StackFrame {
 		}
 	}
 
-	pub fn get_stack_value(&self, index: usize) -> &JvmValue
-	{
-		&self.operand_stack[index]
-	}
+	pub fn get_stack_value(&self, index: usize) -> &JvmValue { &self.operand_stack[index] }
 
 	pub fn get_local_var(&self, index: usize) -> JvmValue { self.local_variables[index].clone() }
 
