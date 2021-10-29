@@ -7,7 +7,7 @@ pub struct ExceptionAttribute {
 	attribute_name: String,
 	attribute_length: u32,
 	number_of_exceptions: u16,
-	exception_index_table: u16
+	exception_index_table: Vec<u16>
 }
 
 impl AttributeInfo for ExceptionAttribute {
@@ -21,8 +21,16 @@ impl ExceptionAttribute {
 		ExceptionAttribute {
 			attribute_name: constant_pool[data.pop_u16() as usize].get_string(),
 			attribute_length: data.pop_u32(),
-			number_of_exceptions: data.pop_u16(),
-			exception_index_table: data.pop_u16()
+			number_of_exceptions: data.peek_u16(),
+			exception_index_table: {
+				let num_exceptions: u16 = data.pop_u16();
+				let mut exceptions: Vec<u16> = Vec::new();
+				for _i in 0..num_exceptions
+				{
+					exceptions.push(data.pop_u16());
+				}
+				exceptions
+			}
 		}
 	}
 

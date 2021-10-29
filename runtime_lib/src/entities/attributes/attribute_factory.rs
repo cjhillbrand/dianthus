@@ -7,6 +7,7 @@ use crate::entities::attributes::exception_attribute::ExceptionAttribute;
 use crate::entities::attributes::line_number_table_attribute::LineNumberTableAttribute;
 use crate::entities::attributes::signature_attribute::SignatureAttribute;
 use crate::entities::attributes::source_file_attribute::SourceFileAttribute;
+use crate::entities::attributes::stack_map_table_attribute::StackMapTableAttribute;
 use crate::entities::constants::constant_container::ConstantContainer;
 use crate::entities::read_bytes::ReadBytes;
 
@@ -28,6 +29,7 @@ pub fn get_attribute_container<T: ReadBytes>(data: &mut T, constant_pool: &[Cons
 			AttributeContainer::LineNumberTableAttribute(LineNumberTableAttribute::new(data, constant_pool))
 		}
 		SOURCE_FILE => AttributeContainer::SourceFileAttribute(SourceFileAttribute::new(data, constant_pool)),
+		STACK_MAP_TABLE => AttributeContainer::StackMapTableAttribute(StackMapTableAttribute::new(data, constant_pool)),
 		&_ => panic!("Unidentified attribute: {}", attribute_type)
 	}
 }

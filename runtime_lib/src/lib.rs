@@ -13,6 +13,7 @@ pub mod entities;
 
 extern crate serde;
 extern crate serde_json;
+extern crate zip;
 #[macro_use]
 extern crate serde_derive;
 
