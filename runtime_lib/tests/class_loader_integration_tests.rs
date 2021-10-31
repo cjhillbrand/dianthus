@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use runtime_lib::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
-use runtime_lib::class_loaders::class_loader::{get_java_home, ClassLoader};
+use runtime_lib::class_loaders::class_loader::{ClassLoader};
 use runtime_lib::class_loaders::system_class_loader::SystemClassLoader;
 use runtime_lib::entities::class_struct::ClassStruct;
 

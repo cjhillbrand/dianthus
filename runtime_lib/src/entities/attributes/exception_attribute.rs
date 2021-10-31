@@ -41,7 +41,7 @@ impl ExceptionAttribute {
 			attribute_name,
 			attribute_length,
 			number_of_exceptions,
-			exception_index_table
+			exception_index_table: vec![exception_index_table]
 		}
 	}
 }
