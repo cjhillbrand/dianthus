@@ -52,6 +52,7 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let next_class_name: &str = &constant_pool[next_class_index].get_string();
 
 	let next_class: &ClassStruct = runtime_data.get_class(next_class_name);
+
 	let method: &MethodInfo = next_class.get_method(&method_name);
 	let code: &CodeAttribute = method.derive_code_attribute();
 	let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);

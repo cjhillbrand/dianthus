@@ -1,6 +1,7 @@
 use std::collections::{HashMap, VecDeque};
 
 use heap::Heap;
+use runtime_lib::class_loaders::class_loader::ClassLoader;
 use runtime_lib::class_loaders::class_loader_container::ClassLoaderContainer;
 use runtime_lib::class_loaders::system_class_loader::SystemClassLoader;
 use runtime_lib::entities::class_struct::ClassStruct;
@@ -41,6 +42,16 @@ impl RunTimeData {
 		}
 	}
 
+	pub fn is_class_loaded(&self, name: &str)
+	{
+		self.method_area.contains_key(name)
+	}
+
+	pub fn load_class(&self, name: &str) -> ClassStruct
+	{
+		self.class_loader.load_class(name)
+	}
+
 	pub fn get_constant_pool(&self, class_name: &str) -> &Vec<ConstantContainer> {
 		self.get_class(class_name).get_constant_pool()
 	}
@@ -61,4 +72,8 @@ impl RunTimeData {
 
 		current_stack.push_front(frame);
 	}
+
+	pub fn get_heap(&self) -> &Heap { &self.heap }
+
+	pub fn get_heap_mut(&mut self) -> &mut Heap { &mut self.heap }
 }

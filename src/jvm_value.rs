@@ -1,3 +1,5 @@
+use jvm_object::JvmObject;
+
 #[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub enum JvmValue {
 	Boolean(bool),
@@ -6,7 +8,8 @@ pub enum JvmValue {
 	Short(i16),
 	Int(i32),
 	Float(f32),
-	Reference(u32),
+	Reference(u64),
+	StaticReference(String),
 	ReturnAddress(u32),
 	Long(i64),
 	Double(f64),
@@ -25,7 +28,8 @@ pub fn to_int(value: JvmValue) -> JvmValue {
 		JvmValue::ReturnAddress(v) => JvmValue::Int(v as i32),
 		JvmValue::Long(v) => JvmValue::Int(v as i32),
 		JvmValue::Double(v) => JvmValue::Int(v as i32),
-		JvmValue::PlaceHolder => panic!("Cannot convert a placeholder to int")
+		JvmValue::PlaceHolder => panic!("Cannot convert a placeholder to int"),
+		JvmValue::StaticReference(_) => panic!("Cannot convert a static reference to int")
 	}
 }
 

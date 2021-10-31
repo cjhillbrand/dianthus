@@ -17,7 +17,6 @@ const INIT: &str = "<init>";
 pub struct ClassExecutor {
 	run_time_data: RunTimeData,
 	class_loader: ClassLoaderContainer,
-	dispatcher: DispatcherContainer
 }
 
 impl ClassExecutor {
@@ -25,7 +24,6 @@ impl ClassExecutor {
 		ClassExecutor {
 			run_time_data: RunTimeData::new(),
 			class_loader: ClassLoaderContainer::System(SystemClassLoader {}),
-			dispatcher: create_dispatcher()
 		}
 	}
 
@@ -41,10 +39,15 @@ impl ClassExecutor {
 		let mut stack: VecDeque<StackFrame> = VecDeque::new();
 		stack.push_front(stack_frame);
 		let current_thread = self.run_time_data.new_thread(stack);
+		ClassExecutor::execute_code(current_thread, &mut self.run_time_data);
+	}
 
+	pub fn execute_code(thread_id: usize, run_time_data: &mut RunTimeData)
+	{
+		let dispatcher: DispatcherContainer = create_dispatcher();
 		loop {
-			self.dispatcher.dispatch(current_thread, &mut self.run_time_data);
-			if self.run_time_data.is_stack_empty(current_thread) {
+			dispatcher.dispatch(thread_id, run_time_data);
+			if run_time_data.is_stack_empty(thread_id) {
 				break;
 			}
 		}
