@@ -1,3 +1,5 @@
+// This line is needed to allow pipeline to build
+#![feature(arbitrary_enum_discriminant)]
 #![allow(dead_code)]
 // Enum variant name is just a naming convention that I like.
 // field reassign I cant figure out how to pass the constant pool around in the intializer
