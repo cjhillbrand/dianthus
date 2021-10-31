@@ -24,24 +24,21 @@ impl Heap {
 		}
 	}
 
-	pub fn get_value_mut(&mut self, reference: u64) -> &mut JvmObject
-	{
+	pub fn get_value_mut(&mut self, reference: u64) -> &mut JvmObject {
 		match self.objects.get_mut(&reference) {
 			Some(v) => v,
 			None => panic!("could not find reference {}", reference)
 		}
 	}
 
-	pub fn get_static_value(&self, class_name: &str) -> &JvmObject
-	{
+	pub fn get_static_value(&self, class_name: &str) -> &JvmObject {
 		match self.static_objects.get(class_name) {
 			Some(v) => v,
 			None => panic!("could not find reference {}", class_name)
 		}
 	}
 
-	pub fn get_static_value_mut(&mut self, class_name: &str) -> &mut JvmObject
-	{
+	pub fn get_static_value_mut(&mut self, class_name: &str) -> &mut JvmObject {
 		match self.static_objects.get_mut(class_name) {
 			Some(v) => v,
 			None => panic!("could not find reference {}", class_name)
@@ -55,10 +52,7 @@ impl Heap {
 		reference
 	}
 
-	pub fn alloc_static(&mut self, obj: JvmObject, name: &str)
-	{
-		self.static_objects.insert(name.to_string(), obj);
-	}
+	pub fn alloc_static(&mut self, obj: JvmObject, name: &str) { self.static_objects.insert(name.to_string(), obj); }
 
 	pub fn dealloc(&mut self, reference: u64) { self.objects.remove(&reference); }
 }

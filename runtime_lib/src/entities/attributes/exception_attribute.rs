@@ -25,8 +25,7 @@ impl ExceptionAttribute {
 			exception_index_table: {
 				let num_exceptions: u16 = data.pop_u16();
 				let mut exceptions: Vec<u16> = Vec::new();
-				for _i in 0..num_exceptions
-				{
+				for _i in 0..num_exceptions {
 					exceptions.push(data.pop_u16());
 				}
 				exceptions

@@ -1,6 +1,6 @@
-use implementations::invoke_init::invoke_class_init;
 use std::collections::VecDeque;
 
+use implementations::invoke_init::invoke_class_init;
 use jvm_value::JvmValue;
 use run_time_data::RunTimeData;
 use runtime_lib::entities::attributes::code_attribute::CodeAttribute;
@@ -51,8 +51,7 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	};
 
 	let next_class_name: &str = &constant_pool[next_class_index].get_string();
-	if !runtime_data.is_class_loaded(&class_name)
-	{
+	if !runtime_data.is_class_loaded(&class_name) {
 		invoke_class_init(thread_id, runtime_data, &next_class_name);
 		// places the constructor stack frame on stack. Return to execute that.
 		// up until this point the current stack_frame has not mutted so pause - construct

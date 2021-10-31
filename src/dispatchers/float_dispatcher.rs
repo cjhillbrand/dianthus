@@ -77,7 +77,9 @@ impl Dispatcher for FloatDispatcher {
 			FSUB => {
 				panic!("FSUB not implemented")
 			}
-			_ => { return false; }
+			_ => {
+				return false;
+			}
 		}
 
 		true

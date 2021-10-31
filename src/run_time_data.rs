@@ -42,15 +42,9 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn is_class_loaded(&self, name: &str) -> bool
-	{
-		self.method_area.contains_key(name)
-	}
+	pub fn is_class_loaded(&self, name: &str) -> bool { self.method_area.contains_key(name) }
 
-	pub fn load_class(&self, name: &str) -> ClassStruct
-	{
-		self.class_loader.load_class(name)
-	}
+	pub fn load_class(&self, name: &str) -> ClassStruct { self.class_loader.load_class(name) }
 
 	pub fn get_constant_pool(&self, class_name: &str) -> &Vec<ConstantContainer> {
 		self.get_class(class_name).get_constant_pool()
@@ -73,13 +67,11 @@ impl RunTimeData {
 		current_stack.push_front(frame);
 	}
 
-	pub fn print_stack(&self)
-	{
+	pub fn print_stack(&self) {
 		println!("{:#?}", self.stacks);
 	}
 
-	pub fn print_heap(&self)
-	{
+	pub fn print_heap(&self) {
 		println!("{:#?}", self.heap);
 	}
 

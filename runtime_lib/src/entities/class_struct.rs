@@ -122,10 +122,7 @@ impl ClassStruct {
 
 	pub fn get_constant_pool(&self) -> &Vec<ConstantContainer> { &self.constant_pool }
 
-	pub fn get_field_names(&self) -> Vec<&String>
-	{
-		self.field_info.keys().collect::<Vec<&String>>()
-	}
+	pub fn get_field_names(&self) -> Vec<&String> { self.field_info.keys().collect::<Vec<&String>>() }
 }
 
 #[cfg(test)]

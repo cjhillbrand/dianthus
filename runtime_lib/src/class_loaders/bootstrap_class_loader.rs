@@ -1,8 +1,8 @@
-use std::path::PathBuf;
-use std::{fs};
-use std::io::Read;
 use std::collections::VecDeque;
+use std::fs;
+use std::io::Read;
 use std::iter::FromIterator;
+use std::path::PathBuf;
 
 use crate::class_loaders::class_loader::{get_java_home, ClassLoader};
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
@@ -26,18 +26,15 @@ impl ClassLoader for BootStrapClassLoader {
 	fn parent(&self) -> ClassLoaderContainer { ClassLoaderContainer::None }
 
 	fn load_class(&self, file: &str) -> ClassStruct {
-		match self.load_rt_jar(file)
-		{
+		match self.load_rt_jar(file) {
 			Some(c) => c,
 			_ => ClassLoader::load_class(self, file)
 		}
 	}
 }
 
-impl BootStrapClassLoader
-{
-	pub fn load_rt_jar(&self, file_name: &str) -> Option<ClassStruct>
-	{
+impl BootStrapClassLoader {
+	pub fn load_rt_jar(&self, file_name: &str) -> Option<ClassStruct> {
 		let mut path: PathBuf = self.path_buf();
 		path.push(RT_JAR);
 		let buf: Vec<u8> = match fs::read(&path) {
@@ -46,17 +43,14 @@ impl BootStrapClassLoader
 		};
 
 		let reader = std::io::Cursor::new(buf);
-		let mut zip = match zip::ZipArchive::new(reader)
-		{
+		let mut zip = match zip::ZipArchive::new(reader) {
 			Ok(archive) => archive,
 			Err(err) => panic!("{}", err)
 		};
 
-		for i in 0..zip.len()
-		{
+		for i in 0..zip.len() {
 			let mut file = zip.by_index(i).unwrap();
-			if file.name().eq(file_name)
-			{
+			if file.name().eq(file_name) {
 				let mut contents: Vec<u8> = Vec::new();
 				file.read_to_end(&mut contents);
 				let mut data: VecDeque<u8> = VecDeque::from_iter(contents);

@@ -16,14 +16,14 @@ const INIT: &str = "<init>";
 
 pub struct ClassExecutor {
 	run_time_data: RunTimeData,
-	class_loader: ClassLoaderContainer,
+	class_loader: ClassLoaderContainer
 }
 
 impl ClassExecutor {
 	pub fn new() -> ClassExecutor {
 		ClassExecutor {
 			run_time_data: RunTimeData::new(),
-			class_loader: ClassLoaderContainer::System(SystemClassLoader {}),
+			class_loader: ClassLoaderContainer::System(SystemClassLoader {})
 		}
 	}
 
@@ -42,8 +42,7 @@ impl ClassExecutor {
 		ClassExecutor::execute_code(current_thread, &mut self.run_time_data);
 	}
 
-	pub fn execute_code(thread_id: usize, run_time_data: &mut RunTimeData)
-	{
+	pub fn execute_code(thread_id: usize, run_time_data: &mut RunTimeData) {
 		let dispatcher: DispatcherContainer = create_dispatcher();
 		loop {
 			dispatcher.dispatch(thread_id, run_time_data);

@@ -1,9 +1,9 @@
+use std::collections::VecDeque;
+
 use heap::Heap;
 use implementations::invoke_init::invoke_class_init;
 use jvm_object::JvmObject;
 use jvm_value::JvmValue;
-use std::collections::VecDeque;
-
 use run_time_data::RunTimeData;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::constants::constant_container::ConstantContainer;
@@ -16,11 +16,9 @@ pub fn return_op(thread_id: usize, runtime_data: &mut RunTimeData) {
 	stack.pop_front();
 }
 
-pub fn get_static(thread_id: usize, runtime_data: &mut RunTimeData)
-{
+pub fn get_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let (next_class_name, field_name) = get_static_field_context(thread_id, runtime_data);
-	if !runtime_data.is_class_loaded(&next_class_name)
-	{
+	if !runtime_data.is_class_loaded(&next_class_name) {
 		invoke_class_init(thread_id, runtime_data, &next_class_name);
 		// places the constructor stack frame on stack. Return to execute that.
 		// up until this point the current stack_frame has not mutted so pause - construct
@@ -40,11 +38,9 @@ pub fn get_static(thread_id: usize, runtime_data: &mut RunTimeData)
 	current_stack_frame_mut.increment_pc(3);
 }
 
-pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData)
-{
+pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let (class_name, field_name) = get_static_field_context(thread_id, runtime_data);
-	if !runtime_data.is_class_loaded(&class_name)
-	{
+	if !runtime_data.is_class_loaded(&class_name) {
 		invoke_class_init(thread_id, runtime_data, &class_name);
 		// places the constructor stack frame on stack. Return to execute that.
 		// up until this point the current stack_frame has not mutted so pause - construct
@@ -69,8 +65,7 @@ pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData)
 	println!("{:#?}", heap);
 }
 
-fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (String, String)
-{
+fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (String, String) {
 	let stack: &VecDeque<StackFrame> = runtime_data.get_stack(thread_id);
 	let current_stack_frame: &StackFrame = match stack.front() {
 		Some(frame) => frame,
@@ -113,15 +108,13 @@ fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (St
 	(next_class_name.to_string(), field_name)
 }
 
-fn get_jvm_value(runtime_data: &RunTimeData, class_name: &str, field_name: &str) -> JvmValue
-{
+fn get_jvm_value(runtime_data: &RunTimeData, class_name: &str, field_name: &str) -> JvmValue {
 	let heap: &Heap = runtime_data.get_heap();
 	let obj: &JvmObject = heap.get_static_value(class_name);
 	obj.get_value(&field_name).clone()
 }
 
-fn aload_n(thread_id: usize, run_time_data: &mut RunTimeData, index: usize)
-{
+fn aload_n(thread_id: usize, run_time_data: &mut RunTimeData, index: usize) {
 	let stack: &mut VecDeque<StackFrame> = run_time_data.get_stack_mut(thread_id);
 	let current_stack_frame: &mut StackFrame = match stack.front_mut() {
 		Some(frame) => frame,
@@ -135,22 +128,10 @@ fn aload_n(thread_id: usize, run_time_data: &mut RunTimeData, index: usize)
 	current_stack_frame.increment_pc(1);
 }
 
-pub fn aload_0(thread_id: usize, run_time_data: &mut RunTimeData)
-{
-	aload_n(thread_id, run_time_data, 0);
-}
+pub fn aload_0(thread_id: usize, run_time_data: &mut RunTimeData) { aload_n(thread_id, run_time_data, 0); }
 
-pub fn aload_1(thread_id: usize, run_time_data: &mut RunTimeData)
-{
-	aload_n(thread_id, run_time_data, 1);
-}
+pub fn aload_1(thread_id: usize, run_time_data: &mut RunTimeData) { aload_n(thread_id, run_time_data, 1); }
 
-pub fn aload_2(thread_id: usize, run_time_data: &mut RunTimeData)
-{
-	aload_n(thread_id, run_time_data, 2);
-}
+pub fn aload_2(thread_id: usize, run_time_data: &mut RunTimeData) { aload_n(thread_id, run_time_data, 2); }
 
-pub fn aload_3(thread_id: usize, run_time_data: &mut RunTimeData)
-{
-	aload_n(thread_id, run_time_data, 3);
-}
+pub fn aload_3(thread_id: usize, run_time_data: &mut RunTimeData) { aload_n(thread_id, run_time_data, 3); }
