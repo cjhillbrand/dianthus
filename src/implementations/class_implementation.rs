@@ -37,7 +37,7 @@ pub fn get_static(thread_id: usize, runtime_data: &mut RunTimeData)
 		}
 	};
 	current_stack_frame_mut.push_on_stack(value);
-	current_stack_frame_mut.increment_pc(1);
+	current_stack_frame_mut.increment_pc(3);
 }
 
 pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData)
@@ -61,7 +61,7 @@ pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData)
 	};
 
 	let value: JvmValue = current_stack_frame.pop_stack();
-	current_stack_frame.increment_pc(1);
+	current_stack_frame.increment_pc(3);
 	let heap: &mut Heap = runtime_data.get_heap_mut();
 	let obj: &mut JvmObject = heap.get_static_value_mut(&class_name);
 

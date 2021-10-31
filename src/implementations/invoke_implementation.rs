@@ -1,3 +1,4 @@
+use implementations::invoke_init::invoke_class_init;
 use std::collections::VecDeque;
 
 use jvm_value::JvmValue;
@@ -50,6 +51,14 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	};
 
 	let next_class_name: &str = &constant_pool[next_class_index].get_string();
+	if !runtime_data.is_class_loaded(&class_name)
+	{
+		invoke_class_init(thread_id, runtime_data, &next_class_name);
+		// places the constructor stack frame on stack. Return to execute that.
+		// up until this point the current stack_frame has not mutted so pause - construct
+		// then on the next visit this SHOULD return false.
+		return;
+	}
 
 	let next_class: &ClassStruct = runtime_data.get_class(next_class_name);
 
@@ -76,7 +85,15 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 		};
 	}
 
-	// after all of this still need to invoke the init method.
+	let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
+	let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
+		Some(frame) => frame,
+		None => {
+			panic!("could not resolve stack frame.")
+		}
+	};
+
+	current_stack_frame.increment_pc(3);
 	runtime_data.push_stack(next_frame, thread_id);
 }
 
