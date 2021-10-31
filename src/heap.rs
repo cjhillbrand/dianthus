@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use jvm_object::JvmObject;
 use rand::{thread_rng, Rng};
 
-#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Default, Serialize, Deserialize, Debug, Clone)]
 pub struct Heap {
 	objects: HashMap<u64, JvmObject>,
 	static_objects: HashMap<String, JvmObject>

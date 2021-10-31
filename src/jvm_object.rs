@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use jvm_value::JvmValue;
 use runtime_lib::entities::class_struct::ClassStruct;
 
-#[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Default, Serialize, Deserialize, Debug, Clone)]
 pub struct JvmObject {
 	fields: HashMap<String, JvmValue>
 }

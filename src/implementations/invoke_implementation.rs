@@ -51,8 +51,8 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	};
 
 	let next_class_name: &str = &constant_pool[next_class_index].get_string();
-	if !runtime_data.is_class_loaded(&class_name) {
-		invoke_class_init(thread_id, runtime_data, &next_class_name);
+	if !runtime_data.is_class_loaded(next_class_name) {
+		invoke_class_init(thread_id, runtime_data, next_class_name);
 		// places the constructor stack frame on stack. Return to execute that.
 		// up until this point the current stack_frame has not mutted so pause - construct
 		// then on the next visit this SHOULD return false.

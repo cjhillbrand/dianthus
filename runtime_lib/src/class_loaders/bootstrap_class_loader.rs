@@ -52,7 +52,10 @@ impl BootStrapClassLoader {
 			let mut file = zip.by_index(i).unwrap();
 			if file.name().eq(file_name) {
 				let mut contents: Vec<u8> = Vec::new();
-				file.read_to_end(&mut contents);
+				match file.read_to_end(&mut contents) {
+					Ok(_) => {}
+					Err(e) => panic!("Could not read file: {} with err {}", file.name(), e)
+				}
 				let mut data: VecDeque<u8> = VecDeque::from_iter(contents);
 				return Some(ClassStruct::new(&mut data));
 			}

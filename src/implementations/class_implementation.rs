@@ -83,7 +83,7 @@ fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (St
 	let field_ref_index: u16 = invoke_byte_1 << 8 | invoke_byte_2;
 
 	let field_ref: &FieldRefInfo = match &constant_pool[field_ref_index as usize] {
-		ConstantContainer::FieldRefInfo(v) => &v,
+		ConstantContainer::FieldRefInfo(v) => v,
 		_ => panic!("expected FieldRefInfo. Index: {}", field_ref_index)
 	};
 
@@ -111,7 +111,7 @@ fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (St
 fn get_jvm_value(runtime_data: &RunTimeData, class_name: &str, field_name: &str) -> JvmValue {
 	let heap: &Heap = runtime_data.get_heap();
 	let obj: &JvmObject = heap.get_static_value(class_name);
-	obj.get_value(&field_name).clone()
+	obj.get_value(field_name).clone()
 }
 
 fn aload_n(thread_id: usize, run_time_data: &mut RunTimeData, index: usize) {
