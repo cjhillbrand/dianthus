@@ -1,6 +1,4 @@
-use serde_json::de::Read;
 use crate::entities::attributes::attribute_info::AttributeInfo;
-use crate::entities::attributes::stack_map_table_attribute::StackMapFrame::{Append, Full, SameLocals1StackItem};
 use crate::entities::constants::constant_container::ConstantContainer;
 use crate::entities::read_bytes::ReadBytes;
 
@@ -182,7 +180,7 @@ impl AppendFrame
         let frame_type: u8 = data.pop_u8();
         let offset_delta: u16 = data.pop_u16();
         let mut locals: Vec<VerificationTypeInfo> = Vec::new();
-        for i in 0..frame_type - 251
+        for _i in 0..frame_type - 251
         {
             locals.push(VerificationTypeInfo::new(data))
         }

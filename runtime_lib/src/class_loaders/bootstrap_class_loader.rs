@@ -45,7 +45,7 @@ impl BootStrapClassLoader
 			Err(_err) => panic!("Could not load rt.jar from java home.")
 		};
 
-		let mut reader = std::io::Cursor::new(buf);
+		let reader = std::io::Cursor::new(buf);
 		let mut zip = match zip::ZipArchive::new(reader)
 		{
 			Ok(archive) => archive,
@@ -55,7 +55,6 @@ impl BootStrapClassLoader
 		for i in 0..zip.len()
 		{
 			let mut file = zip.by_index(i).unwrap();
-			// println!("{}", file.name());
 			if file.name().eq(file_name)
 			{
 				let mut contents: Vec<u8> = Vec::new();

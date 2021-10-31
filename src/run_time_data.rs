@@ -42,7 +42,7 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn is_class_loaded(&self, name: &str)
+	pub fn is_class_loaded(&self, name: &str) -> bool
 	{
 		self.method_area.contains_key(name)
 	}
@@ -71,6 +71,16 @@ impl RunTimeData {
 		let current_stack: &mut VecDeque<StackFrame> = &mut self.stacks[thread];
 
 		current_stack.push_front(frame);
+	}
+
+	pub fn print_stack(&self)
+	{
+		println!("{:#?}", self.stacks);
+	}
+
+	pub fn print_heap(&self)
+	{
+		println!("{:#?}", self.heap);
 	}
 
 	pub fn get_heap(&self) -> &Heap { &self.heap }

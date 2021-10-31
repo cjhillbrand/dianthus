@@ -1,5 +1,3 @@
-use jvm_object::JvmObject;
-
 #[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub enum JvmValue {
 	Boolean(bool),

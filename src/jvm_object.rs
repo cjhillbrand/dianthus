@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use jvm_value::JvmValue;
 use runtime_lib::entities::class_struct::ClassStruct;
-use runtime_lib::entities::field_info::FieldInfo;
 
 #[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub struct JvmObject {
@@ -17,11 +16,11 @@ impl JvmObject {
 
 	pub fn build_obj(class: &ClassStruct) -> JvmObject
 	{
-		let fields: &FieldInfo = class.get_fields();
-		let obj: JvmObject = JvmObject::new();
+		let fields: Vec<&String> = class.get_field_names();
+		let mut obj: JvmObject = JvmObject::new();
 		for field in fields.iter()
 		{
-			obj.fields.insert(field.get_name(), JvmValue::PlaceHolder);
+			obj.fields.insert(field.to_string(), JvmValue::PlaceHolder);
 		}
 
 		obj
@@ -29,6 +28,15 @@ impl JvmObject {
 
 	pub fn get_value(&self, name: &str) -> &JvmValue
 	{
-		self.fields.get(name)
+		match self.fields.get(name)
+		{
+			Some(v) => v,
+			None => panic!("Could not find field: {}", name)
+		}
+	}
+
+	pub fn set_value(&mut self, name: &str, value: JvmValue)
+	{
+		self.fields.insert(name.to_string(), value);
 	}
 }
