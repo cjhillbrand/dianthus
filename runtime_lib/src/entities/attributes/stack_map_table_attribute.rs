@@ -85,11 +85,7 @@ impl SameLocals1StackItemFrame {
 	fn new<T: ReadBytes>(data: &mut T) -> SameLocals1StackItemFrame {
 		SameLocals1StackItemFrame {
 			frame_type: data.pop_u8(),
-			stack: {
-				let mut stack: Vec<VerificationTypeInfo> = Vec::new();
-				stack.push(VerificationTypeInfo::new(data));
-				stack
-			}
+			stack: vec![VerificationTypeInfo::new(data)]
 		}
 	}
 }
@@ -106,11 +102,7 @@ impl SameLocals1StackItemFrameExtendedFrame {
 		SameLocals1StackItemFrameExtendedFrame {
 			frame_type: data.pop_u8(),
 			offset_delta: data.pop_u16(),
-			stack: {
-				let mut stack: Vec<VerificationTypeInfo> = Vec::new();
-				stack.push(VerificationTypeInfo::new(data));
-				stack
-			}
+			stack: vec![VerificationTypeInfo::new(data)]
 		}
 	}
 }
