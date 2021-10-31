@@ -4,7 +4,9 @@ use crate::entities::attributes::constant_value_attribute::ConstantValueAttribut
 use crate::entities::attributes::constants::*;
 use crate::entities::attributes::deprecated_attribute::DeprecatedAttribute;
 use crate::entities::attributes::exception_attribute::ExceptionAttribute;
+use crate::entities::attributes::inner_class_attribute::InnerClassAttribute;
 use crate::entities::attributes::line_number_table_attribute::LineNumberTableAttribute;
+use crate::entities::attributes::runtime_visible_attribute::RuntimeVisibleAttribute;
 use crate::entities::attributes::signature_attribute::SignatureAttribute;
 use crate::entities::attributes::source_file_attribute::SourceFileAttribute;
 use crate::entities::attributes::stack_map_table_attribute::StackMapTableAttribute;
@@ -30,6 +32,8 @@ pub fn get_attribute_container<T: ReadBytes>(data: &mut T, constant_pool: &[Cons
 		}
 		SOURCE_FILE => AttributeContainer::SourceFileAttribute(SourceFileAttribute::new(data, constant_pool)),
 		STACK_MAP_TABLE => AttributeContainer::StackMapTableAttribute(StackMapTableAttribute::new(data, constant_pool)),
+		RUNTIME_VISIBLE_ANNOTATION => AttributeContainer::RunTimeVisibleAnnotationAttribute(RuntimeVisibleAttribute::new(data, constant_pool)),
+		INNER_CLASS_ATTRIBUTE => AttributeContainer::InnerClassAttribute(InnerClassAttribute::new(data, constant_pool)),
 		&_ => panic!("Unidentified attribute: {}", attribute_type)
 	}
 }

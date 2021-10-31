@@ -3,7 +3,9 @@ use crate::entities::attributes::code_attribute::CodeAttribute;
 use crate::entities::attributes::constant_value_attribute::ConstantValueAttribute;
 use crate::entities::attributes::deprecated_attribute::DeprecatedAttribute;
 use crate::entities::attributes::exception_attribute::ExceptionAttribute;
+use crate::entities::attributes::inner_class_attribute::InnerClassAttribute;
 use crate::entities::attributes::line_number_table_attribute::LineNumberTableAttribute;
+use crate::entities::attributes::runtime_visible_attribute::RuntimeVisibleAttribute;
 use crate::entities::attributes::signature_attribute::SignatureAttribute;
 use crate::entities::attributes::source_file_attribute::SourceFileAttribute;
 use crate::entities::attributes::stack_map_table_attribute::StackMapTableAttribute;
@@ -17,7 +19,9 @@ pub enum AttributeContainer {
 	ExceptionAttribute(ExceptionAttribute),
 	LineNumberTableAttribute(LineNumberTableAttribute),
 	SourceFileAttribute(SourceFileAttribute),
-	StackMapTableAttribute(StackMapTableAttribute)
+	StackMapTableAttribute(StackMapTableAttribute),
+	RunTimeVisibleAnnotationAttribute(RuntimeVisibleAttribute),
+	InnerClassAttribute(InnerClassAttribute)
 }
 
 impl AttributeInfo for AttributeContainer {
@@ -30,7 +34,9 @@ impl AttributeInfo for AttributeContainer {
 			AttributeContainer::ExceptionAttribute(v) => v.name(),
 			AttributeContainer::LineNumberTableAttribute(v) => v.name(),
 			AttributeContainer::SourceFileAttribute(v) => v.name(),
-			AttributeContainer::StackMapTableAttribute(v) => v.name()
+			AttributeContainer::StackMapTableAttribute(v) => v.name(),
+			AttributeContainer::RunTimeVisibleAnnotationAttribute(v) => v.name(),
+			AttributeContainer::InnerClassAttribute(v) => v.name()
 		}
 	}
 
@@ -43,7 +49,9 @@ impl AttributeInfo for AttributeContainer {
 			AttributeContainer::ExceptionAttribute(v) => v.attr_length(),
 			AttributeContainer::LineNumberTableAttribute(v) => v.attr_length(),
 			AttributeContainer::SourceFileAttribute(v) => v.attr_length(),
-			AttributeContainer::StackMapTableAttribute(v) => v.attr_length()
+			AttributeContainer::StackMapTableAttribute(v) => v.attr_length(),
+			AttributeContainer::RunTimeVisibleAnnotationAttribute(v) => v.attr_length(),
+			AttributeContainer::InnerClassAttribute(v) => v.attr_length()
 		}
 	}
 }

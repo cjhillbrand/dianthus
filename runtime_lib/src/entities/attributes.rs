@@ -11,3 +11,7 @@ pub mod signature_attribute;
 pub mod source_file_attribute;
 pub mod stack_map_table_attribute;
 pub mod test_fixture;
+mod element_value;
+mod annotation;
+mod runtime_visible_attribute;
+mod inner_class_attribute;
