@@ -6,6 +6,7 @@ use crate::entities::attributes::exception_attribute::ExceptionAttribute;
 use crate::entities::attributes::line_number_table_attribute::LineNumberTableAttribute;
 use crate::entities::attributes::signature_attribute::SignatureAttribute;
 use crate::entities::attributes::source_file_attribute::SourceFileAttribute;
+use crate::entities::attributes::stack_map_table_attribute::StackMapTableAttribute;
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone)]
 pub enum AttributeContainer {
@@ -15,7 +16,8 @@ pub enum AttributeContainer {
 	SignatureAttribute(SignatureAttribute),
 	ExceptionAttribute(ExceptionAttribute),
 	LineNumberTableAttribute(LineNumberTableAttribute),
-	SourceFileAttribute(SourceFileAttribute)
+	SourceFileAttribute(SourceFileAttribute),
+	StackMapTableAttribute(StackMapTableAttribute)
 }
 
 impl AttributeInfo for AttributeContainer {
@@ -27,7 +29,8 @@ impl AttributeInfo for AttributeContainer {
 			AttributeContainer::SignatureAttribute(v) => v.name(),
 			AttributeContainer::ExceptionAttribute(v) => v.name(),
 			AttributeContainer::LineNumberTableAttribute(v) => v.name(),
-			AttributeContainer::SourceFileAttribute(v) => v.name()
+			AttributeContainer::SourceFileAttribute(v) => v.name(),
+			AttributeContainer::StackMapTableAttribute(v) => v.name()
 		}
 	}
 
@@ -39,7 +42,8 @@ impl AttributeInfo for AttributeContainer {
 			AttributeContainer::SignatureAttribute(v) => v.attr_length(),
 			AttributeContainer::ExceptionAttribute(v) => v.attr_length(),
 			AttributeContainer::LineNumberTableAttribute(v) => v.attr_length(),
-			AttributeContainer::SourceFileAttribute(v) => v.attr_length()
+			AttributeContainer::SourceFileAttribute(v) => v.attr_length(),
+			AttributeContainer::StackMapTableAttribute(v) => v.attr_length()
 		}
 	}
 }

@@ -9,4 +9,5 @@ pub mod exception_attribute;
 pub mod line_number_table_attribute;
 pub mod signature_attribute;
 pub mod source_file_attribute;
+pub mod stack_map_table_attribute;
 pub mod test_fixture;

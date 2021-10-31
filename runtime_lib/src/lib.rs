@@ -1,3 +1,5 @@
+// This line is needed to allow pipeline to build
+#![feature(arbitrary_enum_discriminant)]
 #![allow(dead_code)]
 // Enum variant name is just a naming convention that I like.
 // field reassign I cant figure out how to pass the constant pool around in the intializer
@@ -13,6 +15,7 @@ pub mod entities;
 
 extern crate serde;
 extern crate serde_json;
+extern crate zip;
 #[macro_use]
 extern crate serde_derive;
 

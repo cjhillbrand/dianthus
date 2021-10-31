@@ -1,4 +1,5 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::float_implementation::{fconst_0, fconst_1, fconst_2};
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -29,13 +30,13 @@ impl Dispatcher for FloatDispatcher {
 				panic!("FCMPL not implemented")
 			}
 			FCONST_0 => {
-				panic!("FCONST_0 not implemented")
+				fconst_0(thread_id, runtime_data);
 			}
 			FCONST_1 => {
-				panic!("FCONST_1 not implemented")
+				fconst_1(thread_id, runtime_data);
 			}
 			FCONST_2 => {
-				panic!("FCONST_2 not implemented")
+				fconst_2(thread_id, runtime_data);
 			}
 			FDIV => {
 				panic!("FDIV not implemented")
@@ -76,7 +77,11 @@ impl Dispatcher for FloatDispatcher {
 			FSUB => {
 				panic!("FSUB not implemented")
 			}
-			_ => false
+			_ => {
+				return false;
+			}
 		}
+
+		true
 	}
 }

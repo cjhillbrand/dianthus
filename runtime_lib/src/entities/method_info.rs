@@ -24,7 +24,8 @@ impl MethodInfo {
 				let count = data.pop_u16();
 				let mut result: Vec<AttributeContainer> = Vec::new();
 				for _i in 0..count {
-					result.push(get_attribute_container(data, constant_pool));
+					let temp: AttributeContainer = get_attribute_container(data, constant_pool);
+					result.push(temp);
 				}
 
 				result
