@@ -9,9 +9,11 @@ use runtime_lib::entities::constants::constant_container::ConstantContainer;
 use runtime_lib::entities::constants::method_ref_info::MethodRefInfo;
 use runtime_lib::entities::constants::name_and_type_info::NameAndTypeInfo;
 use runtime_lib::entities::method_info::MethodInfo;
+use runtime_lib::native_methods::class_linker::get_method;
 use stack_frame::StackFrame;
 
 pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
+	// TODO: Check if method is native - if so, register an implementation in the
 	let stack: &VecDeque<StackFrame> = runtime_data.get_stack(thread_id);
 	let current_stack_frame = match stack.front() {
 		Some(frame) => frame,
@@ -62,6 +64,21 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let next_class: &ClassStruct = runtime_data.get_class(next_class_name);
 
 	let method: &MethodInfo = next_class.get_method(&method_name);
+	if method.is_native()
+	{
+		let native_func = get_method(&next_class_name, &method_name);
+		native_func();
+		let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
+		let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
+			Some(frame) => frame,
+			None => {
+				panic!("could not resolve stack frame.")
+			}
+		};
+		current_stack_frame.increment_pc(3);
+		return;
+	}
+
 	let code: &CodeAttribute = method.derive_code_attribute();
 	let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);
 

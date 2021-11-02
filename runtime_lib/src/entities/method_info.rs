@@ -33,6 +33,11 @@ impl MethodInfo {
 		}
 	}
 
+	pub fn is_native(&self) -> bool
+	{
+		self.access_flags & 0x0100 > 0
+	}
+
 	pub fn derive_code_attribute(&self) -> &CodeAttribute {
 		let code_attrs: Vec<&AttributeContainer> = self.get_attributes(CODE);
 		assert!(
