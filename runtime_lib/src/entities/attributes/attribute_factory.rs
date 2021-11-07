@@ -32,7 +32,9 @@ pub fn get_attribute_container<T: ReadBytes>(data: &mut T, constant_pool: &[Cons
 		}
 		SOURCE_FILE => AttributeContainer::SourceFileAttribute(SourceFileAttribute::new(data, constant_pool)),
 		STACK_MAP_TABLE => AttributeContainer::StackMapTableAttribute(StackMapTableAttribute::new(data, constant_pool)),
-		RUNTIME_VISIBLE_ANNOTATION => AttributeContainer::RunTimeVisibleAnnotationAttribute(RuntimeVisibleAttribute::new(data, constant_pool)),
+		RUNTIME_VISIBLE_ANNOTATION => {
+			AttributeContainer::RunTimeVisibleAnnotationAttribute(RuntimeVisibleAttribute::new(data, constant_pool))
+		}
 		INNER_CLASS_ATTRIBUTE => AttributeContainer::InnerClassAttribute(InnerClassAttribute::new(data, constant_pool)),
 		&_ => panic!("Unidentified attribute: {}", attribute_type)
 	}

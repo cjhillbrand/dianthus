@@ -6,7 +6,7 @@ use runtime_lib::entities::class_struct::ClassStruct;
 #[derive(PartialEq, Serialize, Deserialize, Debug, Clone)]
 pub enum JvmObject {
 	Object(HashMap<String, JvmValue>),
-	Array(Vec<Box<JvmValue>>)
+	Array(Vec<JvmValue>)
 }
 
 impl JvmObject {
@@ -20,26 +20,19 @@ impl JvmObject {
 		JvmObject::Object(obj)
 	}
 
-	pub fn build_array(array: Vec<JvmValue>) -> JvmObject
-	{
-		let mut result: Vec<Box<JvmValue>> = Vec::new();
-		for value in array.into_iter()
-		{
-			result.push(Box::new(value));
-		}
-
-		JvmObject::Array(result)
+	pub fn build_array(array: Vec<JvmValue>) -> JvmObject {
+		JvmObject::Array(array)
 	}
 
 	pub fn get_value(&self, name: &str) -> &JvmValue {
 		match &self {
-			JvmObject::Object(obj) => {
-				match obj.get(name) {
-					Some(v) => v,
-					None => panic!("Could not find field: {}", name)
-				}
+			JvmObject::Object(obj) => match obj.get(name) {
+				Some(v) => v,
+				None => panic!("Could not find field: {}", name)
+			},
+			JvmObject::Array(_) => {
+				panic!("Can not retrieve field of object that is an array.")
 			}
-			JvmObject::Array(_) => { panic!("Can not retrieve field of object that is an array.") }
 		}
 	}
 
@@ -48,7 +41,9 @@ impl JvmObject {
 			JvmObject::Object(obj) => {
 				obj.insert(name.to_string(), value);
 			}
-			JvmObject::Array(_) => { panic!("Can not set field of object that is of type array.") }
+			JvmObject::Array(_) => {
+				panic!("Can not set field of object that is of type array.")
+			}
 		}
 	}
 }

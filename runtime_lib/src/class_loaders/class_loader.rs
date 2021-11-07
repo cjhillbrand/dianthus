@@ -3,8 +3,8 @@ use std::iter::FromIterator;
 use std::path::PathBuf;
 use std::string::String;
 use std::{env, fs};
-use crate::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
 
+use crate::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 use crate::entities::class_struct::ClassStruct;
 

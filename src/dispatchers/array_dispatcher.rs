@@ -23,7 +23,7 @@ impl Dispatcher for ArrayDispatcher {
 			BASTORE => panic!("BASTORE not implemented"),
 			CALOAD => panic!("CALOAD not implemented"),
 			CASTORE => panic!("CASTORE not implemented"),
-			_ => { return false }
+			_ => return false
 		}
 
 		true

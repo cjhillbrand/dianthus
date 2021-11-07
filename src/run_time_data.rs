@@ -89,7 +89,7 @@ impl RunTimeData {
 		}
 	}
 
-	pub fn get_current_stack_frame_mut(&mut self, thread_id: usize) -> &mut StackFrame{
+	pub fn get_current_stack_frame_mut(&mut self, thread_id: usize) -> &mut StackFrame {
 		let stack: &mut VecDeque<StackFrame> = self.get_stack_mut(thread_id);
 		match stack.front_mut() {
 			Some(frame) => frame,
