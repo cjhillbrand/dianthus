@@ -20,9 +20,7 @@ impl JvmObject {
 		JvmObject::Object(obj)
 	}
 
-	pub fn build_array(array: Vec<JvmValue>) -> JvmObject {
-		JvmObject::Array(array)
-	}
+	pub fn build_array(array: Vec<JvmValue>) -> JvmObject { JvmObject::Array(array) }
 
 	pub fn get_value(&self, name: &str) -> &JvmValue {
 		match &self {
