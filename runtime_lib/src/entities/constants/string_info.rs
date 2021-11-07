@@ -19,6 +19,11 @@ impl StringInfo {
 		}
 	}
 
+	pub fn get_string_index(&self) -> u16
+	{
+		self.string_index
+	}
+
 	#[cfg(test)]
 	pub(crate) fn new_test_model(tag: u8, string_index: u16) -> StringInfo { StringInfo { tag, string_index } }
 }

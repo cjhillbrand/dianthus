@@ -78,4 +78,24 @@ impl RunTimeData {
 	pub fn get_heap(&self) -> &Heap { &self.heap }
 
 	pub fn get_heap_mut(&mut self) -> &mut Heap { &mut self.heap }
+
+	pub fn get_current_stack_frame(&self, thread_id: usize) -> &StackFrame {
+		let stack: &VecDeque<StackFrame> = self.get_stack(thread_id);
+		match stack.front() {
+			Some(frame) => frame,
+			None => {
+				panic!("could not resolve stack frame.")
+			}
+		}
+	}
+
+	pub fn get_current_stack_frame_mut(&mut self, thread_id: usize) -> &mut StackFrame{
+		let stack: &mut VecDeque<StackFrame> = self.get_stack_mut(thread_id);
+		match stack.front_mut() {
+			Some(frame) => frame,
+			None => {
+				panic!("could not resolve stack frame.")
+			}
+		}
+	}
 }

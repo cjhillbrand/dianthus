@@ -34,15 +34,6 @@ impl Dispatcher for LongDispatcher {
 			}
 			LCONST_0 => lconst_0(thread_id, runtime_data),
 			LCONST_1 => lconst_1(thread_id, runtime_data),
-			LDC => {
-				panic!("LDC not implemented")
-			}
-			LDC_W => {
-				panic!("LDC_W not implemented")
-			}
-			LDC2_W => {
-				panic!("LDC2_W not implemented")
-			}
 			LDIV => {
 				panic!("LDIV not implemented")
 			}

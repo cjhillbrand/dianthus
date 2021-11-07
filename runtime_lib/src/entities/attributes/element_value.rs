@@ -1,4 +1,3 @@
-use serde_json::de::Read;
 use crate::entities::attributes::annotation::Annotation;
 use crate::entities::read_bytes::ReadBytes;
 
@@ -70,7 +69,7 @@ impl ElementValueEnum {
 }
 
 #[derive(PartialEq, Eq, Serialize, Deserialize, Debug, Clone, Default)]
-struct EnumConstValue {
+pub struct EnumConstValue {
     type_name_index: u16,
     const_name_index: u16
 }

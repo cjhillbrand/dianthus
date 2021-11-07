@@ -1,4 +1,5 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::array_implementation::aconst_null;
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -9,7 +10,7 @@ impl Dispatcher for ArrayDispatcher {
 		match self.get_instruction(thread_id, runtime_data) {
 			AALOAD => panic!("AALOAD not implemented"),
 			AASTORE => panic!("AASOTRE not implemented"),
-			ACONST_NULL => panic!("ACONST_NULL not implemented"),
+			ACONST_NULL => aconst_null(thread_id, runtime_data),
 			ANEWARRAY => panic!("ANEWARRAY not implemented"),
 			ARETURN => panic!("ARETURN not implemented"),
 			ARRAYLENGTH => panic!("ARRAYLENGTH not implemented"),
@@ -22,7 +23,9 @@ impl Dispatcher for ArrayDispatcher {
 			BASTORE => panic!("BASTORE not implemented"),
 			CALOAD => panic!("CALOAD not implemented"),
 			CASTORE => panic!("CASTORE not implemented"),
-			_ => false
+			_ => { return false }
 		}
+
+		true
 	}
 }

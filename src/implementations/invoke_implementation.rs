@@ -13,7 +13,6 @@ use runtime_lib::native_methods::class_linker::get_method;
 use stack_frame::StackFrame;
 
 pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
-	// TODO: Check if method is native - if so, register an implementation in the
 	let stack: &VecDeque<StackFrame> = runtime_data.get_stack(thread_id);
 	let current_stack_frame = match stack.front() {
 		Some(frame) => frame,
@@ -63,6 +62,89 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 
 	let next_class: &ClassStruct = runtime_data.get_class(next_class_name);
 
+	let method: &MethodInfo = next_class.get_method(&method_name);
+	if method.is_native()
+	{
+		let native_func = get_method(&next_class_name, &method_name);
+		native_func();
+		let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
+		let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
+			Some(frame) => frame,
+			None => {
+				panic!("could not resolve stack frame.")
+			}
+		};
+		current_stack_frame.increment_pc(3);
+		return;
+	}
+
+	let code: &CodeAttribute = method.derive_code_attribute();
+	let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);
+
+	let mut range = get_args_count(&method_signature);
+	for mut i in 0..range {
+		let value: &JvmValue = current_stack_frame.get_stack_value(i);
+		next_frame.set_local_var(value.clone(), i);
+		match value {
+			JvmValue::Long(_v) => {
+				i += 1;
+				range += 1;
+				next_frame.set_local_var(JvmValue::PlaceHolder, i);
+			}
+			JvmValue::Double(_v) => {
+				i += 1;
+				range += 1;
+				next_frame.set_local_var(JvmValue::PlaceHolder, i);
+			}
+			_ => {}
+		};
+	}
+
+	let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
+	let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
+		Some(frame) => frame,
+		None => {
+			panic!("could not resolve stack frame.")
+		}
+	};
+
+	current_stack_frame.increment_pc(3);
+	runtime_data.push_stack(next_frame, thread_id);
+}
+
+pub fn invoke_virtual(thread_id: usize, runtime_data: &mut RunTimeData) {
+	let current_stack_frame: &StackFrame = runtime_data.get_current_stack_frame(thread_id);
+	let executing_class: &str = current_stack_frame.get_executing_class();
+	let class: &ClassStruct = runtime_data.get_class(executing_class);
+	let constant_pool: &Vec<ConstantContainer> = class.get_constant_pool();
+	let pc: usize = current_stack_frame.get_pc();
+	let cp_index = (current_stack_frame.get_code()[pc + 1] as u16) << 8 |
+		current_stack_frame.get_code()[pc + 2] as u16;
+
+	let method_ref: &MethodRefInfo = match &constant_pool[cp_index as usize] {
+		ConstantContainer::MethodRefInfo(v) => v,
+		_ => panic!("expected MethodRefInfo. Index: {}", cp_index)
+	};
+
+	let name_and_type_index: usize = method_ref.get_name_and_type_index() as usize;
+	let class_index: usize = method_ref.get_class_index() as usize;
+	let name_and_type_info: &NameAndTypeInfo = match &constant_pool[name_and_type_index as usize] {
+		ConstantContainer::NameAndTypeInfo(v) => v,
+		_ => panic!("expected NameAndTypeInfo. Index: {}", name_and_type_index)
+	};
+	let name_index: usize = name_and_type_info.get_name_index() as usize;
+	let descriptor_index: usize = name_and_type_info.get_descriptor_index() as usize;
+	let method_name: String = constant_pool[name_index].get_string();
+	let method_signature: String = constant_pool[descriptor_index].get_string();
+
+
+	let next_class_index: usize = match &constant_pool[class_index] {
+		ConstantContainer::ClassInfo(v) => v.name_index() as usize,
+		_ => panic!("Expected ClassInfo at index: {}", class_index)
+	};
+
+	let next_class_name: &str = &constant_pool[next_class_index].get_string();
+	let next_class: &ClassStruct = runtime_data.get_class(next_class_name);
 	let method: &MethodInfo = next_class.get_method(&method_name);
 	if method.is_native()
 	{

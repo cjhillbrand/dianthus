@@ -5,3 +5,4 @@ pub mod int_implementation;
 pub mod invoke_implementation;
 pub mod invoke_init;
 pub mod long_implementation;
+pub mod array_implementation;
