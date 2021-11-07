@@ -12,6 +12,7 @@
 )]
 pub mod class_loaders;
 pub mod entities;
+pub mod native_methods;
 
 extern crate serde;
 extern crate serde_json;

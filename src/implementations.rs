@@ -1,3 +1,4 @@
+pub mod array_implementation;
 pub mod class_implementation;
 pub mod control_implementation;
 pub mod float_implementation;

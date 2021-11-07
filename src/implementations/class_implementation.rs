@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use heap::Heap;
 use implementations::invoke_init::invoke_class_init;
 use jvm_object::JvmObject;
-use jvm_value::JvmValue;
+use jvm_value::{to_jvm_value, JvmValue};
 use run_time_data::RunTimeData;
 use runtime_lib::entities::class_struct::ClassStruct;
 use runtime_lib::entities::constants::constant_container::ConstantContainer;
@@ -14,6 +14,29 @@ use stack_frame::StackFrame;
 pub fn return_op(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let stack: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
 	stack.pop_front();
+}
+
+pub fn ldc(thread_id: usize, runtime_data: &mut RunTimeData) {
+	let current_stack_frame: &StackFrame = runtime_data.get_current_stack_frame(thread_id);
+	let pc: usize = current_stack_frame.get_pc();
+	let cp_index: usize = current_stack_frame.get_code()[pc + 1] as usize;
+	let constants: &Vec<ConstantContainer> = runtime_data.get_constant_pool(current_stack_frame.get_executing_class());
+
+	dbg!(":#?", &constants[cp_index]);
+
+	let jvm_value: (Option<JvmValue>, Option<JvmObject>) = to_jvm_value(constants, cp_index);
+	if jvm_value.0.is_some() {
+		let current_stack_frame_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+		current_stack_frame_mut.push_on_stack(jvm_value.0.unwrap());
+	} else if jvm_value.1.is_some() {
+		let heap_mut: &mut Heap = runtime_data.get_heap_mut();
+		let reference: u64 = heap_mut.alloc(jvm_value.1.unwrap());
+		let current_stack_frame_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+		current_stack_frame_mut.push_on_stack(JvmValue::Reference(reference));
+	}
+
+	let current_stack_frame_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+	current_stack_frame_mut.increment_pc(2);
 }
 
 pub fn get_static(thread_id: usize, runtime_data: &mut RunTimeData) {

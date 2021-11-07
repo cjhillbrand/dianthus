@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::string::String;
 use std::{env, fs};
 
+use crate::class_loaders::bootstrap_class_loader::BootStrapClassLoader;
 use crate::class_loaders::class_loader_container::ClassLoaderContainer;
 use crate::entities::class_struct::ClassStruct;
 
@@ -14,16 +15,15 @@ pub trait ClassLoader {
 		let mut path: PathBuf = self.path_buf();
 		path.push(file);
 		path.set_extension("class");
-		// check if class file, check if .jar
-		// if .jar use zip archive, and find correct file. May want to have
-		// each class loader keep track of classes that it knows of.
-		// or first go, we could see how long it takes to load them all? idk
 		match fs::read(&path) {
 			Ok(data_vec) => {
 				let mut data: VecDeque<u8> = VecDeque::from_iter(data_vec);
 				ClassStruct::new(&mut data)
 			}
-			Err(_err) => self.parent().load_class(file)
+			Err(_err) => match self.parent() {
+				ClassLoaderContainer::Bootstrap(v) => BootStrapClassLoader::load_class(&v, file),
+				v => v.load_class(file)
+			}
 		}
 	}
 }

@@ -1,5 +1,5 @@
 use dispatchers::dispatcher::Dispatcher;
-use implementations::invoke_implementation::invoke_static;
+use implementations::invoke_implementation::{invoke_static, invoke_virtual};
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -12,7 +12,7 @@ impl Dispatcher for InvokeDispatcher {
 			INVOKEINTERFACE => panic!("INVOKEINTERFACE not implemented"),
 			INVOKESPECIAL => panic!("INVOKESPECIAL not implemented"),
 			INVOKESTATIC => invoke_static(thread_id, runtime_data),
-			INVOKEVIRTUAL => panic!("INVOKEVIRTUAL not implemented"),
+			INVOKEVIRTUAL => invoke_virtual(thread_id, runtime_data),
 			_ => return false
 		}
 

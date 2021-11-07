@@ -42,6 +42,7 @@ impl BootStrapClassLoader {
 			Err(_err) => panic!("Could not load rt.jar from java home.")
 		};
 
+		let full_file_name: String = format!("{}{}", &file_name, ".class");
 		let reader = std::io::Cursor::new(buf);
 		let mut zip = match zip::ZipArchive::new(reader) {
 			Ok(archive) => archive,
@@ -50,7 +51,7 @@ impl BootStrapClassLoader {
 
 		for i in 0..zip.len() {
 			let mut file = zip.by_index(i).unwrap();
-			if file.name().eq(file_name) {
+			if file.name().eq(&full_file_name) {
 				let mut contents: Vec<u8> = Vec::new();
 				match file.read_to_end(&mut contents) {
 					Ok(_) => {}

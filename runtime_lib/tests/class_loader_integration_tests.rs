@@ -20,7 +20,7 @@ fn system_class_loader_loads_class_in_current_directory() {
 #[ignore]
 fn bootstrap_class_loader_loads_rt_jar() {
 	let loader: BootStrapClassLoader = BootStrapClassLoader {};
-	let class: ClassStruct = match loader.load_rt_jar("java/io/PrintStream.class") {
+	let class: ClassStruct = match loader.load_rt_jar("java/lang/System") {
 		Some(c) => c,
 		None => panic!("Could not load class")
 	};

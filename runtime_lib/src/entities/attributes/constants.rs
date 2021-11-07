@@ -6,3 +6,5 @@ pub const EXCEPTION: &str = "Exceptions";
 pub const LINE_NUMBER_TABLE: &str = "LineNumberTable";
 pub const SOURCE_FILE: &str = "SourceFile";
 pub const STACK_MAP_TABLE: &str = "StackMapTable";
+pub const RUNTIME_VISIBLE_ANNOTATION: &str = "RuntimeVisibleAnnotations";
+pub const INNER_CLASS_ATTRIBUTE: &str = "InnerClasses";
