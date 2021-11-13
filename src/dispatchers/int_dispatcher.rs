@@ -1,5 +1,7 @@
 use dispatchers::dispatcher::Dispatcher;
 use implementations::int_implementation::*;
+use implementations::
+use implementations::common_implementation::*;
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -9,15 +11,15 @@ impl Dispatcher for IntDispatcher {
 	fn dispatch(&self, thread_id: usize, runtime_data: &mut RunTimeData) -> bool {
 		match self.get_instruction(thread_id, runtime_data) {
 			BIPUSH => bipush(thread_id, runtime_data),
-			I2B => panic!("I2B not implemented"),
-			I2C => panic!("I2C not implemented"),
-			I2D => panic!("I2D not implemented"),
-			I2F => panic!("I2F not implemented"),
-			I2L => panic!("I2L not implemented"),
-			I2S => panic!("I2S not implemented"),
-			IADD => iadd(thread_id, runtime_data),
+			I2B => i2b(thread_id, runtime_data),
+			I2C => i2c(thread_id, runtime_data),
+			I2D => i2d(thread_id, runtime_data),
+			I2F => i2f(thread_id, runtime_data),
+			I2L => i2l(thread_id, runtime_data),
+			I2S => i2s(thread_id, runtime_data),
+			IADD => i_add(thread_id, runtime_data),
 			IALOAD => panic!("IALOAD not implemented"),
-			IAND => panic!("IAND not implemented"),
+			IAND => i_and(thread_id, runtime_data),
 			IASTORE => panic!("IASTORE not implemented"),
 			ICONST_M1 => iconst_m1(thread_id, runtime_data),
 			ICONST_0 => iconst_0(thread_id, runtime_data),
@@ -26,27 +28,27 @@ impl Dispatcher for IntDispatcher {
 			ICONST_3 => iconst_3(thread_id, runtime_data),
 			ICONST_4 => iconst_4(thread_id, runtime_data),
 			ICONST_5 => iconst_5(thread_id, runtime_data),
-			IDIV => panic!("IDIV not implemented"),
+			IDIV => i_div(thread_id, runtime_data),
 			ILOAD => panic!("ILOAD not implemented"),
-			ILOAD_0 => iload_0(thread_id, runtime_data),
-			ILOAD_1 => iload_1(thread_id, runtime_data),
-			ILOAD_2 => iload_2(thread_id, runtime_data),
-			ILOAD_3 => iload_3(thread_id, runtime_data),
-			IMUL => panic!("IMUL not implemented"),
-			INEG => panic!("INEG not implemented"),
-			IOR => panic!("IOR not implemented"),
-			IREM => panic!("IREM not implemented"),
+			ILOAD_0 => load_0(thread_id, runtime_data),
+			ILOAD_1 => load_1(thread_id, runtime_data),
+			ILOAD_2 => load_2(thread_id, runtime_data),
+			ILOAD_3 => load_3(thread_id, runtime_data),
+			IMUL => i_mul(thread_id, runtime_data),
+			INEG => i_neg(thread_id, runtime_data),
+			IOR => i_or(thread_id, runtime_data),
+			IREM => i_rem(thread_id, runtime_data),
 			IRETURN => i_return(thread_id, runtime_data),
-			ISHL => panic!("ISHL not implemented"),
-			ISHR => panic!("ISHR not implemented"),
+			ISHL => i_shl(thread_id, runtime_data),
+			ISHR => i_shr(thread_id, runtime_data),
 			ISTORE => panic!("ISTORE not implemented"),
-			ISTORE_0 => istore_0(thread_id, runtime_data),
-			ISTORE_1 => istore_1(thread_id, runtime_data),
-			ISTORE_2 => istore_2(thread_id, runtime_data),
-			ISTORE_3 => istore_3(thread_id, runtime_data),
-			ISUB => panic!("ISUB not implemented"),
-			IUSHR => panic!("IUSHR not implemented"),
-			IXOR => panic!("IXOR not implemented"),
+			ISTORE_0 => store_0(thread_id, runtime_data),
+			ISTORE_1 => store_1(thread_id, runtime_data),
+			ISTORE_2 => store_2(thread_id, runtime_data),
+			ISTORE_3 => store_3(thread_id, runtime_data),
+			ISUB => i_sub(thread_id, runtime_data),
+			IUSHR => i_ushr(thread_id, runtime_data),
+			IXOR => i_xor(thread_id, runtime_data),
 			_ => {
 				return false;
 			}
