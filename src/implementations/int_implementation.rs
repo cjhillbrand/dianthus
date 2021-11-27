@@ -1,6 +1,5 @@
-use implementations::common_implementation::{return_value};
-
-use jvm_value::{JvmValue};
+use implementations::common_implementation::return_value;
+use jvm_value::JvmValue;
 use run_time_data::RunTimeData;
 use stack_frame::StackFrame;
 
@@ -37,7 +36,7 @@ pub fn iconst_4(thread_id: usize, runtime_data: &mut RunTimeData) { iconst_n(thr
 pub fn iconst_5(thread_id: usize, runtime_data: &mut RunTimeData) { iconst_n(thread_id, runtime_data, 5) }
 
 pub fn i_return(thread_id: usize, runtime_data: &mut RunTimeData) {
-	let cast =  |operand: JvmValue| operand.to_int();
+	let cast = |operand: JvmValue| operand.to_int();
 	return_value(thread_id, runtime_data, cast);
 }
 
@@ -59,8 +58,7 @@ pub fn i2c(thread_id: usize, runtime_data: &mut RunTimeData) {
 	stack_frame.increment_pc(1)
 }
 
-pub fn i2d(thread_id: usize, runtime_data: &mut RunTimeData)
-{
+pub fn i2d(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let stack_frame: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
 	let value: i32 = stack_frame.pop_stack().i32();
 
@@ -173,8 +171,7 @@ pub fn i_neg(thread_id: usize, runtime_data: &mut RunTimeData) {
 }
 
 fn binop<T>(stack_frame: &mut StackFrame, op: T)
-	where T: FnOnce(i32, i32) -> i32
-{
+where T: FnOnce(i32, i32) -> i32 {
 	let lhs: JvmValue = stack_frame.pop_stack();
 	let rhs: JvmValue = stack_frame.pop_stack();
 	let lhs_value: i32 = lhs.i32();

@@ -20,20 +20,16 @@ impl Dispatcher for FloatDispatcher {
 			FCONST_1 => fconst_1(thread_id, runtime_data),
 			FCONST_2 => fconst_2(thread_id, runtime_data),
 			FDIV => f_div(thread_id, runtime_data),
-			FLOAD => {
-				panic!("FLOAD not implemented")
-			}
+			FLOAD => load(thread_id, runtime_data),
 			FLOAD_0 => load_0(thread_id, runtime_data),
 			FLOAD_1 => load_1(thread_id, runtime_data),
 			FLOAD_2 => load_2(thread_id, runtime_data),
-			FLOAD_3 => load_3(thread_id, runtime_data)
+			FLOAD_3 => load_3(thread_id, runtime_data),
 			FMUL => f_mul(thread_id, runtime_data),
 			FNEG => f_neg(thread_id, runtime_data),
 			FREM => f_rem(thread_id, runtime_data),
 			FRETURN => f_return(thread_id, runtime_data),
-			FSTORE => {
-				panic!("FSTORE not implemented")
-			}
+			FSTORE => store(thread_id, runtime_data),
 			FSTORE_0 => store_0(thread_id, runtime_data),
 			FSTORE_1 => store_1(thread_id, runtime_data),
 			FSTORE_2 => store_2(thread_id, runtime_data),

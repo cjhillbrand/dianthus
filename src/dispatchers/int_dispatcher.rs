@@ -1,7 +1,6 @@
 use dispatchers::dispatcher::Dispatcher;
-use implementations::int_implementation::*;
-use implementations::
 use implementations::common_implementation::*;
+use implementations::int_implementation::*;
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -29,7 +28,7 @@ impl Dispatcher for IntDispatcher {
 			ICONST_4 => iconst_4(thread_id, runtime_data),
 			ICONST_5 => iconst_5(thread_id, runtime_data),
 			IDIV => i_div(thread_id, runtime_data),
-			ILOAD => panic!("ILOAD not implemented"),
+			ILOAD => load(thread_id, runtime_data),
 			ILOAD_0 => load_0(thread_id, runtime_data),
 			ILOAD_1 => load_1(thread_id, runtime_data),
 			ILOAD_2 => load_2(thread_id, runtime_data),
@@ -41,7 +40,7 @@ impl Dispatcher for IntDispatcher {
 			IRETURN => i_return(thread_id, runtime_data),
 			ISHL => i_shl(thread_id, runtime_data),
 			ISHR => i_shr(thread_id, runtime_data),
-			ISTORE => panic!("ISTORE not implemented"),
+			ISTORE => store(thread_id, runtime_data),
 			ISTORE_0 => store_0(thread_id, runtime_data),
 			ISTORE_1 => store_1(thread_id, runtime_data),
 			ISTORE_2 => store_2(thread_id, runtime_data),

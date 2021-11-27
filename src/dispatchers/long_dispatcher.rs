@@ -20,7 +20,7 @@ impl Dispatcher for LongDispatcher {
 			LCONST_0 => lconst_0(thread_id, runtime_data),
 			LCONST_1 => lconst_1(thread_id, runtime_data),
 			LDIV => l_div(thread_id, runtime_data),
-			LLOAD => panic!("LLOAD not implemented"),
+			LLOAD => load(thread_id, runtime_data),
 			LLOAD_0 => load_0(thread_id, runtime_data),
 			LLOAD_1 => load_1(thread_id, runtime_data),
 			LLOAD_2 => load_2(thread_id, runtime_data),
@@ -32,9 +32,7 @@ impl Dispatcher for LongDispatcher {
 			LRETURN => l_return(thread_id, runtime_data),
 			LSHL => l_shl(thread_id, runtime_data),
 			LSHR => l_shr(thread_id, runtime_data),
-			LSTORE => {
-				panic!("LSTORE not implemented")
-			}
+			LSTORE => store(thread_id, runtime_data),
 			LSTORE_0 => store_0(thread_id, runtime_data),
 			LSTORE_1 => store_1(thread_id, runtime_data),
 			LSTORE_2 => store_2(thread_id, runtime_data),

@@ -1,4 +1,6 @@
-use implementations::common_implementation::{return_value, store_n};
+use std::cmp::Ordering;
+
+use implementations::common_implementation::return_value;
 use jvm_value::JvmValue;
 use run_time_data::RunTimeData;
 use stack_frame::StackFrame;
@@ -111,10 +113,11 @@ pub fn l_cmp(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let lhs_value: i64 = lhs.long();
 	let rhs_value: i64 = rhs.long();
 
-	let result_value =
-		if lhs_value > rhs_value { 1 }
-		else if lhs_value == rhs_value { 0 }
-		else { -1 };
+	let result_value: i32 = match lhs_value.cmp(&rhs_value) {
+		Ordering::Greater => 1,
+		Ordering::Less => 0,
+		Ordering::Equal => -1
+	};
 
 	let result = JvmValue::Int(result_value);
 	stack_frame.push_on_stack(result);
@@ -132,16 +135,14 @@ pub fn l_neg(thread_id: usize, runtime_data: &mut RunTimeData) {
 }
 
 fn conversion<T>(stack_frame: &mut StackFrame, op: T)
-	where T : FnOnce(i64) -> JvmValue
-{
+where T: FnOnce(i64) -> JvmValue {
 	let operand: i64 = stack_frame.pop_stack().long();
 	stack_frame.push_on_stack(op(operand));
 	stack_frame.increment_pc(1);
 }
 
 fn binop<T>(stack_frame: &mut StackFrame, op: T)
-	where T : FnOnce(i64, i64) -> i64
-{
+where T: FnOnce(i64, i64) -> i64 {
 	let lhs: JvmValue = stack_frame.pop_stack();
 	let rhs: JvmValue = stack_frame.pop_stack();
 	let lhs_value: i64 = lhs.long();

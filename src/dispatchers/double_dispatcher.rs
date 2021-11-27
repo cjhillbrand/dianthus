@@ -24,9 +24,7 @@ impl Dispatcher for DoubleDispatcher {
 			DCONST_0 => dconst_0(thread_id, runtime_data),
 			DCONST_1 => dconst_1(thread_id, runtime_data),
 			DDIV => d_div(thread_id, runtime_data),
-			DLOAD => {
-				panic!("DLOAD not implemented")
-			}
+			DLOAD => load(thread_id, runtime_data),
 			DLOAD_0 => load_0(thread_id, runtime_data),
 			DLOAD_1 => load_1(thread_id, runtime_data),
 			DLOAD_2 => load_2(thread_id, runtime_data),
@@ -35,9 +33,7 @@ impl Dispatcher for DoubleDispatcher {
 			DNEG => d_neg(thread_id, runtime_data),
 			DREM => d_rem(thread_id, runtime_data),
 			DRETURN => d_return(thread_id, runtime_data),
-			DSTORE => {
-				panic!("DSTORE not implemented")
-			}
+			DSTORE => store(thread_id, runtime_data),
 			DSTORE_0 => store_0(thread_id, runtime_data),
 			DSTORE_1 => store_1(thread_id, runtime_data),
 			DSTORE_2 => store_2(thread_id, runtime_data),
@@ -46,6 +42,6 @@ impl Dispatcher for DoubleDispatcher {
 			_ => return false
 		}
 
-		return true
+		true
 	}
 }
