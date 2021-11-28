@@ -172,8 +172,8 @@ pub fn i_neg(thread_id: usize, runtime_data: &mut RunTimeData) {
 
 fn binop<T>(stack_frame: &mut StackFrame, op: T)
 where T: FnOnce(i32, i32) -> i32 {
-	let lhs: JvmValue = stack_frame.pop_stack();
 	let rhs: JvmValue = stack_frame.pop_stack();
+	let lhs: JvmValue = stack_frame.pop_stack();
 	let lhs_value: i32 = lhs.i32();
 	let rhs_value: i32 = rhs.i32();
 

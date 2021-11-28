@@ -85,7 +85,6 @@ pub fn put_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	let obj: &mut JvmObject = heap.get_static_value_mut(&class_name);
 
 	obj.set_value(&field_name, value);
-	println!("{:#?}", heap);
 }
 
 fn get_static_field_context(thread_id: usize, runtime_data: &RunTimeData) -> (String, String) {

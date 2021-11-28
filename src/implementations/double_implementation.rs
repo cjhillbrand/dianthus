@@ -109,8 +109,8 @@ where T: FnOnce(f64) -> JvmValue {
 
 fn binop<T>(stack_frame: &mut StackFrame, op: T)
 where T: FnOnce(f64, f64) -> f64 {
-	let lhs: JvmValue = stack_frame.pop_stack();
 	let rhs: JvmValue = stack_frame.pop_stack();
+	let lhs: JvmValue = stack_frame.pop_stack();
 	let lhs_value: f64 = lhs.double();
 	let rhs_value: f64 = rhs.double();
 

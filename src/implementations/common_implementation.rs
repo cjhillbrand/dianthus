@@ -65,13 +65,12 @@ where T: FnOnce(JvmValue) -> JvmValue {
 	let return_value: JvmValue = current_stack_frame.pop_stack();
 	stack.pop_front();
 	let casted_value: JvmValue = cast(return_value);
-	let new_stack_frame = match stack.front_mut() {
-		Some(frame) => frame,
+	match stack.front_mut() {
+		Some(frame) => {
+			frame.push_on_stack(casted_value);
+		},
 		None => {
-			panic!("could not resolve stack frame.")
+			println!("Return value of main: {}", casted_value.i32())
 		}
 	};
-
-	new_stack_frame.push_on_stack(casted_value);
-	new_stack_frame.increment_pc(1)
 }

@@ -1,5 +1,3 @@
-use std::collections::VecDeque;
-
 use implementations::invoke_init::invoke_class_init;
 use jvm_value::JvmValue;
 use run_time_data::RunTimeData;
@@ -13,13 +11,7 @@ use runtime_lib::native_methods::class_linker::get_method;
 use stack_frame::StackFrame;
 
 pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
-	let stack: &VecDeque<StackFrame> = runtime_data.get_stack(thread_id);
-	let current_stack_frame = match stack.front() {
-		Some(frame) => frame,
-		None => {
-			panic!("could not resolve stack frame.")
-		}
-	};
+	let current_stack_frame = runtime_data.get_current_stack_frame(thread_id);
 
 	let executing_class: &str = current_stack_frame.get_executing_class();
 	let class: &ClassStruct = runtime_data.get_class(executing_class);
@@ -66,48 +58,19 @@ pub fn invoke_static(thread_id: usize, runtime_data: &mut RunTimeData) {
 	if method.is_native() {
 		let native_func = get_method(next_class_name, &method_name);
 		native_func();
-		let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
-		let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
-			Some(frame) => frame,
-			None => {
-				panic!("could not resolve stack frame.")
-			}
-		};
-		current_stack_frame.increment_pc(3);
+		let stack_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+		stack_mut.increment_pc(3);
 		return;
 	}
 
 	let code: &CodeAttribute = method.derive_code_attribute();
 	let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);
 
-	let mut range = get_args_count(&method_signature);
-	for mut i in 0..range {
-		let value: &JvmValue = current_stack_frame.get_stack_value(i);
-		next_frame.set_local_var(value.clone(), i);
-		match value {
-			JvmValue::Long(_v) => {
-				i += 1;
-				range += 1;
-				next_frame.set_local_var(JvmValue::PlaceHolder, i);
-			}
-			JvmValue::Double(_v) => {
-				i += 1;
-				range += 1;
-				next_frame.set_local_var(JvmValue::PlaceHolder, i);
-			}
-			_ => {}
-		};
-	}
+	let range = get_args_count(&method_signature);
+	let stack_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+	copy_args(stack_mut, &mut next_frame, range);
 
-	let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
-	let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
-		Some(frame) => frame,
-		None => {
-			panic!("could not resolve stack frame.")
-		}
-	};
-
-	current_stack_frame.increment_pc(3);
+	stack_mut.increment_pc(3);
 	runtime_data.push_stack(next_frame, thread_id);
 }
 
@@ -146,48 +109,19 @@ pub fn invoke_virtual(thread_id: usize, runtime_data: &mut RunTimeData) {
 	if method.is_native() {
 		let native_func = get_method(next_class_name, &method_name);
 		native_func();
-		let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
-		let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
-			Some(frame) => frame,
-			None => {
-				panic!("could not resolve stack frame.")
-			}
-		};
-		current_stack_frame.increment_pc(3);
+
+		let stack_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+		stack_mut.increment_pc(3);
 		return;
 	}
 
 	let code: &CodeAttribute = method.derive_code_attribute();
 	let mut next_frame: StackFrame = StackFrame::create_stack_frame(executing_class, code);
+	let range = get_args_count(&method_signature);
+	let stack_mut: &mut StackFrame = runtime_data.get_current_stack_frame_mut(thread_id);
+	copy_args(stack_mut, &mut next_frame, range);
 
-	let mut range = get_args_count(&method_signature);
-	for mut i in 0..range {
-		let value: &JvmValue = current_stack_frame.get_stack_value(i);
-		next_frame.set_local_var(value.clone(), i);
-		match value {
-			JvmValue::Long(_v) => {
-				i += 1;
-				range += 1;
-				next_frame.set_local_var(JvmValue::PlaceHolder, i);
-			}
-			JvmValue::Double(_v) => {
-				i += 1;
-				range += 1;
-				next_frame.set_local_var(JvmValue::PlaceHolder, i);
-			}
-			_ => {}
-		};
-	}
-
-	let stack_mut: &mut VecDeque<StackFrame> = runtime_data.get_stack_mut(thread_id);
-	let current_stack_frame: &mut StackFrame = match stack_mut.front_mut() {
-		Some(frame) => frame,
-		None => {
-			panic!("could not resolve stack frame.")
-		}
-	};
-
-	current_stack_frame.increment_pc(3);
+	stack_mut.increment_pc(3);
 	runtime_data.push_stack(next_frame, thread_id);
 }
 
@@ -203,4 +137,29 @@ fn get_args_count(signature: &str) -> usize {
 	};
 
 	end_index - start_index - 1
+}
+
+fn handle_is_native() {
+
+}
+
+fn copy_args(caller: &mut StackFrame, callee: &mut StackFrame, mut count: usize)
+{
+	for mut i in 0..count {
+		let value: JvmValue = caller.pop_stack();
+		callee.set_local_var(value.clone(), i);
+		match &value {
+			JvmValue::Long(_v) => {
+				i += 1;
+				count += 1;
+				callee.set_local_var(JvmValue::PlaceHolder, i);
+			}
+			JvmValue::Double(_v) => {
+				i += 1;
+				count += 1;
+				callee.set_local_var(JvmValue::PlaceHolder, i);
+			}
+			_ => {}
+		};
+	}
 }

@@ -1,4 +1,5 @@
 use dispatchers::dispatcher::Dispatcher;
+use implementations::compare_implementation::*;
 use opcodes::*;
 use run_time_data::RunTimeData;
 
@@ -9,21 +10,23 @@ impl Dispatcher for CompareDispatcher {
 		match self.get_instruction(thread_id, runtime_data) {
 			IF_ACMPEQ => panic!("IFACMPEQ is not implemented"),
 			IF_ACMPNE => panic!("IFACMPNE is not implemented"),
-			IF_ICMPEQ => panic!("IFICMPEQ is not implemented"),
-			IF_ICMPNE => panic!("IFICMPNE is not implemented"),
-			IF_ICMPLT => panic!("IFICMPLT is not implemented"),
-			IF_ICMPGE => panic!("IFICMPGE is not implemented"),
-			IF_ICMPGT => panic!("IFICMPGT is not implemented"),
-			IF_ICMPLE => panic!("IFICMPLE is not implemented"),
-			IFEQ => panic!("IFEQ is not implemented"),
-			IFNE => panic!("IFNE is not implemented"),
-			IFLT => panic!("IFLT is not implemented"),
-			IFLE => panic!("IFLEis not implemented"),
-			IFGE => panic!("IFGE is not implemented"),
-			IFGT => panic!("IFGT is not implemented"),
+			IF_ICMPEQ => if_icmpeq(thread_id, runtime_data),
+			IF_ICMPNE => if_icmpne(thread_id, runtime_data),
+			IF_ICMPLT => if_icmplt(thread_id, runtime_data),
+			IF_ICMPGE => if_icmpge(thread_id, runtime_data),
+			IF_ICMPGT => if_icmpgt(thread_id, runtime_data),
+			IF_ICMPLE => if_icmple(thread_id, runtime_data),
+			IFEQ => if_eq(thread_id, runtime_data),
+			IFNE => if_ne(thread_id, runtime_data),
+			IFLT => if_lt(thread_id, runtime_data),
+			IFLE => if_le(thread_id, runtime_data),
+			IFGE => if_ge(thread_id, runtime_data),
+			IFGT => if_gt(thread_id, runtime_data),
 			IFNONNULL => panic!("IFNONULL is not implemented"),
 			IFNULL => panic!("IFNULL is not implemented"),
-			_ => false
-		}
+			_ => { return false }
+		};
+
+		return true;
 	}
 }

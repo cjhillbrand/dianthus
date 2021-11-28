@@ -33,6 +33,10 @@ impl ClassStruct {
 		result.constant_pool = Vec::new();
 		result.constant_pool.push(ConstantContainer::None);
 		for _i in 0..constants_count - 1 {
+			if _i == 308
+			{
+				dbg!("here");
+			}
 			result.constant_pool.push(get_constant_container(data));
 		}
 
